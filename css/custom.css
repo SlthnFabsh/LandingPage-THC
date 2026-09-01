@@ -306,3 +306,55 @@ h1, h2, h3, .font-heading {
 .animate-pulse-glow {
   animation: pulseGlow 6s ease-in-out infinite;
 }
+
+/* ==========================================================================
+   CTA LOGO REVEAL ANIMATION (Kiri → Kanan, Tahan 3 detik, Ulangi)
+   ========================================================================== */
+
+/* Wrapper */
+.cta-logo-sweep-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Logo: awalnya tersembunyi penuh (clip dari kanan = 100%), 
+   lalu perlahan terungkap ke kiri (clip kanan → 0%), 
+   tahan 3 detik, lalu reset dan ulangi.
+   
+   Total durasi = 1.5s reveal + 3s tahan + 0.2s jeda = ~4.7s
+   Persentase keyframe:
+   - 0%        : clip 100% (tak terlihat sama sekali)
+   - 32%       : clip 0%   (terlihat penuh) → selesai reveal setelah ~1.5s
+   - 95%       : clip 0%   (masih tahan / hold selama ~3 detik)
+   - 100%      : clip 100% (kembali tersembunyi, instant reset)
+*/
+.cta-logo-sweep {
+  display: block;
+  clip-path: inset(0 100% 0 0);
+  animation: logoRevealLTR 4.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  filter: drop-shadow(0 0 14px rgba(2, 86, 235, 0.5)) drop-shadow(0 0 30px rgba(2, 86, 235, 0.25));
+}
+
+@keyframes logoRevealLTR {
+  /* Mulai: logo tak terlihat sama sekali */
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.8;
+  }
+  /* Perlahan terungkap dari kiri ke kanan — selesai ~1.5 detik */
+  32% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+  /* Tahan logo tampil jelas selama ±3 detik */
+  95% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+  /* Kembali tersembunyi (instant) lalu ulangi dari 0% */
+  100% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+}
+

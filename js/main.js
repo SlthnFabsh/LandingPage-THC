@@ -109,6 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
           const targetNum = parseInt(targetEl.getAttribute('data-counter-target'), 10);
           const suffix = targetEl.getAttribute('data-counter-suffix') || '';
           const prefix = targetEl.getAttribute('data-counter-prefix') || '';
+          // data-counter-display: teks akhir yang ditampilkan (misal "1rb+")
+          // data-counter-steps: jumlah langkah animasi (override otomatis)
+          const displayFinal = targetEl.getAttribute('data-counter-display') || null;
+          const animTarget = parseInt(targetEl.getAttribute('data-counter-anim-target') || targetNum, 10);
           const duration = 2200; // Durasi 2.2 detik
           const startTime = performance.now();
 
@@ -118,14 +122,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Easing Out Expo untuk gerakan halus
             const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-            const currentNum = Math.floor(easeProgress * targetNum);
-
-            targetEl.textContent = `${prefix}${currentNum}${suffix}`;
+            const currentNum = Math.floor(easeProgress * animTarget);
 
             if (progress < 1) {
+              targetEl.textContent = `${prefix}${currentNum}${suffix}`;
               requestAnimationFrame(updateCounter);
             } else {
-              targetEl.textContent = `${prefix}${targetNum}${suffix}`;
+              // Tampilkan teks akhir (bisa pakai display override)
+              targetEl.textContent = displayFinal ? displayFinal : `${prefix}${targetNum}${suffix}`;
             }
           }
 
@@ -138,18 +142,18 @@ document.addEventListener('DOMContentLoaded', () => {
     counterElements.forEach(el => counterObserver.observe(el));
   }
 
-  // 6. Scroll Reveal Animation (Animasi Kedatangan Teks & Kartu)
-  const fadeUpElements = document.querySelectorAll('.fade-up');
-  if (fadeUpElements.length > 0) {
+  // 6. Scroll Reveal Animations (Animasi Kedatangan Teks & Kartu Variasi Spectacular)
+  const revealElements = document.querySelectorAll('.fade-up, .fade-down, .fade-left, .fade-right, .zoom-in-bounce, .flip-up');
+  if (revealElements.length > 0) {
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('active');
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1 });
 
-    fadeUpElements.forEach(el => revealObserver.observe(el));
+    revealElements.forEach(el => revealObserver.observe(el));
   }
 
   // 7. Video Fallback Warning Console Log & Status check

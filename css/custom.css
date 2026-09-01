@@ -190,29 +190,105 @@ h1, h2, h3, .font-heading {
   z-index: 1;
 }
 
-/* Scroll Reveal / Text Arrival Animations */
+/* ==========================================================================
+   SUPER WOW ENTRANCE & SCROLL REVEAL ANIMATIONS (VARIATED & ULTRA MODERN)
+   ========================================================================== */
+
+/* 1. Fade Up (Slide Up + Blur + Scale) */
 .fade-up {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transform: translateY(40px) scale(0.97);
+  filter: blur(5px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
 }
-
 .fade-up.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0);
 }
 
-/* Stagger Delays for Scroll Entrance Only */
-.fade-up:not(.active).delay-100 { transition-delay: 100ms; }
-.fade-up:not(.active).delay-200 { transition-delay: 200ms; }
-.fade-up:not(.active).delay-300 { transition-delay: 300ms; }
-.fade-up:not(.active).delay-400 { transition-delay: 400ms; }
+/* 2. Fade Down (Top Drop Entrance) */
+.fade-down {
+  opacity: 0;
+  transform: translateY(-40px) scale(0.97);
+  filter: blur(4px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+.fade-down.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
 
-/* Instant Hover Effect (Tanpa Delay) */
+/* 3. Fade Left (Slide In from Left) */
+.fade-left {
+  opacity: 0;
+  transform: translateX(-55px) scale(0.96);
+  filter: blur(4px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+.fade-left.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  filter: blur(0);
+}
+
+/* 4. Fade Right (Slide In from Right) */
+.fade-right {
+  opacity: 0;
+  transform: translateX(55px) scale(0.96);
+  filter: blur(4px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+.fade-right.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  filter: blur(0);
+}
+
+/* 5. Zoom In Bounce (Pop Elastic Arrival) */
+.zoom-in-bounce {
+  opacity: 0;
+  transform: scale(0.82) translateY(20px);
+  filter: blur(6px);
+  transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+.zoom-in-bounce.active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+}
+
+/* 6. Flip Up (3D Perspective Elevation) */
+.flip-up {
+  opacity: 0;
+  transform: perspective(1000px) rotateX(25deg) translateY(40px);
+  filter: blur(4px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+.flip-up.active {
+  opacity: 1;
+  transform: perspective(1000px) rotateX(0deg) translateY(0);
+  filter: blur(0);
+}
+
+/* Stagger Delays for Entrance Reveal Only */
+.fade-up:not(.active).delay-100, .fade-down:not(.active).delay-100, .fade-left:not(.active).delay-100, .fade-right:not(.active).delay-100, .zoom-in-bounce:not(.active).delay-100, .flip-up:not(.active).delay-100 { transition-delay: 100ms; }
+.fade-up:not(.active).delay-200, .fade-down:not(.active).delay-200, .fade-left:not(.active).delay-200, .fade-right:not(.active).delay-200, .zoom-in-bounce:not(.active).delay-200, .flip-up:not(.active).delay-200 { transition-delay: 200ms; }
+.fade-up:not(.active).delay-300, .fade-down:not(.active).delay-300, .fade-left:not(.active).delay-300, .fade-right:not(.active).delay-300, .zoom-in-bounce:not(.active).delay-300, .flip-up:not(.active).delay-300 { transition-delay: 300ms; }
+.fade-up:not(.active).delay-400, .fade-down:not(.active).delay-400, .fade-left:not(.active).delay-400, .fade-right:not(.active).delay-400, .zoom-in-bounce:not(.active).delay-400, .flip-up:not(.active).delay-400 { transition-delay: 400ms; }
+.fade-up:not(.active).delay-500, .fade-down:not(.active).delay-500, .fade-left:not(.active).delay-500, .fade-right:not(.active).delay-500, .zoom-in-bounce:not(.active).delay-500, .flip-up:not(.active).delay-500 { transition-delay: 500ms; }
+
+/* Instant Hover Effect (Tanpa Delay saat dikursorkan) */
 .hover-instant {
-  transition: transform 0.40s cubic-bezier(0, 0, 0.2, 1), background-color 0.15s cubic-bezier(0, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0, 0, 0.2, 1), color 0.15s cubic-bezier(0, 0, 0.2, 1) !important;
-  transition-delay: 0,2s !important;
+  transition: transform 0.15s cubic-bezier(0, 0, 0.2, 1), background-color 0.15s cubic-bezier(0, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0, 0, 0.2, 1), color 0.15s cubic-bezier(0, 0, 0.2, 1) !important;
+  transition-delay: 0s !important;
 }
 
 /* Pulse Glow Animation */

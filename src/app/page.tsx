@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import CompanySection from '@/components/CompanySection';
 import Services from '@/components/Services';
 import Marquee, { MarqueeLogo } from '@/components/Marquee';
 import NewsSection from '@/components/NewsSection';
@@ -40,6 +41,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <CompanySection />
         <Services />
         <Marquee
           titleKey="clients.title"

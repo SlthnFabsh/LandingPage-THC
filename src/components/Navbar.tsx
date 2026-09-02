@@ -1,23 +1,18 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Menu, X, ArrowRight, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 
 export default function Navbar() {
   const { lang, toggle, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
-  const [pastHero, setPastHero] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
     const updateNavbar = () => {
       setScrolled(window.scrollY > 30);
-      const heroSection = document.getElementById('beranda');
-      if (heroSection) {
-        setPastHero(heroSection.getBoundingClientRect().bottom <= 0);
-      }
     };
     window.addEventListener('scroll', updateNavbar, { passive: true });
     updateNavbar();
@@ -34,18 +29,14 @@ export default function Navbar() {
     window.setTimeout(() => setMenuOpen(false), 300);
   }, []);
 
-  const paddingClass =
-    scrolled ? 'py-1 sm:py-1.5 shadow-2xl shadow-slate-950/30'
-      : 'py-1.5 sm:py-2';
-
-  const navbarStyle = pastHero ? 'navbar-blur' : 'navbar-solid';
+  const shadowClass = scrolled ? 'shadow-lg shadow-slate-900/10' : 'shadow-sm';
 
   return (
     <>
-      <div className="fixed top-3 sm:top-5 left-0 right-0 z-50 px-4 sm:px-8 pointer-events-none">
+      <div className="fixed top-0 inset-x-0 z-50">
         <header
           id="navbar"
-          className={`${navbarStyle} ${paddingClass} pointer-events-auto max-w-[1340px] mx-auto rounded-2xl sm:rounded-3xl border border-white/60 shadow-2xl shadow-slate-950/25 px-5 sm:px-8 transition-all duration-300 flex items-center justify-between`}
+          className={`bg-white border-b border-slate-200 ${shadowClass} w-full px-5 sm:px-8 py-3 flex items-center justify-between transition-all duration-300`}
         >
           {/* Brand Logo */}
           <a href="#beranda" className="flex items-center group shrink-0 pr-4">
@@ -82,31 +73,14 @@ export default function Navbar() {
             <button
               id="lang-toggle-desktop"
               onClick={toggle}
-              className="w-10 h-10 rounded-full bg-white/70 hover:bg-white border border-slate-300/80 flex items-center justify-center transition-all shadow-xs group overflow-hidden"
-              title={lang === 'en' ? 'English' : 'Bahasa Indonesia'}
+              className="px-4 h-10 rounded-full bg-white hover:bg-slate-100 border border-slate-300/80 font-semibold text-sm text-slate-700 hover:text-slate-900 transition-all shadow-xs"
+              title={lang === 'en' ? 'Switch to Bahasa Indonesia' : 'Switch to English'}
               aria-label="Ganti Bahasa"
             >
-              {lang === 'id' ? (
-                <span className="flag-id w-6 h-6 rounded-full overflow-hidden flex flex-col shadow-xs border border-slate-200 group-hover:scale-110 transition-transform">
-                  <span className="h-1/2 bg-red-600"></span>
-                  <span className="h-1/2 bg-white"></span>
-                </span>
-              ) : (
-                <span className="flag-en w-8 h-[18px] rounded-[4px] overflow-hidden shadow-sm border border-slate-200 group-hover:scale-110 transition-transform">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/assets/images/amerika.svg" alt="amerika" className="w-full h-full object-cover" />
-                </span>
-              )}
+              {lang === 'id' ? 'Indonesia (ID)' : 'English (EN)'}
             </button>
 
-            <a
-              href="#faq"
-              className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm tracking-wide shadow-lg shadow-brand-600/30 hover:scale-105 transition-all flex items-center gap-2"
-            >
-              <span>{t('nav.hubungi')}</span>
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
+            </div>
 
           {/* Mobile Hamburger Button */}
           <button
@@ -167,39 +141,13 @@ export default function Navbar() {
                 <button
                   id="lang-toggle-mobile"
                   onClick={toggle}
-                  className="relative w-14 h-7 rounded-full bg-slate-200 hover:bg-slate-300 transition-colors border border-slate-300"
+                  className="px-4 py-2 rounded-full bg-white hover:bg-slate-100 border border-slate-300/80 font-semibold text-sm text-slate-700 hover:text-slate-900 transition-colors"
                   aria-label="Ganti Bahasa"
                 >
-                  <span
-                    id="lang-toggle-dot"
-                    className="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-sm flex items-center justify-center transition-transform duration-300"
-                    style={{ transform: lang === 'en' ? 'translateX(28px)' : 'translateX(0)' }}
-                  >
-                    {lang === 'id' ? (
-                      <span className="flag-id w-4 h-4 rounded-full overflow-hidden flex flex-col">
-                        <span className="h-1/2 bg-red-600"></span>
-                        <span className="h-1/2 bg-white"></span>
-                      </span>
-                    ) : (
-                      <span className="flag-en w-5 h-[12px] rounded-[3px] overflow-hidden shadow-xs border border-slate-200">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="/assets/images/england.svg" alt="English" className="w-full h-full object-cover" />
-                      </span>
-                    )}
-                  </span>
+                  {lang === 'id' ? 'Indonesia (ID)' : 'English (EN)'}
                 </button>
               </div>
             </div>
-          </div>
-
-          <div className="pt-6 border-t border-slate-100">
-            <a
-              href="#faq"
-              onClick={closeMenu}
-              className="w-full py-3 rounded-xl bg-brand-600 text-white text-center font-semibold block shadow-md"
-            >
-              {t('nav.hubungi')}
-            </a>
           </div>
         </div>
       </div>

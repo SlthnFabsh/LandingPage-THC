@@ -1,4 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #0256eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #0b132b;
+  --color-brand-950: #070c1e;
+}
 
 :root {
   --primary-blue: #0256eb;
@@ -99,7 +111,7 @@ h1, h2, h3, .font-heading {
 /* Hero Background Animation Grid */
 .hero-grid-pattern {
   background-size: 40px 40px;
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
@@ -178,7 +190,7 @@ h1, h2, h3, .font-heading {
   -webkit-text-fill-color: transparent;
 }
 
-/* Video Overlay Styling (Disesuaikan agar video terlihat lebih jernih & biru tidak terlalu pekat) */
+/* Video Overlay Styling */
 .hero-video-wrapper {
   position: absolute;
   top: 0;
@@ -331,22 +343,13 @@ h1, h2, h3, .font-heading {
   display: inline-block;
 }
 
-/* Logo: awalnya tersembunyi penuh (clip dari kanan = 100%), 
-   lalu perlahan terungkap ke kiri (clip kanan → 0%), 
-   tahan 3 detik, lalu reset dan ulangi.
-   
-   Total durasi = 1.5s reveal + 3s tahan + 0.2s jeda = ~4.7s
-   Persentase keyframe:
-   - 0%        : clip 100% (tak terlihat sama sekali)
-   - 32%       : clip 0%   (terlihat penuh) → selesai reveal setelah ~1.5s
-   - 95%       : clip 0%   (masih tahan / hold selama ~3 detik)
-   - 100%      : clip 100% (kembali tersembunyi, instant reset)
-*/
 .cta-logo-sweep {
   display: block;
   clip-path: inset(0 100% 0 0);
   animation: logoRevealLTR 4.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}@keyframes logoRevealLTR {
+}
+
+@keyframes logoRevealLTR {
   /* Mulai: logo tak terlihat sama sekali */
   0% {
     clip-path: inset(0 100% 0 0);
@@ -378,4 +381,3 @@ h1, h2, h3, .font-heading {
 #lang-toggle-desktop .flag-en {
   box-shadow: 0 0 0 2px rgba(2, 86, 235, 0.15);
 }
-

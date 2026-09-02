@@ -34,6 +34,20 @@ h1, h2, h3, .font-heading {
 }
 
 /* Glassmorphism Classes */
+/* Navbar solid (abu-abu pekat, tanpa blur) -> sebelum melewati hero/video */
+.navbar-solid {
+  background-color: #dcdfe4;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Navbar blur (transparan + frosted) -> setelah melewati hero/video */
+.navbar-blur {
+  background-color: rgba(220, 223, 228, 0.55);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+
 .glass-nav {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
@@ -332,10 +346,7 @@ h1, h2, h3, .font-heading {
   display: block;
   clip-path: inset(0 100% 0 0);
   animation: logoRevealLTR 4.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  filter: drop-shadow(0 0 14px rgba(2, 86, 235, 0.5)) drop-shadow(0 0 30px rgba(2, 86, 235, 0.25));
-}
-
-@keyframes logoRevealLTR {
+}@keyframes logoRevealLTR {
   /* Mulai: logo tak terlihat sama sekali */
   0% {
     clip-path: inset(0 100% 0 0);
@@ -356,5 +367,15 @@ h1, h2, h3, .font-heading {
     clip-path: inset(0 100% 0 0);
     opacity: 0;
   }
+}
+
+/* ==========================================================================
+   LANGUAGE TOGGLE (Language Switcher)
+   ========================================================================== */
+
+/* Highlight active flag dengan ring biru */
+#lang-toggle-desktop .flag-id,
+#lang-toggle-desktop .flag-en {
+  box-shadow: 0 0 0 2px rgba(2, 86, 235, 0.15);
 }
 

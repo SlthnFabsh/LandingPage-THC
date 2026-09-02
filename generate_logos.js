@@ -7,7 +7,7 @@ const mitraDir = 'c:/laragon/www/Landingpage-thc/assets/images/mitra';
 if (!fs.existsSync(pelangganDir)) fs.mkdirSync(pelangganDir, { recursive: true });
 if (!fs.existsSync(mitraDir)) fs.mkdirSync(mitraDir, { recursive: true });
 
-// SVG logo generators with professional vector designs
+// SVG logo generators with professional vector 
 const logos = {
   matahari: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
     <circle cx="35" cy="30" r="16" fill="#ED1C24"/>

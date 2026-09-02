@@ -39,7 +39,7 @@
 
   <!-- FLOATING NAVBAR (KOTAK BERSUDUT MELENGKUNG / ROUNDED-2XL SM:ROUNDED-3XL) -->
   <div class="fixed top-3 sm:top-5 left-0 right-0 z-50 px-4 sm:px-8 pointer-events-none">
-    <header id="navbar" class="pointer-events-auto max-w-[1340px] mx-auto rounded-2xl sm:rounded-3xl bg-[#dcdfe4]/95 backdrop-blur-xl border border-white/60 shadow-2xl shadow-slate-950/25 px-5 sm:px-8 py-2 sm:py-3 transition-all duration-300 flex items-center justify-between">
+    <header id="navbar" class="navbar-solid pointer-events-auto max-w-[1340px] mx-auto rounded-2xl sm:rounded-3xl border border-white/60 shadow-2xl shadow-slate-950/25 px-5 sm:px-8 py-2 sm:py-3 transition-all duration-300 flex items-center justify-between">
       
       <!-- Brand Logo (Logo.png) -->
       <a href="#" class="flex items-center group shrink-0 pr-4">
@@ -48,30 +48,35 @@
 
       <!-- Desktop Nav Links -->
       <nav class="hidden lg:flex items-center gap-8 xl:gap-14 font-bold text-slate-700 text-sm sm:text-base tracking-wide">
-        <a href="#beranda" class="text-slate-950 font-extrabold hover:text-brand-600 transition-colors">Beranda</a>
-        <a href="#tentang" class="hover:text-brand-600 transition-colors">Tentang</a>
-        <a href="#layanan" class="hover:text-brand-600 transition-colors">Layanan</a>
-        <a href="#jaringan" class="hover:text-brand-600 transition-colors">Jaringan</a>
+        <a href="#beranda" class="text-slate-950 font-extrabold hover:text-brand-600 transition-colors" data-i18n="nav.beranda">Beranda</a>
+        <a href="#tentang" class="hover:text-brand-600 transition-colors" data-i18n="nav.tentang">Tentang</a>
+        <a href="#layanan" class="hover:text-brand-600 transition-colors" data-i18n="nav.layanan">Layanan</a>
+        <a href="#jaringan" class="hover:text-brand-600 transition-colors" data-i18n="nav.jaringan">Jaringan</a>
         
         <!-- Dropdown Berita -->
         <a href="#berita" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
-          <span>Berita</span>
+          <span data-i18n="nav.berita">Berita</span>
           <i data-lucide="chevron-down" class="w-4 h-4 text-slate-600"></i>
         </a>
       </nav>
 
-      <!-- Right Action Button & Circular Language Selector -->
+      <!-- Right Action Button & Language Toggle -->
       <div class="hidden lg:flex items-center gap-3 shrink-0">
-        <!-- Circular Flag Button -->
-        <button class="w-10 h-10 rounded-full bg-white/70 hover:bg-white border border-slate-300/80 flex items-center justify-center transition-all shadow-xs group" title="Bahasa Indonesia">
-          <span class="w-6 h-6 rounded-full overflow-hidden flex flex-col shadow-xs border border-slate-200 group-hover:scale-110 transition-transform">
+        <!-- Language Toggle Button -->
+        <button id="lang-toggle-desktop" class="w-10 h-10 rounded-full bg-white/70 hover:bg-white border border-slate-300/80 flex items-center justify-center transition-all shadow-xs group overflow-hidden" title="Bahasa Indonesia">
+          <!-- Flag Indonesia -->
+          <span id="flag-id-desktop" class="flag-id w-6 h-6 rounded-full overflow-hidden flex flex-col shadow-xs border border-slate-200 group-hover:scale-110 transition-transform">
             <span class="h-1/2 bg-red-600"></span>
             <span class="h-1/2 bg-white"></span>
+          </span>
+          <!-- Flag UK -->
+          <span id="flag-en-desktop" class="flag-en hidden w-8 h-[18px] rounded-[4px] overflow-hidden shadow-sm border border-slate-200 group-hover:scale-110 transition-transform">
+            <img src="assets/images/amerika.svg" alt="amerika" class="w-full h-full object-cover">
           </span>
         </button>
 
         <a href="#faq" class="px-6 sm:px-7 py-2.5 sm:py-3 rounded-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm tracking-wide shadow-lg shadow-brand-600/30 hover:scale-105 transition-all flex items-center gap-2">
-          <span>Hubungi Kami</span>
+          <span data-i18n="nav.hubungi">Hubungi Kami</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
       </div>
@@ -97,16 +102,33 @@
           </button>
         </div>
         <div class="flex flex-col gap-4 font-medium text-slate-700 text-base">
-          <a href="#beranda" class="py-2 border-b border-slate-100 text-brand-600">Beranda</a>
-          <a href="#tentang" class="py-2 border-b border-slate-100">Tentang</a>
-          <a href="#layanan" class="py-2 border-b border-slate-100">Layanan</a>
-          <a href="#jaringan" class="py-2 border-b border-slate-100">Jaringan</a>
-          <a href="#berita" class="py-2 border-b border-slate-100">Media</a>
-          <a href="#faq" class="py-2">FAQ</a>
+          <a href="#beranda" class="py-2 border-b border-slate-100 text-brand-600" data-i18n="nav.beranda">Beranda</a>
+          <a href="#tentang" class="py-2 border-b border-slate-100" data-i18n="nav.tentang">Tentang</a>
+          <a href="#layanan" class="py-2 border-b border-slate-100" data-i18n="nav.layanan">Layanan</a>
+          <a href="#jaringan" class="py-2 border-b border-slate-100" data-i18n="nav.jaringan">Jaringan</a>
+          <a href="#berita" class="py-2 border-b border-slate-100" data-i18n="nav.berita">Media</a>
+          <a href="#faq" class="py-2" data-i18n="nav.faq">FAQ</a>
+        </div>
+        <!-- Mobile Language Toggle -->
+        <div class="mt-6 pt-4 border-t border-slate-100">
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-medium text-slate-500" data-i18n="nav.bahasa">Bahasa</span>
+            <button id="lang-toggle-mobile" class="relative w-14 h-7 rounded-full bg-slate-200 hover:bg-slate-300 transition-colors border border-slate-300">
+              <span id="lang-toggle-dot" class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-sm flex items-center justify-center transition-transform duration-300">
+                <span id="flag-id-mobile" class="flag-id w-4 h-4 rounded-full overflow-hidden flex flex-col">
+                  <span class="h-1/2 bg-red-600"></span>
+                  <span class="h-1/2 bg-white"></span>
+                </span>
+<span id="flag-en-mobile" class="flag-en hidden w-5 h-[12px] rounded-[3px] overflow-hidden shadow-xs border border-slate-200">
+  <img src="assets/images/england.svg" alt="English" class="w-full h-full object-cover">
+</span>
+              </span>
+            </button>
+          </div>
         </div>
       </div>
       <div class="pt-6 border-t border-slate-100">
-        <a href="#faq" class="w-full py-3 rounded-xl bg-brand-600 text-white text-center font-semibold block shadow-md">
+        <a href="#faq" class="w-full py-3 rounded-xl bg-brand-600 text-white text-center font-semibold block shadow-md" data-i18n="nav.hubungi">
           Hubungi Kami
         </a>
       </div>
@@ -173,13 +195,13 @@
 
       <!-- Subtitle Description -->
       <p class="max-w-4xl mx-auto text-base sm:text-lg md:text-xl text-slate-300 font-normal leading-relaxed mb-10 px-2 fade-up delay-200">
-        Kami hadir untuk memberikan solusi Internet. <strong class="text-white font-medium">Trans Hybrid Communication</strong> hadir untuk membantu perusahaan dalam mendukung efisiensi operasional &amp; komunikasi bisnis Anda untuk tumbuh dan berkembang bersama kami.
+        <span data-i18n="hero.subtitle">Kami hadir untuk memberikan solusi Internet.</span> <strong class="text-white font-medium">Trans Hybrid Communication</strong> <span data-i18n="hero.subtitle2">hadir untuk membantu perusahaan dalam mendukung efisiensi operasional &amp; komunikasi bisnis Anda untuk tumbuh dan berkembang bersama kami.</span>
       </p>
 
       <!-- Primary CTA Button -->
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 fade-up delay-300">
         <a href="#faq" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 text-white font-bold text-sm sm:text-base tracking-wide shadow-glow-blue-lg hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 group">
-          <span>Mulai Berlangganan Sekarang</span>
+          <span data-i18n="hero.cta">Mulai Berlangganan Sekarang</span>
           <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
         </a>
       </div>
@@ -190,19 +212,19 @@
         <!-- Stat 1 -->
         <div class="p-4 sm:p-6 rounded-2xl glass-card border border-white/15 text-center hover:border-white/40 transition-all hover:-translate-y-1 zoom-in-bounce delay-100">
           <div class="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1 tracking-tight" data-counter-target="50" data-counter-suffix="rb+">0rb+</div>
-          <div class="text-xs sm:text-sm text-slate-300 font-medium">Pelanggan Aktif</div>
+          <div class="text-xs sm:text-sm text-slate-300 font-medium" data-i18n="stats.pelanggan">Pelanggan Aktif</div>
         </div>
 
         <!-- Stat 2 -->
         <div class="p-4 sm:p-6 rounded-2xl glass-card border border-white/15 text-center hover:border-white/40 transition-all hover:-translate-y-1 zoom-in-bounce delay-200">
           <div class="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1 tracking-tight" data-counter-target="100" data-counter-suffix="+">0+</div>
-          <div class="text-xs sm:text-sm text-slate-300 font-medium">Perusahaan / BUMN</div>
+          <div class="text-xs sm:text-sm text-slate-300 font-medium" data-i18n="stats.perusahaan">Perusahaan / BUMN</div>
         </div>
 
         <!-- Stat 3 -->
         <div class="p-4 sm:p-6 rounded-2xl glass-card border border-white/15 text-center hover:border-white/40 transition-all hover:-translate-y-1 zoom-in-bounce delay-300">
           <div class="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1 tracking-tight" data-counter-target="19" data-counter-suffix="thn+">0thn+</div>
-          <div class="text-xs sm:text-sm text-slate-300 font-medium">Pengalaman</div>
+          <div class="text-xs sm:text-sm text-slate-300 font-medium" data-i18n="stats.pengalaman">Pengalaman</div>
         </div>
 
         <!-- Stat 4 -->
@@ -223,11 +245,11 @@
       
       <!-- Layanan Header (Top Drop Arrival) -->
       <div class="text-center mb-16 fade-down">
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4" data-i18n="services.title">
           Layanan Kami
         </h2>
         <div class="w-12 h-1 bg-brand-600 mx-auto rounded-full mb-4"></div>
-        <p class="text-slate-600 text-base max-w-2xl mx-auto font-normal">
+        <p class="text-slate-600 text-base max-w-2xl mx-auto font-normal" data-i18n="services.desc">
           Solusi infrastruktur telekomunikasi komprehensif yang dirancang untuk keandalan tinggi dan performa bisnis optimal.
         </p>
       </div>
@@ -241,10 +263,10 @@
             <div class="w-14 h-14 rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-white/20 group-hover:text-white group-hover:border group-hover:border-white/30 flex items-center justify-center mb-6 transition-all duration-150 shadow-xs">
               <i data-lucide="wifi" class="w-7 h-7"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-3 group-hover:text-white transition-colors duration-150">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-3 group-hover:text-white transition-colors duration-150" data-i18n="services.internet">
               Internet
             </h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-6 group-hover:text-blue-100 transition-colors duration-150">
+            <p class="text-slate-600 text-sm leading-relaxed mb-6 group-hover:text-blue-100 transition-colors duration-150" data-i18n="services.internet.desc">
               Layanan Dedicated Internet berkecepatan tinggi dengan garansi SLA 99.9%, koneksi ultra-stabil tanpa hambatan untuk skala Industri &amp; Korporasi.
             </p>
             
@@ -252,17 +274,17 @@
             <ul class="space-y-2.5 mb-8 text-xs font-bold text-slate-700 group-hover:text-white transition-colors duration-150">
               <li class="flex items-center gap-2">
                 <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-600 group-hover:text-cyan-300 transition-colors"></i>
-                <span>High Speed Fiber Dedicated</span>
+                <span data-i18n="services.internet.feature1">High Speed Fiber Dedicated</span>
               </li>
               <li class="flex items-center gap-2">
                 <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-600 group-hover:text-cyan-300 transition-colors"></i>
-                <span>Garansi SLA 99.9% Uptime</span>
+                <span data-i18n="services.internet.feature2">Garansi SLA 99.9% Uptime</span>
               </li>
             </ul>
           </div>
 
           <a href="#faq" class="inline-flex items-center gap-2 text-xs font-bold text-brand-600 group-hover:text-white tracking-wide uppercase transition-colors duration-150">
-            <span>Lebih Detail</span>
+            <span data-i18n="common.lebihDetail">Lebih Detail</span>
             <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
           </a>
         </div>
@@ -273,10 +295,10 @@
             <div class="w-14 h-14 rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-white/20 group-hover:text-white group-hover:border group-hover:border-white/30 flex items-center justify-center mb-6 transition-all duration-150 shadow-xs">
               <i data-lucide="network" class="w-7 h-7"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-3 group-hover:text-white transition-colors duration-150">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-3 group-hover:text-white transition-colors duration-150" data-i18n="services.konektivitas">
               Konektivitas
             </h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-6 group-hover:text-blue-100 transition-colors duration-150">
+            <p class="text-slate-600 text-sm leading-relaxed mb-6 group-hover:text-blue-100 transition-colors duration-150" data-i18n="services.konektivitas.desc">
               Cakupan fleksibel yang menghubungkan kantor cabang ke pusat secara aman. Beragam Pilihan Point-To-Point &amp; MPLS Multi-Branch IP-VPN.
             </p>
 
@@ -284,17 +306,17 @@
             <ul class="space-y-2.5 mb-8 text-xs font-bold text-slate-700 group-hover:text-white transition-colors duration-150">
               <li class="flex items-center gap-2">
                 <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-600 group-hover:text-cyan-300 transition-colors"></i>
-                <span>Point-To-Point Network</span>
+                <span data-i18n="services.konektivitas.feature1">Point-To-Point Network</span>
               </li>
               <li class="flex items-center gap-2">
                 <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-600 group-hover:text-cyan-300 transition-colors"></i>
-                <span>MPLS Multi-Branch IP-VPN</span>
+                <span data-i18n="services.konektivitas.feature2">MPLS Multi-Branch IP-VPN</span>
               </li>
             </ul>
           </div>
 
           <a href="#faq" class="inline-flex items-center gap-2 text-xs font-bold text-brand-600 group-hover:text-white tracking-wide uppercase transition-colors duration-150">
-            <span>Lebih Detail</span>
+            <span data-i18n="common.lebihDetail">Lebih Detail</span>
             <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
           </a>
         </div>
@@ -305,10 +327,10 @@
             <div class="w-14 h-14 rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-white/20 group-hover:text-white group-hover:border group-hover:border-white/30 flex items-center justify-center mb-6 transition-all duration-150 shadow-xs">
               <i data-lucide="cpu" class="w-7 h-7"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-3 group-hover:text-white transition-colors duration-150">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-3 group-hover:text-white transition-colors duration-150" data-i18n="services.solusi">
               Solusi
             </h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-6 group-hover:text-blue-100 transition-colors duration-150">
+            <p class="text-slate-600 text-sm leading-relaxed mb-6 group-hover:text-blue-100 transition-colors duration-150" data-i18n="services.solusi.desc">
               Infrastruktur dan solusi custom yang disesuaikan dengan kebutuhan Anda, Managed Services, WiFi Corporate, dan konsultasi IT terpadu.
             </p>
 
@@ -316,17 +338,17 @@
             <ul class="space-y-2.5 mb-8 text-xs font-bold text-slate-700 group-hover:text-white transition-colors duration-150">
               <li class="flex items-center gap-2">
                 <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-600 group-hover:text-cyan-300 transition-colors"></i>
-                <span>Custom ICT Managed Services</span>
+                <span data-i18n="services.solusi.feature1">Custom ICT Managed Services</span>
               </li>
               <li class="flex items-center gap-2">
                 <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-600 group-hover:text-cyan-300 transition-colors"></i>
-                <span>Enterprise Cloud WiFi</span>
+                <span data-i18n="services.solusi.feature2">Enterprise Cloud WiFi</span>
               </li>
             </ul>
           </div>
 
           <a href="#faq" class="inline-flex items-center gap-2 text-xs font-bold text-brand-600 group-hover:text-white tracking-wide uppercase transition-colors duration-150">
-            <span>Lebih Detail</span>
+            <span data-i18n="common.lebihDetail">Lebih Detail</span>
             <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
           </a>
         </div>
@@ -337,10 +359,10 @@
             <div class="w-14 h-14 rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-white/20 group-hover:text-white group-hover:border group-hover:border-white/30 flex items-center justify-center mb-6 transition-all duration-150 shadow-xs">
               <i data-lucide="database" class="w-7 h-7"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-3 group-hover:text-white transition-colors duration-150">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-3 group-hover:text-white transition-colors duration-150" data-i18n="services.data">
               Pusat Data
             </h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-6 group-hover:text-blue-100 transition-colors duration-150">
+            <p class="text-slate-600 text-sm leading-relaxed mb-6 group-hover:text-blue-100 transition-colors duration-150" data-i18n="services.data.desc">
               Fasilitas Data Center Tier-3 aman dengan keandalan tinggi dan proteksi fisik &amp; cyber 24/7 untuk menjamin keberlanjutan sistem bisnis Anda.
             </p>
 
@@ -348,17 +370,17 @@
             <ul class="space-y-2.5 mb-8 text-xs font-bold text-slate-700 group-hover:text-white transition-colors duration-150">
               <li class="flex items-center gap-2">
                 <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-600 group-hover:text-cyan-300 transition-colors"></i>
-                <span>Tier-3 Data Center High Security</span>
+                <span data-i18n="services.data.feature1">Tier-3 Data Center High Security</span>
               </li>
               <li class="flex items-center gap-2">
                 <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-600 group-hover:text-cyan-300 transition-colors"></i>
-                <span>24/7 Physical &amp; Cyber Protection</span>
+                <span data-i18n="services.data.feature2">24/7 Physical &amp; Cyber Protection</span>
               </li>
             </ul>
           </div>
 
           <a href="#faq" class="inline-flex items-center gap-2 text-xs font-bold text-brand-600 group-hover:text-white tracking-wide uppercase transition-colors duration-150">
-            <span>Lebih Detail</span>
+            <span data-i18n="common.lebihDetail">Lebih Detail</span>
             <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
           </a>
         </div>
@@ -372,11 +394,11 @@
   <!-- PELANGGAN SECTION (10 CLIENT LOGOS - SLIDE TO LEFT) -->
   <section class="py-20 bg-white border-y border-slate-100 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center fade-up">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3" data-i18n="clients.title">
         Pelanggan
       </h2>
       <div class="w-12 h-1 bg-brand-600 mx-auto rounded-full mb-3"></div>
-      <p class="text-sm text-slate-500 font-medium">Dipercaya oleh perusahaan nasional &amp; korporasi terkemuka</p>
+      <p class="text-sm text-slate-500 font-medium" data-i18n="clients.desc">Dipercaya oleh perusahaan nasional &amp; korporasi terkemuka</p>
     </div>
 
     <!-- Infinite Marquee Slider Left -->
@@ -455,11 +477,11 @@
   <!-- MITRA SECTION (10 PARTNER LOGOS - SLIDE TO RIGHT) -->
   <section class="py-20 bg-slate-50 border-b border-slate-200/60 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center fade-up">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3" data-i18n="partners.title">
         Mitra
       </h2>
       <div class="w-12 h-1 bg-brand-600 mx-auto rounded-full mb-3"></div>
-      <p class="text-sm text-slate-500 font-medium">Mitra teknologi &amp; infrastruktur terpercaya</p>
+      <p class="text-sm text-slate-500 font-medium" data-i18n="partners.desc">Mitra teknologi &amp; infrastruktur terpercaya</p>
     </div>
 
     <!-- Infinite Marquee Slider Right -->
@@ -542,13 +564,13 @@
       <!-- Section Top Bar -->
       <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-14 gap-4 fade-up">
         <div>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2" data-i18n="news.title">
             Berita Terbaru
           </h2>
-          <p class="text-slate-500 text-sm sm:text-base">Informasi resmi &amp; pembaruan terkini dari Trans Hybrid Communication</p>
+          <p class="text-slate-500 text-sm sm:text-base" data-i18n="news.desc">Informasi resmi &amp; pembaruan terkini dari Trans Hybrid Communication</p>
         </div>
         <a href="#" class="inline-flex items-center gap-2 font-bold text-sm text-brand-600 hover:text-brand-700 group">
-          <span>Lihat Semua Berita</span>
+          <span data-i18n="news.viewall">Lihat Semua Berita</span>
           <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
         </a>
       </div>
@@ -568,17 +590,17 @@
             <div>
               <div class="flex items-center gap-2 text-xs text-slate-400 mb-3 font-medium">
                 <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                <span>12 Agustus 2026</span>
+                <span data-i18n="news.date1">12 Agustus 2026</span>
               </div>
-              <h3 class="text-lg font-bold text-slate-900 mb-3 leading-snug group-hover:text-brand-600 transition-colors">
+              <h3 class="text-lg font-bold text-slate-900 mb-3 leading-snug group-hover:text-brand-600 transition-colors" data-i18n="news.title1">
                 Trans Hybrid Communication Dukung Penguatan Digitalisasi Enterprise
               </h3>
-              <p class="text-slate-600 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-6">
+              <p class="text-slate-600 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-6" data-i18n="news.desc1">
                 PT Trans Hybrid Communication terus berinovasi dalam memperkuat infrastruktur jaringan nasional guna mendorong efisiensi operasional sektor publik dan swasta...
               </p>
             </div>
             <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700 tracking-wide uppercase">
-              <span>Baca Selengkapnya</span>
+              <span data-i18n="news.readmore">Baca Selengkapnya</span>
               <i data-lucide="chevron-right" class="w-4 h-4"></i>
             </a>
           </div>
@@ -596,17 +618,17 @@
             <div>
               <div class="flex items-center gap-2 text-xs text-slate-400 mb-3 font-medium">
                 <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                <span>18 Juli 2026</span>
+                <span data-i18n="news.date2">18 Juli 2026</span>
               </div>
-              <h3 class="text-lg font-bold text-slate-900 mb-3 leading-snug group-hover:text-brand-600 transition-colors">
+              <h3 class="text-lg font-bold text-slate-900 mb-3 leading-snug group-hover:text-brand-600 transition-colors" data-i18n="news.title2">
                 PT. Trans Hybrid Communication (THC) Resmi Perluas Backbone Maritim
               </h3>
-              <p class="text-slate-600 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-6">
+              <p class="text-slate-600 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-6" data-i18n="news.desc2">
                 Guna mendukung konektivitas wilayah pesisir &amp; logistik nasional, THC meluncurkan jalur backbone fiber optik maritim berkapasitas tinggi di wilayah strategis...
               </p>
             </div>
             <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700 tracking-wide uppercase">
-              <span>Baca Selengkapnya</span>
+              <span data-i18n="news.readmore">Baca Selengkapnya</span>
               <i data-lucide="chevron-right" class="w-4 h-4"></i>
             </a>
           </div>
@@ -624,30 +646,18 @@
             <div>
               <div class="flex items-center gap-2 text-xs text-slate-400 mb-3 font-medium">
                 <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                <span>05 Mei 2026</span>
+                <span data-i18n="news.date3">05 Mei 2026</span>
               </div>
-              <h3 class="text-lg font-bold text-slate-900 mb-3 leading-snug group-hover:text-brand-600 transition-colors">
+              <h3 class="text-lg font-bold text-slate-900 mb-3 leading-snug group-hover:text-brand-600 transition-colors" data-i18n="news.title3">
                 PT. Trans Hybrid Communication Hadir di Seluruh Wilayah Jawa &amp; Bali
               </h3>
-              <p class="text-slate-600 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-6">
-            </span>
-          </div>
-          <div class="p-6 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
-                <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-600"></i>
-                <span>10 Juni 2026</span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors mb-3 line-clamp-2">
-                Perluasan Jaringan Point-To-Point THC Capai 1.000+ Pop Nodes di Seluruh Nusantara
-              </h3>
-              <p class="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6">
-                Komitmen jangkauan hingga area terdepan kini semakin kokoh dengan beroperasinya jalur komunikasi baru antar pulau Jawa dan Sumatra.
+              <p class="text-slate-600 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-6" data-i18n="news.desc3">
+                Memperluas jangkauan layanan di seluruh Jawa dan Bali, THC menghadirkan konektivitas andal bagi sektor korporasi, pemerintahan, dan UKM.
               </p>
             </div>
-            <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 tracking-wide uppercase group/link">
-              <span>Baca Selengkapnya</span>
-              <i data-lucide="chevron-right" class="w-4 h-4 group-hover/link:translate-x-1 transition-transform"></i>
+            <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700 tracking-wide uppercase">
+              <span data-i18n="news.readmore">Baca Selengkapnya</span>
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
             </a>
           </div>
         </article>
@@ -664,11 +674,11 @@
       
       <!-- FAQ Section Header (Top Drop Arrival) -->
       <div class="text-center mb-16 fade-down">
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4" data-i18n="faq.title">
           Pertanyaan yang Sering Diajukan
         </h2>
         <div class="w-12 h-1 bg-brand-600 mx-auto rounded-full mb-4"></div>
-        <p class="text-slate-600 text-base font-normal">
+        <p class="text-slate-600 text-base font-normal" data-i18n="faq.desc">
           Punya pertanyaan? Kami telah menyediakan jawaban umum untuk membantu Anda.
         </p>
       </div>
@@ -679,14 +689,14 @@
         <!-- FAQ 1 (Fade Left) -->
         <div class="faq-item rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all overflow-hidden fade-left delay-100">
           <button class="faq-header w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none cursor-pointer">
-            <span class="font-bold text-slate-900 text-base sm:text-lg">
+            <span class="font-bold text-slate-900 text-base sm:text-lg" data-i18n="faq.q1">
               Bagaimana cara menghubungi marketing ?
             </span>
             <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 ml-4">
               <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-300"></i>
             </div>
           </button>
-          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4">
+          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4" data-i18n="faq.a1">
             Anda dapat menghubungi tim Marketing kami melalui tombol kontak di situs web ini, melalui email resmi di <a href="mailto:info@transhybrid.net.id" class="text-brand-600 font-semibold underline">info@transhybrid.net.id</a>, atau telepon langsung ke 0811-1222-808. Tim kami siap melayani konsultasi kebutuhan infrastruktur Anda 24/7.
           </div>
         </div>
@@ -694,14 +704,14 @@
         <!-- FAQ 2 (Fade Right) -->
         <div class="faq-item rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all overflow-hidden fade-right delay-200">
           <button class="faq-header w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none cursor-pointer">
-            <span class="font-bold text-slate-900 text-base sm:text-lg">
+            <span class="font-bold text-slate-900 text-base sm:text-lg" data-i18n="faq.q2">
               Jika kami memiliki masalah kami harus menghubungi kemana ?
             </span>
             <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 ml-4">
               <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-300"></i>
             </div>
           </button>
-          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4">
+          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4" data-i18n="faq.a2">
             Untuk gangguan teknis atau bantuan operasional, Anda dapat langsung menghubungi Helpdesk / Network Operations Center (NOC) THC yang beroperasi 24 jam sehari 7 hari seminggu melalui Hotline Care Center 0811-1222-808 atau Helpdesk Ticketing System resmi kami.
           </div>
         </div>
@@ -709,14 +719,14 @@
         <!-- FAQ 3 (Fade Left) -->
         <div class="faq-item rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all overflow-hidden fade-left delay-300">
           <button class="faq-header w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none cursor-pointer">
-            <span class="font-bold text-slate-900 text-base sm:text-lg">
+            <span class="font-bold text-slate-900 text-base sm:text-lg" data-i18n="faq.q3">
               Dimana alamat Trans Hybrid Communication ?
             </span>
             <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 ml-4">
               <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-300"></i>
             </div>
           </button>
-          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4">
+          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4" data-i18n="faq.a3">
             Kantor Pusat PT Trans Hybrid Communication berlokasi di Gedung Cyber Lantai 6, Jl. Kuningan Barat IV No.8, DKI Jakarta (Office) dan Gedung Operasional di Margonda Raya Depok. Kantor cabang kami juga tersebar di berbagai kota besar di Indonesia.
           </div>
         </div>
@@ -724,14 +734,14 @@
         <!-- FAQ 4 (Fade Right) -->
         <div class="faq-item rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all overflow-hidden fade-right delay-100">
           <button class="faq-header w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none cursor-pointer">
-            <span class="font-bold text-slate-900 text-base sm:text-lg">
+            <span class="font-bold text-slate-900 text-base sm:text-lg" data-i18n="faq.q4">
               Apa saja layanannya ?
             </span>
             <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 ml-4">
               <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-300"></i>
             </div>
           </button>
-          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4">
+          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4" data-i18n="faq.a4">
             Layanan utama kami meliputi: Dedicated High-Speed Internet Broadband, Jaringan Konektivitas Point-to-Point &amp; MPLS IP-VPN, Managed Services &amp; ICT Solutions, serta Colocation Data Center Tier-3.
           </div>
         </div>
@@ -739,14 +749,14 @@
         <!-- FAQ 5 (Fade Left) -->
         <div class="faq-item rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all overflow-hidden fade-left delay-200">
           <button class="faq-header w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none cursor-pointer">
-            <span class="font-bold text-slate-900 text-base sm:text-lg">
+            <span class="font-bold text-slate-900 text-base sm:text-lg" data-i18n="faq.q5">
               Produk apa saja di Trans Hybrid Communication ?
             </span>
             <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 ml-4">
               <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-300"></i>
             </div>
           </button>
-          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4">
+          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4" data-i18n="faq.a5">
             Produk kami mencakup THC Broadband Corporate, THC Leased Line, Local Loop Fiber Optic, SD-WAN Enterprise, Cloud Connectivity Direct, Cloud Managed WiFi, dan Server Rack Colocation.
           </div>
         </div>
@@ -754,14 +764,14 @@
         <!-- FAQ 6 (Fade Right) -->
         <div class="faq-item rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all overflow-hidden fade-right delay-300">
           <button class="faq-header w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none cursor-pointer">
-            <span class="font-bold text-slate-900 text-base sm:text-lg">
+            <span class="font-bold text-slate-900 text-base sm:text-lg" data-i18n="faq.q6">
               Dimana saja cakupan area terdepannya ?
             </span>
             <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 ml-4">
               <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-300"></i>
             </div>
           </button>
-          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4">
+          <div class="faq-content hidden px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4" data-i18n="faq.a6">
             Cakupan jaringan THC mencakup kota-kota besar di seluruh Indonesia seperti Jabodetabek, Surabaya, Bandung, Semarang, Medan, Palembang, Makassar, Denpasar, Balikpapan, serta jalur serat optik maritim antar pulau.
           </div>
         </div>
@@ -784,7 +794,7 @@
             <img src="assets/images/logo1.png" alt="Trans Hybrid Communication" class="cta-logo-sweep h-24 sm:h-32 md:h-36 w-auto object-contain">
           </div>
         </div>
-        <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight">
+        <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight" data-i18n="cta.title">
           Siap Berkoneksi?
         </h2>
       </div>
@@ -804,10 +814,10 @@
           
           <!-- Left: Text -->
           <div class="flex-1 text-white fade-left delay-300">
-            <h3 class="text-2xl sm:text-3xl font-extrabold mb-3 leading-tight">
+            <h3 class="text-2xl sm:text-3xl font-extrabold mb-3 leading-tight" data-i18n="cta.subtitle">
               Konektivitas adalah Investasi
             </h3>
-            <p class="text-base text-blue-100 leading-relaxed max-w-xl font-normal">
+            <p class="text-base text-blue-100 leading-relaxed max-w-xl font-normal" data-i18n="cta.desc">
               Koneksi andal bukan lagi pilihan, ini kebutuhan. Mulai hari ini, tingkatkan infrastruktur jaringan lembaga Anda — lebih cepat, lebih aman, dan lebih efisien. Konsultasi hanya butuh hitungan menit.
             </p>
           </div>
@@ -815,7 +825,7 @@
           <!-- Right: CTA Button -->
           <div class="shrink-0 fade-right delay-400">
             <a href="#faq" class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-brand-700 font-extrabold text-base hover:bg-brand-50 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-brand-900/30 group">
-              <span>Hubungi Kami</span>
+              <span data-i18n="nav.hubungi">Hubungi Kami</span>
               <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
             </a>
           </div>
@@ -839,48 +849,48 @@
           <div class="flex items-center gap-3">
             <img src="assets/images/logo1.png" alt="PT Trans Hybrid Communication Logo" class="h-12 w-auto object-contain">
           </div>
-          <p class="text-slate-600 text-sm leading-relaxed">
+          <p class="text-slate-600 text-sm leading-relaxed" data-i18n="footer.desc">
             Menyediakan teknologi dan konektivitas telekomunikasi yang andal sejak tahun 2006 untuk mendukung kemajuan bisnis Indonesia.
           </p>
         </div>
 
         <!-- Col 2: Layanan (Flip Up) -->
         <div class="flip-up delay-200">
-          <h4 class="font-extrabold text-slate-900 text-base mb-4 tracking-wide">
+          <h4 class="font-extrabold text-slate-900 text-base mb-4 tracking-wide" data-i18n="footer.services">
             LAYANAN
           </h4>
           <ul class="space-y-2.5 text-sm">
-            <li><a href="#layanan" class="hover:text-brand-600 transition-colors">Internet</a></li>
-            <li><a href="#layanan" class="hover:text-brand-600 transition-colors">Konektivitas</a></li>
-            <li><a href="#layanan" class="hover:text-brand-600 transition-colors">Solusi</a></li>
-            <li><a href="#layanan" class="hover:text-brand-600 transition-colors">Data Pusat</a></li>
+            <li><a href="#layanan" class="hover:text-brand-600 transition-colors" data-i18n="services.internet">Internet</a></li>
+            <li><a href="#layanan" class="hover:text-brand-600 transition-colors" data-i18n="services.konektivitas">Konektivitas</a></li>
+            <li><a href="#layanan" class="hover:text-brand-600 transition-colors" data-i18n="services.solusi">Solusi</a></li>
+            <li><a href="#layanan" class="hover:text-brand-600 transition-colors" data-i18n="services.data">Data Pusat</a></li>
           </ul>
         </div>
 
         <!-- Col 3: Perusahaan (Flip Up) -->
         <div class="flip-up delay-300">
-          <h4 class="font-extrabold text-slate-900 text-base mb-4 tracking-wide">
+          <h4 class="font-extrabold text-slate-900 text-base mb-4 tracking-wide" data-i18n="footer.company">
             PERUSAHAAN
           </h4>
           <ul class="space-y-2.5 text-sm">
-            <li><a href="#layanan" class="hover:text-brand-600 transition-colors">Tentang Kami</a></li>
+            <li><a href="#layanan" class="hover:text-brand-600 transition-colors" data-i18n="footer.about">Tentang Kami</a></li>
           </ul>
         </div>
 
         <!-- Col 4: Kontak Kami (Flip Up) -->
         <div class="flip-up delay-400">
-          <h4 class="font-extrabold text-slate-900 text-base mb-4 tracking-wide">
+          <h4 class="font-extrabold text-slate-900 text-base mb-4 tracking-wide" data-i18n="footer.contact">
             KONTAK KAMI
           </h4>
           <ul class="space-y-3 text-sm">
             <li class="flex items-start gap-2.5">
               <i data-lucide="building-2" class="w-4 h-4 text-brand-600 shrink-0 mt-0.5"></i>
-              <span class="text-slate-600"><strong>Office:</strong> Gedung Cyber Lantai 6, Jl. Kuningan Barat IV No.8, DKI Jakarta (Office)</span>
+              <span class="text-slate-600"><strong>Office:</strong> <span data-i18n="footer.office">Gedung Cyber Lantai 6, Jl. Kuningan Barat IV No.8, DKI Jakarta (Office)</span></span>
             </li>
             <li class="flex items-start gap-2.5">
               <i data-lucide="map-pin" class="w-4 h-4 text-brand-600 shrink-0 mt-0.5"></i>
-              <span class="text-slate-600"><strong>Operational:</strong> Margonda Raya Jl. Salak No 520 Ruko B-C, Kel,
-Pondok Cina, Kecamatan Beji, Kota Depok, Jawa Barat 16424 (Operational)</span>
+              <span class="text-slate-600"><strong>Operational:</strong> <span data-i18n="footer.op">Margonda Raya Jl. Salak No 520 Ruko B-C, Kel,
+Pondok Cina, Kecamatan Beji, Kota Depok, Jawa Barat 16424 (Operational)</span></span>
             </li>
             <li class="flex items-center gap-2.5">
               <i data-lucide="phone" class="w-4 h-4 text-brand-600 shrink-0"></i>
@@ -936,10 +946,10 @@ Pondok Cina, Kecamatan Beji, Kota Depok, Jawa Barat 16424 (Operational)</span>
 
         <!-- Copyright Text (Center Aligned) -->
         <div class="space-y-1 fade-up delay-300">
-          <p class="text-xs sm:text-sm font-semibold text-slate-700">
+          <p class="text-xs sm:text-sm font-semibold text-slate-700" data-i18n="footer.copyright">
             © 2026 PT Trans Hybrid Communication. Semua Hak Cipta Dilindungi Undang-Undang.
           </p>
-          <p class="text-xs text-slate-500">
+          <p class="text-xs text-slate-500" data-i18n="footer.tagline">
             Menyediakan teknologi yang andal sejak 2006
           </p>
         </div>
@@ -958,6 +968,10 @@ Pondok Cina, Kecamatan Beji, Kota Depok, Jawa Barat 16424 (Operational)</span>
   <script>
     lucide.createIcons();
   </script>
+  <!-- i18next CDN -->
+  <script src="https://unpkg.com/i18next@23.16.8/dist/umd/i18next.min.js"></script>
+  <!-- i18n translations -->
+  <script src="js/i18n.js"></script>
   <!-- Main JS file -->
   <script src="js/main.js"></script>
 

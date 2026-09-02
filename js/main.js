@@ -1,16 +1,109 @@
+const LNG_STORAGE_KEY = 'thc_lang';
+
+function updateFlagUI(lng) {
+  const isEn = lng === 'en';
+
+  const idFlags = document.querySelectorAll('.flag-id');
+  idFlags.forEach(f => f.classList.toggle('hidden', isEn));
+  const enFlags = document.querySelectorAll('.flag-en');
+  enFlags.forEach(f => f.classList.toggle('hidden', !isEn));
+
+  const dot = document.getElementById('lang-toggle-dot');
+  if (dot) dot.style.transform = isEn ? 'translateX(28px)' : 'translateX(0)';
+
+  const toggleDesktop = document.getElementById('lang-toggle-desktop');
+  if (toggleDesktop) toggleDesktop.title = isEn ? 'English' : 'Bahasa Indonesia';
+}
+
+function updateContent() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const value = i18next.t(key);
+    if (value && value !== key) {
+      el.innerHTML = value;
+    }
+  });
+
+  document.documentElement.lang = i18next.language;
+
+  const title = i18next.t('meta_title');
+  if (title) document.title = title;
+  const desc = i18next.t('meta_desc');
+  if (desc) document.querySelector('meta[name="description"]').setAttribute('content', desc);
+
+  updateFlagUI(i18next.language);
+}
+
+function setLanguage(lng) {
+  i18next.changeLanguage(lng, () => {
+    localStorage.setItem(LNG_STORAGE_KEY, lng);
+    updateContent();
+  });
+}
+
+function initI18n() {
+  if (typeof i18next === 'undefined') return;
+
+  const savedLang = localStorage.getItem(LNG_STORAGE_KEY) || 'id';
+  const supportedLngs = ['id', 'en'];
+
+  i18next.init({
+    lng: savedLang,
+    fallbackLng: 'id',
+    supportedLngs,
+    resources: {
+      id: { translation: THC_TRANSLATIONS.id },
+      en: { translation: THC_TRANSLATIONS.en }
+    },
+    interpolation: { escapeValue: false, prefix: '{{', suffix: '}}' },
+    returnEmptyString: false
+  }, () => {
+    updateContent();
+
+    const toggleDesktop = document.getElementById('lang-toggle-desktop');
+    if (toggleDesktop) {
+      toggleDesktop.addEventListener('click', () => {
+        const next = i18next.language === 'en' ? 'id' : 'en';
+        setLanguage(next);
+      });
+    }
+
+    const toggleMobile = document.getElementById('lang-toggle-mobile');
+    if (toggleMobile) {
+      toggleMobile.addEventListener('click', () => {
+        const next = i18next.language === 'en' ? 'id' : 'en';
+        setLanguage(next);
+      });
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  initI18n();
+
   // 1. Floating Navbar scroll transformation
   const navbar = document.getElementById('navbar');
-  if (navbar) {
-    window.addEventListener('scroll', () => {
+  const heroSection = document.getElementById('beranda');
+  if (navbar && heroSection) {
+    function updateNavbar() {
+      const heroBottom = heroSection.getBoundingClientRect().bottom;
       if (window.scrollY > 30) {
-        navbar.classList.add('py-1', 'sm:py-1.5', 'bg-[#dcdfe4]/98', 'shadow-2xl', 'shadow-slate-950/30');
-        navbar.classList.remove('py-1.5', 'sm:py-2', 'bg-[#dcdfe4]/95');
+        navbar.classList.add('py-1', 'sm:py-1.5', 'shadow-2xl', 'shadow-slate-950/30');
+        navbar.classList.remove('py-1.5', 'sm:py-2');
       } else {
-        navbar.classList.remove('py-1', 'sm:py-1.5', 'bg-[#dcdfe4]/98', 'shadow-2xl', 'shadow-slate-950/30');
-        navbar.classList.add('py-1.5', 'sm:py-2', 'bg-[#dcdfe4]/95');
+        navbar.classList.remove('py-1', 'sm:py-1.5', 'shadow-2xl', 'shadow-slate-950/30');
+        navbar.classList.add('py-1.5', 'sm:py-2');
       }
-    });
+      if (heroBottom <= 0) {
+        navbar.classList.add('navbar-blur');
+        navbar.classList.remove('navbar-solid');
+      } else {
+        navbar.classList.add('navbar-solid');
+        navbar.classList.remove('navbar-blur');
+      }
+    }
+    window.addEventListener('scroll', updateNavbar, { passive: true });
+    updateNavbar();
   }
 
   // 2. Mobile Menu Drawer Toggle

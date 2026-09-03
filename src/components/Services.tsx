@@ -53,7 +53,7 @@ export default function Services() {
           {services.map(({ icon: Icon, titleKey, descKey, iconColor }, i) => (
             <TiltCard
               key={i}
-              className="group flex min-h-[280px] cursor-pointer flex-col justify-between border border-[#d9dce5] bg-white p-6 transition-colors duration-300 hover:border-transparent sm:p-7 md:p-8"
+              className="group flex min-h-[280px] cursor-pointer flex-col justify-between border border-[#d9dce5] bg-white p-6 transition-colors duration-300 hover:border-transparent hover:bg-[#0256eb] sm:p-7 md:p-8"
             >
               <motion.div
                 initial={{ opacity: 0, y: 38 }}
@@ -67,19 +67,19 @@ export default function Services() {
                   <motion.div whileHover={{ scale: 1.12, rotate: 6 }} className={`mb-6 flex h-11 w-11 items-center justify-center rounded-full bg-[#eef0f8] ${iconColor}`}>
                     <Icon className="h-5 w-5" />
                   </motion.div>
-                  <h3 className="mb-3 text-2xl font-bold text-[#073b91] transition-colors group-hover:text-[#1259c7] md:text-[28px]">
+                  <h3 className="mb-3 text-2xl font-bold text-[#073b91] transition-colors group-hover:text-white md:text-[28px]">
                     {t(titleKey)}
                   </h3>
-                  <p className="max-w-xl text-sm leading-relaxed text-slate-500 md:text-[15px]">
+                  <p className="max-w-xl text-sm leading-relaxed text-slate-500 transition-colors group-hover:text-white md:text-[15px]">
                     {t(descKey)}
                   </p>
                 </div>
 
                 <a
                   href="#faq"
-                  className="mt-8 inline-flex w-fit items-center gap-2 text-xs font-bold tracking-wide text-[#073b91] uppercase transition-colors hover:text-[#1259c7]"
+                  className="mt-8 inline-flex w-fit items-center gap-2 text-xs font-bold tracking-wide text-[#073b91] uppercase transition-colors hover:text-[#1259c7] group-hover:text-white"
                 >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#073b91] text-white transition-colors group-hover:bg-[#1259c7]">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#073b91] text-white transition-colors group-hover:bg-white group-hover:text-[#0256eb]">
                     <Plus className="h-4 w-4" />
                   </span>
                   <span>{t('common.lebihDetail')}</span>

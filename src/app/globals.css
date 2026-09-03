@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -26,8 +26,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, .font-heading {
-  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-optical-sizing: auto;
 }
 
 /* Custom Scrollbar */

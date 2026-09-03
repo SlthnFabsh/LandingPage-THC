@@ -54,10 +54,10 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="fixed top-0 inset-x-0 z-50">
+      <div className="fixed inset-x-4 top-2.5 z-50 sm:inset-x-8 sm:top-3 lg:inset-x-12">
         <header
           id="navbar"
-          className={`bg-white border-b border-slate-200 ${shadowClass} w-full px-5 sm:px-8 py-3 flex items-center justify-between transition-all duration-300`}
+          className={`mx-auto flex w-full max-w-[1360px] items-center justify-between rounded-[16px] border border-white/60 bg-white/70 px-4 py-2 backdrop-blur-xl transition-all duration-300 sm:px-6 sm:py-2.5 ${shadowClass}`}
         >
           {/* Brand Logo */}
           <a href="#beranda" className="flex items-center group shrink-0 pr-4">
@@ -65,7 +65,7 @@ export default function Navbar() {
             <img
               src="/assets/images/logo1.png"
               alt="Trans Hybrid - Your Trusted Partner"
-              className="h-12 sm:h-16 md:h-[70px] w-auto object-contain group-hover:scale-105 transition-transform"
+              className="h-10 w-auto object-contain transition-transform group-hover:scale-105 sm:h-12 md:h-14"
             />
           </a>
 

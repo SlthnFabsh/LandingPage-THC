@@ -67,9 +67,9 @@ export const translations = {
       date3: '05 Mei 2026',
       title3: 'PT. Trans Hybrid Communication Hadir di Seluruh Wilayah Jawa & Bali',
       desc3: 'Memperluas jangkauan layanan di seluruh Jawa dan Bali, THC menghadirkan konektivitas andal bagi sektor korporasi, pemerintahan, dan UKM.',
-      date4: '10 Juni 2026',
-      title4: 'Perluasan Jaringan Point-To-Point THC Capai 1.000+ Pop Nodes di Seluruh Nusantara',
-      desc4: 'Komitmen jangkauan hingga area terdepan kini semakin kokoh dengan beroperasinya jalur komunikasi baru antar pulau Jawa dan Sumatra.'
+      date4: '15 Mei 2025',
+      title4: 'THC Hadirkan Internet Gratis untuk Sekolah di Perbatasan Kalimantan Barat',
+      desc4: 'THC meluncurkan program THCare, menyediakan layanan internet gratis dan perangkat telekomunikasi untuk sekolah-sekolah di wilayah perbatasan Kalimantan Barat.'
     },
     faq: {
       title: 'Pertanyaan yang Sering Diajukan',
@@ -170,9 +170,9 @@ export const translations = {
       date3: 'May 05, 2026',
       title3: 'PT. Trans Hybrid Communication Now Available Across Java & Bali',
       desc3: 'Expanding its service coverage across Java and Bali, THC delivers reliable connectivity for corporate, government, and SME sectors.',
-      date4: 'June 10, 2026',
-      title4: 'THC Point-To-Point Network Expansion Reaches 1,000+ Pop Nodes Across the Archipelago',
-      desc4: 'The commitment to reach the most remote areas is now stronger with the operation of new communication routes between Java and Sumatra.'
+      date4: 'May 15, 2025',
+      title4: 'THC Provides Free Internet for Schools on the West Kalimantan Border',
+      desc4: 'THC launched the THCare program, providing free internet services and telecommunications equipment for schools in the West Kalimantan border region.'
     },
     faq: {
       title: 'Frequently Asked Questions',

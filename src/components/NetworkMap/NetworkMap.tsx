@@ -234,7 +234,7 @@ export default function NetworkMap() {
   );
 
   return (
-    <div className="relative overflow-hidden rounded-[14px] bg-[#132A54] p-4 sm:p-6">
+    <div className="relative overflow-hidden rounded-[16px] bg-[#132A54] p-3 sm:p-5 md:p-6">
       <div className="relative select-none">
             <svg
               ref={svgRef}

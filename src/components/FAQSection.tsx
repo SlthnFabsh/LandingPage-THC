@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { Mail, Minus, Plus } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 
 const faqItems = [
@@ -39,39 +39,51 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="py-24 bg-white border-t border-slate-100">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* FAQ Header */}
-        <div className="text-center mb-16 fade-down">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">{t('faq.title')}</h2>
-          <div className="w-12 h-1 bg-brand-600 mx-auto rounded-full mb-4"></div>
-          <p className="text-slate-600 text-base font-normal">{t('faq.desc')}</p>
+    <section id="faq" className="border-t border-slate-100 bg-[#f8f7ff] py-20 md:py-28">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16 lg:px-8">
+        <div className="fade-left">
+          <div className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{t('nav.faq')}</div>
+          <div className="mb-7 flex items-end gap-3">
+            <div className="h-20 w-24 overflow-hidden rounded-xl bg-slate-200 shadow-sm sm:h-24 sm:w-28">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/assets/images/news-1.jpg" alt="Infrastruktur Trans Hybrid" className="h-full w-full object-cover" />
+            </div>
+            <div className="mb-[-12px] h-20 w-24 overflow-hidden rounded-xl bg-slate-200 shadow-sm sm:h-24 sm:w-28">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/assets/images/sutet-network.jpg" alt="Jaringan Trans Hybrid" className="h-full w-full object-cover" />
+            </div>
+          </div>
+          <h2 className="max-w-md text-5xl font-black leading-[0.98] tracking-[-0.06em] text-slate-950 sm:text-6xl">
+            {t('faq.title')}
+          </h2>
+          <p className="mt-6 max-w-md text-base leading-relaxed text-slate-600">{t('faq.desc')}</p>
+          <a
+            href="mailto:info@transhybrid.net.id"
+            className="mt-7 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/15 transition hover:bg-brand-700"
+          >
+            <Mail className="h-4 w-4" />
+            <span>{t('nav.hubungi')}</span>
+          </a>
         </div>
 
-        {/* FAQ Accordion List */}
-        <div className="space-y-4">
+        <div className="space-y-3 fade-right">
           {faqItems.map(({ qKey, aKey, anim, highlight }, i) => {
             const isOpen = openIndex === i;
             return (
               <div
                 key={i}
-                className={`faq-item rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all overflow-hidden ${anim}`}
+                className={`faq-item overflow-hidden rounded-xl border border-white bg-white shadow-sm transition-all hover:shadow-md ${anim}`}
               >
                 <button
-                  className="faq-header w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none cursor-pointer"
+                  className="faq-header flex min-h-[72px] w-full cursor-pointer items-center justify-between gap-4 px-5 py-5 text-left focus:outline-none sm:px-6"
                   onClick={() => toggle(i)}
+                  aria-expanded={isOpen}
                 >
-                  <span className="font-bold text-slate-900 text-base sm:text-lg">{t(qKey)}</span>
-                  <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 ml-4">
-                    <ChevronDown
-                      className={`faq-icon w-5 h-5 text-slate-500 transition-transform duration-300 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </div>
+                  <span className="text-base font-semibold leading-snug text-slate-900 sm:text-lg">{t(qKey)}</span>
+                  {isOpen ? <Minus className="h-5 w-5 shrink-0 text-slate-500" /> : <Plus className="h-5 w-5 shrink-0 text-slate-500" />}
                 </button>
                 <div
-                  className={`faq-content px-6 pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-200/60 pt-4 ${
+                  className={`faq-content border-t border-slate-100 px-5 pb-6 pt-4 text-sm leading-relaxed text-slate-600 sm:px-6 sm:text-base ${
                     isOpen ? '' : 'hidden'
                   }`}
                 >

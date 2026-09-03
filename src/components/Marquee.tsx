@@ -29,10 +29,11 @@ export default function Marquee({ titleKey, descKey, direction, logos, inverseCa
         inverseCards ? 'bg-slate-50 border-b border-slate-200/60' : 'bg-white border-y border-slate-100'
       } py-20 overflow-hidden`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center fade-up">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">{t(titleKey)}</h2>
-        <div className="w-12 h-1 bg-brand-600 mx-auto rounded-full mb-3"></div>
-        <p className="text-sm text-slate-500 font-medium">{t(descKey)}</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center fade-up">
+        <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase tracking-[-0.06em] text-black leading-none mb-3">
+          {t(titleKey)}
+        </h2>
+        <p className="text-sm sm:text-base text-black font-normal">{t(descKey)}</p>
       </div>
 
       <div className="marquee-container marquee-mask relative overflow-hidden py-4">

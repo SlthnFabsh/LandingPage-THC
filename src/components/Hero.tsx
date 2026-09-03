@@ -13,11 +13,15 @@ export default function Hero() {
       {/* Hero Content */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
         <h1 className="text-[2.8rem] font-black leading-[0.9] tracking-[-0.06em] sm:text-[4.5rem] md:text-[7rem] lg:text-[8.5rem]">
-          <span className="block">#To The Next</span>
-          <span className="block">Level !</span>
+          <span className="hero-text-line block overflow-hidden">
+            <span className="hero-text-reveal block">#To The Next</span>
+          </span>
+          <span className="hero-text-line block overflow-hidden">
+            <span className="hero-text-reveal hero-text-reveal-delay block">Level !</span>
+          </span>
         </h1>
 
-        <p className="mt-8 text-[1.4rem] font-semibold tracking-[-0.04em] sm:text-[2rem] md:text-[2.8rem]">
+        <p className="hero-subtitle mt-8 text-[1.4rem] font-semibold tracking-[-0.04em] sm:text-[2rem] md:text-[2.8rem]">
           Your Connection, Our Commitment.
         </p>
       </div>

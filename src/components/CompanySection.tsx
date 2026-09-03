@@ -13,18 +13,18 @@ export default function CompanySection() {
         <div className="grid min-h-[100vh] items-center lg:grid-cols-[1.25fr_0.75fr]">
           <div className="px-6 py-12 sm:px-8 md:px-10 lg:pl-16 lg:pr-8 xl:pl-20 xl:pr-10">
             <div className="max-w-[620px]">
-              <h2 className="text-[3rem] font-black leading-none tracking-[-0.08em] text-slate-900 md:text-[4.8rem] xl:text-[6.2rem]">
+              <h2 className="fade-up delay-100 text-[3rem] font-black leading-none tracking-[-0.08em] text-blue-900 md:text-[4.8rem] xl:text-[6.2rem]">
                 PERUSAHAAN
               </h2>
 
               <div className="mt-8 space-y-6 text-lg leading-relaxed text-slate-700 md:text-[1.15rem] xl:text-[1.35rem]">
-                <p>
+                <p className="fade-up delay-200">
                   Trans Hybrid Communication adalah mitra anda dan dalam dunia yang
                   serba cepat, memulukan komunikasi dan informasi untuk memastikan
                   bisnis Anda berjalan lancar.
                 </p>
 
-                <p>
+                <p className="fade-up delay-300">
                   Kami menyediakan layanan prima, wawasan lokal mendalam, dan koneksi
                   yang kuat, memberdayakan Anda untuk unggul. Dengan dedikasi pada
                   ekuitas jaringan, kami berkomitmen menghadirkan layanan terbaik agar
@@ -53,8 +53,8 @@ export default function CompanySection() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-black/10" aria-hidden="true" />
 
             <div className="relative z-10 flex h-full min-h-[420px] flex-col justify-center gap-5 py-8 pl-6 pr-5 md:gap-6 md:py-12 md:pl-10 md:pr-8 lg:pl-12 lg:pr-8 xl:pl-14">
-              {stats.map((stat) => (
-                <div key={stat.label} className="max-w-[280px]">
+              {stats.map((stat, index) => (
+                <div key={stat.label} className={`scale-in delay-${(index + 1) * 100} max-w-[280px]`}>
                   <div className="text-[1.65rem] font-black tracking-[-0.05em] text-white md:text-[2.1rem] xl:text-[2.5rem]">
                     {stat.value}
                   </div>

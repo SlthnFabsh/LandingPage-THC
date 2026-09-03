@@ -26,6 +26,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Custom cursor active: hide native cursor across the page */
+html.thc-cursor-active,
+html.thc-cursor-active * {
+  cursor: none !important;
+}
+
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-optical-sizing: auto;

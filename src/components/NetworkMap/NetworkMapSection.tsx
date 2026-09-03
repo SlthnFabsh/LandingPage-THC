@@ -2,6 +2,9 @@
 
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
+import TextSplit from '@/components/TextSplit';
+import NoiseOverlay from '@/components/NoiseOverlay';
+import Parallax from '@/components/Parallax';
 
 const NetworkMap = dynamic(() => import('./NetworkMap'), {
   ssr: false,
@@ -19,11 +22,16 @@ const NetworkMap = dynamic(() => import('./NetworkMap'), {
 export default function NetworkMapSection() {
   return (
     <section id="jaringan" className="hero-grid-pattern relative overflow-hidden bg-[#0b132b] py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <NoiseOverlay />
+      <Parallax amount={70} delay={0.15} className="pointer-events-none absolute -right-40 top-10 z-0 h-[28rem] w-[28rem] rounded-full bg-[#0256eb]/20 blur-[110px]" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 md:mb-10">
-          <h2 className="network-fade-up text-3xl font-black tracking-[-0.08em] text-white md:text-6xl">
-            NETWORK MAP
-          </h2>
+          <TextSplit
+            as="h2"
+            text="NETWORK MAP"
+            className="text-3xl font-black tracking-[-0.08em] text-white md:text-6xl"
+            stagger={0.04}
+          />
           <p className="network-fade-up delay-100 mt-3 max-w-2xl text-lg text-[#CBD8ED] md:text-1XL">
             Peta jaringan kabel Trans Hybrid menghubungkan Indonesia, Malaysia, Brunei, dan
             Filipina melalui jalur submarine dan inland.

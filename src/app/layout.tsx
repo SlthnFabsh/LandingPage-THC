@@ -4,6 +4,8 @@ import { LanguageProvider } from '@/components/LanguageProvider';
 import RevealLoader from '@/components/RevealLoader';
 import SmoothScroll from '@/components/SmoothScroll';
 import ScrollProgress from '@/components/ScrollProgress';
+import Preloader from '@/components/Preloader';
+import CustomCursor from '@/components/CustomCursor';
 
 export const metadata: Metadata = {
   title: 'Trans Hybrid Communication | Solusi Internet & Infrastruktur Digital #ToTheNextLevel',
@@ -16,9 +18,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="id" className="scroll-smooth">
       <body className="bg-slate-50 text-slate-800 antialiased selection:bg-brand-600 selection:text-white overflow-x-hidden">
         <LanguageProvider>{children}</LanguageProvider>
+        <Preloader />
         <RevealLoader />
         <SmoothScroll />
         <ScrollProgress />
+        <CustomCursor />
       </body>
     </html>
   );

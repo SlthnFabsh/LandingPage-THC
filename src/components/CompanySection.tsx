@@ -3,6 +3,7 @@
 import { useLanguage } from '@/components/LanguageProvider';
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import TextSplit from '@/components/TextSplit';
 
 const statValues = ['50RB+', '100+', '19Thn+', '1RB+', '500+'];
 const statLabelKeys = [
@@ -20,6 +21,7 @@ function Stat({ value, suffix, label, index }: { value: number; suffix: string; 
   const element = useRef<HTMLDivElement>(null);
   const inView = useInView(element, { once: true, amount: 0.2 });
   const [count, setCount] = useState(0);
+  const [bounce, setBounce] = useState(false);
 
   useEffect(() => {
     if (!inView) return;
@@ -29,7 +31,11 @@ function Stat({ value, suffix, label, index }: { value: number; suffix: string; 
     const tick = (time: number) => {
       const progress = Math.min((time - start) / duration, 1);
       setCount(Math.round(value * (1 - Math.pow(1 - progress, 4))));
-      if (progress < 1) frame = requestAnimationFrame(tick);
+      if (progress < 1) {
+        frame = requestAnimationFrame(tick);
+      } else {
+        setBounce(true);
+      }
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
@@ -37,7 +43,14 @@ function Stat({ value, suffix, label, index }: { value: number; suffix: string; 
 
   return (
     <motion.div ref={element} initial={{ opacity: 0, scale: 0.55 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 1.1, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }} className="max-w-[280px]">
-      <div className="text-[1.65rem] font-black tracking-[-0.05em] text-white md:text-[2.1rem] xl:text-[2.5rem]">{count}{suffix}</div>
+      <motion.div
+        animate={bounce ? { scale: [1, 1.14, 1] } : undefined}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="text-[1.65rem] font-black tracking-[-0.05em] text-white md:text-[2.1rem] xl:text-[2.5rem]"
+      >
+        {count}
+        {suffix}
+      </motion.div>
       <div className="mt-0.5 text-xs leading-snug text-white/85 md:text-sm xl:text-base">{label}</div>
     </motion.div>
   );
@@ -53,9 +66,12 @@ export default function CompanySection() {
           <div className="px-6 py-12 sm:px-8 md:px-10 lg:pl-16 lg:pr-8 xl:pl-20 xl:pr-10">
 
             <div className="max-w-[620px]">
-              <h2 className="company-fade-up delay-100 text-[3rem] font-black leading-none tracking-[-0.08em] text-blue-900 md:text-[4.8rem] xl:text-[6.2rem]">
-                {t('company.title')}
-              </h2>
+              <TextSplit
+                as="h2"
+                text={t('company.title')}
+                className="text-[3rem] font-black leading-none tracking-[-0.08em] text-blue-900 md:text-[4.8rem] xl:text-[6.2rem]"
+                stagger={0.03}
+              />
 
               <div className="mt-8 space-y-6 text-lg leading-relaxed text-slate-700 md:text-[1.15rem] xl:text-[1.35rem]">
                 <p className="company-fade-up delay-200">{t('company.p1')}</p>

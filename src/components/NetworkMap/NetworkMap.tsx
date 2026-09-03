@@ -7,9 +7,16 @@ import { zoom, zoomIdentity, type ZoomBehavior } from 'd3-zoom';
 import { geoMercator, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import worldAtlas from 'world-atlas/countries-110m.json';
-import { Minus, Plus, LocateFixed, X } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Minus, Plus, LocateFixed, X, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useMotionPrefs } from '@/lib/motion';
 import { networkCables, networkNodes, type NetworkNode } from './networkData';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const VB_W = 680;
 const VB_H = 430;
@@ -54,6 +61,8 @@ const legendItems: { label: string; shape: 'rect' | 'circle' | 'dash' | 'line'; 
 export default function NetworkMap() {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const zoomBehaviorRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  const prefs = useMotionPrefs();
+  const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [transform, setTransform] = useState({ x: 0, y: 0, k: 1 });
   const [svgWidth, setSvgWidth] = useState(VB_W);
@@ -164,6 +173,68 @@ export default function NetworkMap() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  // Scroll-linked progressive cable drawing (desktop only)
+  useEffect(() => {
+    if (!prefs.loaded || (prefs.isMobile || prefs.reduced)) return;
+    const svg = svgRef.current;
+    const host = mapRef.current;
+    if (!svg || !host) return;
+
+    const cableEls = Array.from(svg.querySelectorAll<SVGPathElement>('[data-cable]'));
+    const nodeEls = Array.from(svg.querySelectorAll<SVGGElement>('[data-node]'));
+    if (cableEls.length === 0) return;
+
+    // Measure real path lengths and hide by pushing draw offset to length
+    cableEls.forEach((el) => {
+      const len = el.getTotalLength();
+      el.dataset.len = String(len);
+      el.style.strokeDasharray = `${len}`;
+      el.style.strokeDashoffset = `${len}`;
+    });
+    // Nodes hidden until their cable is drawn
+    nodeEls.forEach((el) => {
+      gsap.set(el, { opacity: 0 });
+    });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: host,
+        start: 'top 80%',
+        end: 'bottom 45%',
+        scrub: 0.6,
+      },
+    });
+
+    tl.to(
+      cableEls,
+      {
+        strokeDashoffset: 0,
+        ease: 'none',
+        duration: 1,
+        stagger: 0.18,
+      },
+      0
+    );
+
+    // Nodes pulse in one-by-one following the cable order
+    tl.fromTo(
+      nodeEls,
+      { opacity: 0 },
+      { opacity: 1, ease: 'power2.out', duration: 0.4, stagger: 0.08 },
+      0.4
+    );
+
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+      cableEls.forEach((el) => {
+        delete el.dataset.len;
+        el.style.strokeDasharray = '';
+        el.style.strokeDashoffset = '';
+      });
+    };
+  }, [prefs]);
+
   const zoomBy = (factor: number) => {
     const svg = svgRef.current;
     if (!svg || !zoomBehaviorRef.current) return;
@@ -236,7 +307,7 @@ export default function NetworkMap() {
 
   return (
     <div className="relative overflow-hidden rounded-[16px] bg-[#132A54] p-3 sm:p-5 md:p-6">
-      <div className="relative select-none">
+      <div ref={mapRef} className="relative select-none">
             <svg
               ref={svgRef}
               role="img"
@@ -269,6 +340,8 @@ export default function NetworkMap() {
                     c.kind === 'submarine' ? (
                       <path
                         key={c.id}
+                        data-cable={c.id}
+                        data-kind="submarine"
                         d={c.d}
                         fill="none"
                         stroke="#FF6B5B"
@@ -279,6 +352,8 @@ export default function NetworkMap() {
                     ) : (
                       <path
                         key={c.id}
+                        data-cable={c.id}
+                        data-kind="inland"
                         d={c.d}
                         fill="none"
                         stroke="#4CD07D"
@@ -328,7 +403,7 @@ export default function NetworkMap() {
                   const label = node.city;
                   const labelY = node.labelPos === 'bottom' ? pos.y + (gateway ? 16 : 16) : pos.y - (gateway ? 12 : 12);
                   return (
-                    <g key={node.id} {...markerEvents(node.id)} className="cursor-pointer outline-none">
+                    <g key={node.id} data-node={node.id} {...markerEvents(node.id)} className="cursor-pointer outline-none">
                       {gateway ? (
                         <rect
                           x={pos.x - 6}

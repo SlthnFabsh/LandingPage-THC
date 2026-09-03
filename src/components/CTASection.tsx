@@ -3,6 +3,8 @@
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
+import NoiseOverlay from '@/components/NoiseOverlay';
+import Magnetic from '@/components/Magnetic';
 
 export default function CTASection() {
   const { t } = useLanguage();
@@ -32,6 +34,7 @@ export default function CTASection() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/assets/images/sutet-network.jpg" alt="Jaringan Infrastruktur THC" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-brand-900/95 via-brand-800/80 to-brand-700/40"></div>
+            <NoiseOverlay />
           </div>
 
           {/* Content */}
@@ -42,15 +45,17 @@ export default function CTASection() {
             </div>
 
             <div className="shrink-0 fade-right delay-400">
-              <motion.a
-                href="#faq"
-                whileHover={{ scale: 1.06, boxShadow: '0 0 30px rgba(99, 169, 255, 0.55)' }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-brand-700 font-extrabold text-base transition-all shadow-xl shadow-brand-900/30 group"
-              >
-                <span>{t('nav.hubungi')}</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.a>
+              <Magnetic>
+                <motion.a
+                  href="#faq"
+                  whileHover={{ scale: 1.06, boxShadow: '0 0 30px rgba(99, 169, 255, 0.55)' }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-brand-700 font-extrabold text-base transition-all shadow-xl shadow-brand-900/30 group"
+                >
+                  <span>{t('nav.hubungi')}</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </motion.a>
+              </Magnetic>
             </div>
           </div>
         </div>

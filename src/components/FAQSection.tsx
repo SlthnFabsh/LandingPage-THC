@@ -51,7 +51,7 @@ export default function FAQSection() {
             </div>
             <div className="mb-[-12px] h-20 w-24 overflow-hidden rounded-xl bg-slate-200 shadow-sm sm:h-24 sm:w-28">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/sutet-network.jpg" alt="Jaringan Trans Hybrid" className="h-full w-full object-cover" />
+              <img src="/assets/images/borneo.png" alt="Jaringan Trans Hybrid" className="h-full w-full object-cover" />
             </div>
           </div>
           <h2 className="max-w-md text-5xl font-black leading-[0.98] tracking-[-0.06em] text-blue-900 sm:text-6xl">

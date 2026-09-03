@@ -67,13 +67,14 @@ export default function CompanySection() {
 
             <div className="max-w-[620px]">
               <TextSplit
+                key={t('company.title')}
                 as="h2"
                 text={t('company.title')}
-                className="text-[3rem] font-black leading-none tracking-[-0.08em] text-blue-900 md:text-[4.8rem] xl:text-[6.2rem]"
+                className="text-[3.25rem] font-extrabold leading-[0.94] tracking-[-0.055em] text-blue-900 sm:text-[4.5rem] md:text-[5.2rem] xl:text-[6rem]"
                 stagger={0.03}
               />
 
-              <div className="mt-8 space-y-6 text-lg leading-relaxed text-slate-700 md:text-[1.15rem] xl:text-[1.35rem]">
+              <div className="mt-8 max-w-[590px] space-y-6 text-base leading-[1.7] text-slate-700 sm:text-lg md:text-[1.1rem] xl:text-[1.2rem]">
                 <p className="company-fade-up delay-200">{t('company.p1')}</p>
 
                 <p className="company-fade-up delay-300">{t('company.p2')}</p>
@@ -90,9 +91,9 @@ export default function CompanySection() {
             </div>
           </div>
 
-          <div className="relative h-[72vh] min-h-[420px] w-[94%] overflow-hidden justify-self-end lg:h-[78vh] lg:min-h-[620px] lg:w-[96%] lg:translate-x-[2.5rem]">
+          <div className="relative h-[72vh] min-h-[420px] w-[94%] overflow-hidden justify-self-end lg:h-[78vh] lg:min-h-[620px] lg:w-[96%] lg:translate-x-[-1.5rem]">
             <img
-              src="/assets/images/pekerjaan.png"
+              src="/assets/images/borneo.png"
               alt={t('company.title')}
               className="absolute inset-0 h-full w-full object-cover"
               style={{ objectPosition: 'right center' }}

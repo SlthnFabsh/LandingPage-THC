@@ -37,7 +37,7 @@ const news: NewsItem[] = [
     anim: 'fade-up delay-300',
   },
   {
-    img: '/assets/images/pekerjaan.png',
+    img: '/assets/images/news-4.jpg',
     alt: 'THC Hadirkan Internet Gratis untuk Sekolah di Perbatasan Kalimantan Barat',
     dateKey: 'news.date4',
     titleKey: 'news.title4',
@@ -54,6 +54,7 @@ export default function NewsSection() {
         <div className="mb-12 md:mb-16">
           <div>
             <TextSplit
+              key={t('news.title')}
               as="h2"
               text={t('news.title')}
               className="mb-3 text-5xl font-black uppercase leading-none tracking-[-0.06em] text-blue-900 sm:text-6xl md:text-7xl"

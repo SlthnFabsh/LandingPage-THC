@@ -41,6 +41,7 @@ export default function Services() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 md:mb-16">
           <TextSplit
+            key={t('services.title')}
             as="h2"
             text={t('services.title')}
             className="text-5xl font-black uppercase tracking-[-0.06em] text-blue-900 md:text-6xl"

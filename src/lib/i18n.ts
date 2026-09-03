@@ -26,19 +26,19 @@ export const translations = {
       title: 'Layanan Kami',
       desc: 'Solusi infrastruktur telekomunikasi komprehensif yang dirancang untuk keandalan tinggi dan performa bisnis optimal.',
       internet: 'Internet',
-      'internet.desc': 'Layanan Dedicated Internet berkecepatan tinggi dengan garansi SLA 99.9%, koneksi ultra-stabil tanpa hambatan untuk skala Industri & Korporasi.',
+      'internet.desc': 'Layanan Akses Internet Berkecepatan Tinggi Menggunakan Teknologi Fiber Optic Dimana Akses Hanya Dialokasikan Ke Instansi Tanpa Berbagi Bandwidth.',
       'internet.feature1': 'High Speed Fiber Dedicated',
       'internet.feature2': 'Garansi SLA 99.9% Uptime',
       konektivitas: 'Konektivitas',
-      'konektivitas.desc': 'Cakupan fleksibel yang menghubungkan kantor cabang ke pusat secara aman. Beragam Pilihan Point-To-Point & MPLS Multi-Branch IP-VPN.',
+      'konektivitas.desc': 'Solusi konektivitas paling lengkap untuk bisnis; Sirkuit Privat Pribadi Internasional, Internet Ethernet Private Line, Lokal Loop Metro E City, Backbone Metro Intercity, IP Transit, IP VPNB.',
       'konektivitas.feature1': 'Point-To-Point Network',
       'konektivitas.feature2': 'MPLS Multi-Branch IP-VPN',
       solusi: 'Solusi',
-      'solusi.desc': 'Infrastruktur dan solusi custom yang disesuaikan dengan kebutuhan Anda, Managed Services, WiFi Corporate, dan konsultasi IT terpadu.',
+      'solusi.desc': 'Memahami kebutuhan bisnis yang dinamis dan beragam, kami menyajikan layanan tambahan untuk mengoptimalkan bisnis Anda; Integrator Sistem, CCTV, Hotspot Internet dan IPTV.',
       'solusi.feature1': 'Custom ICT Managed Services',
       'solusi.feature2': 'Enterprise Cloud WiFi',
       data: 'Pusat Data',
-      'data.desc': 'Fasilitas Data Center Tier-3 aman dengan keandalan tinggi dan proteksi fisik & cyber 24/7 untuk menjamin keberlanjutan sistem bisnis Anda.',
+      'data.desc': 'Pusat data skala internasional dengan tingkat keamanan yang tinggi untuk kebutuhan penyimpanan data bisnis skala besar Anda.',
       'data.feature1': 'Tier-3 Data Center High Security',
       'data.feature2': '24/7 Physical & Cyber Protection'
     },
@@ -129,19 +129,19 @@ export const translations = {
       title: 'Our Services',
       desc: 'Comprehensive telecommunication infrastructure solutions designed for high reliability and optimal business performance.',
       internet: 'Internet',
-      'internet.desc': 'High-speed Dedicated Internet service with 99.9% SLA guarantee, ultra-stable connection without interruption for Industrial & Corporate scale.',
+      'internet.desc': 'High-speed Internet access using fiber optic technology, with access allocated exclusively to institutions without shared bandwidth.',
       'internet.feature1': 'High Speed Fiber Dedicated',
       'internet.feature2': '99.9% Uptime SLA Guarantee',
       konektivitas: 'Connectivity',
-      'konektivitas.desc': 'Flexible coverage that securely connects branch offices to the center. Various Point-To-Point & MPLS Multi-Branch IP-VPN options.',
+      'konektivitas.desc': 'A complete connectivity solution for business: International Private Circuit, Ethernet Private Line, Metro E City Local Loop, Metro Intercity Backbone, IP Transit, and IP VPN.',
       'konektivitas.feature1': 'Point-To-Point Network',
       'konektivitas.feature2': 'MPLS Multi-Branch IP-VPN',
       solusi: 'Solutions',
-      'solusi.desc': 'Custom infrastructure and solutions tailored to your needs, Managed Services, Corporate WiFi, and integrated IT consulting.',
+      'solusi.desc': 'Understanding dynamic and diverse business needs, we provide additional services to optimize your business: System Integrator, CCTV, Internet Hotspot, and IPTV.',
       'solusi.feature1': 'Custom ICT Managed Services',
       'solusi.feature2': 'Enterprise Cloud WiFi',
       data: 'Data Center',
-      'data.desc': 'Secure Tier-3 Data Center facility with high reliability and 24/7 physical & cyber protection to ensure the continuity of your business systems.',
+      'data.desc': 'International-scale data center with high security for the storage needs of your large-scale business data.',
       'data.feature1': 'Tier-3 Data Center High Security',
       'data.feature2': '24/7 Physical & Cyber Protection'
     },
@@ -225,12 +225,24 @@ export const metaByLang = meta;
 export type TranslationDict = typeof translations['id'];
 
 function getPath(obj: unknown, path: string): unknown {
-  return path.split('.').reduce<unknown>((acc, part) => {
-    if (acc && typeof acc === 'object' && part in (acc as Record<string, unknown>)) {
-      return (acc as Record<string, unknown>)[part];
+  const parts = path.split('.');
+  let current: unknown = obj;
+
+  for (let index = 0; index < parts.length; index += 1) {
+    if (!current || typeof current !== 'object') return undefined;
+
+    const record = current as Record<string, unknown>;
+    const remainingPath = parts.slice(index).join('.');
+    if (remainingPath in record) return record[remainingPath];
+
+    if (parts[index] in record) {
+      current = record[parts[index]];
+    } else {
+      return undefined;
     }
-    return undefined;
-  }, obj);
+  }
+
+  return current;
 }
 
 export function translate(lang: Language, key: string): string {

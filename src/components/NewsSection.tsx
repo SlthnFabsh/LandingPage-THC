@@ -50,7 +50,7 @@ export default function NewsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 fade-up md:mb-16">
           <div>
-            <h2 className="mb-3 text-5xl font-black uppercase leading-none tracking-[-0.06em] text-black sm:text-6xl md:text-7xl">
+            <h2 className="mb-3 text-5xl font-black uppercase leading-none tracking-[-0.06em] text-blue-900 sm:text-6xl md:text-7xl">
               {t('news.title')}
             </h2>
             <p className="text-sm font-normal text-slate-700 sm:text-base">{t('news.desc')}</p>

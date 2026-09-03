@@ -20,10 +20,10 @@ export default function NetworkMapSection() {
     <section id="jaringan" className="hero-grid-pattern relative overflow-hidden bg-[#0b132b] py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 md:mb-10">
-          <h2 className="fade-up text-3xl font-black tracking-[-0.08em] text-white md:text-6xl">
+          <h2 className="network-fade-up text-3xl font-black tracking-[-0.08em] text-white md:text-6xl">
             NETWORK MAP
           </h2>
-          <p className="fade-up delay-100 mt-3 max-w-2xl text-lg text-[#CBD8ED] md:text-1XL">
+          <p className="network-fade-up delay-100 mt-3 max-w-2xl text-lg text-[#CBD8ED] md:text-1XL">
             Peta jaringan kabel Trans Hybrid menghubungkan Indonesia, Malaysia, Brunei, dan
             Filipina melalui jalur submarine dan inland.
           </p>

@@ -30,7 +30,7 @@ export default function Marquee({ titleKey, descKey, direction, logos, inverseCa
       } py-20 overflow-hidden`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center fade-up">
-        <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase tracking-[-0.06em] text-black leading-none mb-3">
+        <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase tracking-[-0.06em] text-blue-900 leading-none mb-3">
           {t(titleKey)}
         </h2>
         <p className="text-sm sm:text-base text-black font-normal">{t(descKey)}</p>

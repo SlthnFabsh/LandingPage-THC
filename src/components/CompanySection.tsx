@@ -13,18 +13,18 @@ export default function CompanySection() {
         <div className="grid min-h-[100vh] items-center lg:grid-cols-[1.25fr_0.75fr]">
           <div className="px-6 py-12 sm:px-8 md:px-10 lg:pl-16 lg:pr-8 xl:pl-20 xl:pr-10">
             <div className="max-w-[620px]">
-              <h2 className="fade-up delay-100 text-[3rem] font-black leading-none tracking-[-0.08em] text-blue-900 md:text-[4.8rem] xl:text-[6.2rem]">
+              <h2 className="company-fade-up delay-100 text-[3rem] font-black leading-none tracking-[-0.08em] text-blue-900 md:text-[4.8rem] xl:text-[6.2rem]">
                 PERUSAHAAN
               </h2>
 
               <div className="mt-8 space-y-6 text-lg leading-relaxed text-slate-700 md:text-[1.15rem] xl:text-[1.35rem]">
-                <p className="fade-up delay-200">
+                <p className="company-fade-up delay-200">
                   Trans Hybrid Communication adalah mitra anda dan dalam dunia yang
                   serba cepat, memulukan komunikasi dan informasi untuk memastikan
                   bisnis Anda berjalan lancar.
                 </p>
 
-                <p className="fade-up delay-300">
+                <p className="company-fade-up delay-300">
                   Kami menyediakan layanan prima, wawasan lokal mendalam, dan koneksi
                   yang kuat, memberdayakan Anda untuk unggul. Dengan dedikasi pada
                   ekuitas jaringan, kami berkomitmen menghadirkan layanan terbaik agar
@@ -33,10 +33,10 @@ export default function CompanySection() {
               </div>
 
               <div className="mt-10 flex flex-wrap gap-4">
-                <button className="rounded-full border border-slate-700 bg-white px-7 py-3 text-base font-medium text-slate-900 transition hover:bg-slate-900 hover:text-white">
+                <button className="rounded-full border border-slate-700 bg-white px-7 py-3 text-base font-medium text-slate-600 transition hover:bg-blue-900 hover:text-white">
                   – Tentang Kami
                 </button>
-                <button className="rounded-full border border-slate-700 bg-white px-7 py-3 text-base font-medium text-slate-900 transition hover:bg-slate-900 hover:text-white">
+                <button className="rounded-full border border-slate-700 bg-white px-7 py-3 text-base font-medium text-slate-600 transition hover:bg-blue-900 hover:text-white">
                   – Perjalanan Kami
                 </button>
               </div>

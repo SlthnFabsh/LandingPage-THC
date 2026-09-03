@@ -53,7 +53,7 @@ export default function FAQSection() {
               <img src="/assets/images/sutet-network.jpg" alt="Jaringan Trans Hybrid" className="h-full w-full object-cover" />
             </div>
           </div>
-          <h2 className="max-w-md text-5xl font-black leading-[0.98] tracking-[-0.06em] text-slate-950 sm:text-6xl">
+          <h2 className="max-w-md text-5xl font-black leading-[0.98] tracking-[-0.06em] text-blue-900 sm:text-6xl">
             {t('faq.title')}
           </h2>
           <p className="mt-6 max-w-md text-base leading-relaxed text-slate-600">{t('faq.desc')}</p>

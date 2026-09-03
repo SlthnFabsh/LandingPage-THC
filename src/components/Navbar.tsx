@@ -9,6 +9,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState('beranda');
 
   useEffect(() => {
     const updateNavbar = () => {
@@ -17,6 +18,26 @@ export default function Navbar() {
     window.addEventListener('scroll', updateNavbar, { passive: true });
     updateNavbar();
     return () => window.removeEventListener('scroll', updateNavbar);
+  }, []);
+
+  useEffect(() => {
+    const sectionIds = ['beranda', 'tentang', 'layanan', 'jaringan', 'berita', 'faq'];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: '-30% 0px -55% 0px', threshold: [0.1, 0.25, 0.5] }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   const openMenu = useCallback(() => {
@@ -50,19 +71,19 @@ export default function Navbar() {
 
           {/* Desktop Nav Links */}
           <nav className="hidden lg:flex items-center gap-8 xl:gap-14 font-bold text-slate-700 text-sm sm:text-base tracking-wide">
-            <a href="#beranda" className="text-slate-950 font-extrabold hover:text-brand-600 transition-colors">
+            <a href="#beranda" className={`font-extrabold transition-colors hover:text-blue-600 ${activeSection === 'beranda' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : 'text-slate-950'}`}>
               {t('nav.beranda')}
             </a>
-            <a href="#tentang" className="hover:text-brand-600 transition-colors">
+            <a href="#tentang" className={`transition-colors hover:text-blue-600 ${activeSection === 'tentang' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : ''}`}>
               {t('nav.tentang')}
             </a>
-            <a href="#layanan" className="hover:text-brand-600 transition-colors">
+            <a href="#layanan" className={`transition-colors hover:text-blue-600 ${activeSection === 'layanan' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : ''}`}>
               {t('nav.layanan')}
             </a>
-            <a href="#jaringan" className="hover:text-brand-600 transition-colors">
+            <a href="#jaringan" className={`transition-colors hover:text-blue-600 ${activeSection === 'jaringan' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : ''}`}>
               {t('nav.jaringan')}
             </a>
-            <a href="#berita" className="hover:text-brand-600 transition-colors flex items-center gap-1.5">
+            <a href="#berita" className={`flex items-center gap-1.5 transition-colors hover:text-blue-600 ${activeSection === 'berita' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : ''}`}>
               <span>{t('nav.berita')}</span>
               <ChevronDown className="w-4 h-4 text-slate-600" />
             </a>
@@ -114,22 +135,22 @@ export default function Navbar() {
               </button>
             </div>
             <div className="flex flex-col gap-4 font-medium text-slate-700 text-base">
-              <a href="#beranda" onClick={closeMenu} className="py-2 border-b border-slate-100 text-brand-600">
+              <a href="#beranda" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'beranda' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.beranda')}
               </a>
-              <a href="#tentang" onClick={closeMenu} className="py-2 border-b border-slate-100">
+              <a href="#tentang" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'tentang' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.tentang')}
               </a>
-              <a href="#layanan" onClick={closeMenu} className="py-2 border-b border-slate-100">
+              <a href="#layanan" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'layanan' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.layanan')}
               </a>
-              <a href="#jaringan" onClick={closeMenu} className="py-2 border-b border-slate-100">
+              <a href="#jaringan" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'jaringan' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.jaringan')}
               </a>
-              <a href="#berita" onClick={closeMenu} className="py-2 border-b border-slate-100">
+              <a href="#berita" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'berita' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.berita')}
               </a>
-              <a href="#faq" onClick={closeMenu} className="py-2">
+              <a href="#faq" onClick={closeMenu} className={`py-2 hover:text-blue-600 ${activeSection === 'faq' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.faq')}
               </a>
             </div>

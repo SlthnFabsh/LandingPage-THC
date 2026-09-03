@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 export default function RevealLoader() {
   useEffect(() => {
     const selector =
-      '.fade-up, .fade-down, .fade-left, .fade-right, .zoom-in-bounce, .scale-in, .map-reveal, .flip-up';
+      '.fade-up, .fade-down, .fade-left, .fade-right, .zoom-in-bounce, .scale-in, .company-fade-up, .network-fade-up, .services-reveal, .map-reveal, .flip-up';
 
     const revealElements = document.querySelectorAll<HTMLElement>(selector);
     if (revealElements.length === 0) return;

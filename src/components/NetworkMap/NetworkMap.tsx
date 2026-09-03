@@ -7,16 +7,10 @@ import { zoom, zoomIdentity, type ZoomBehavior } from 'd3-zoom';
 import { geoMercator, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import worldAtlas from 'world-atlas/countries-110m.json';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Minus, Plus, LocateFixed, X, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useMotionPrefs } from '@/lib/motion';
 import { networkCables, networkNodes, type NetworkNode } from './networkData';
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const VB_W = 680;
 const VB_H = 430;
@@ -61,8 +55,6 @@ const legendItems: { label: string; shape: 'rect' | 'circle' | 'dash' | 'line'; 
 export default function NetworkMap() {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const zoomBehaviorRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
-  const prefs = useMotionPrefs();
-  const mapRef = useRef<HTMLDivElement | null>(null);
 
   const [transform, setTransform] = useState({ x: 0, y: 0, k: 1 });
   const [svgWidth, setSvgWidth] = useState(VB_W);
@@ -173,68 +165,6 @@ export default function NetworkMap() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Scroll-linked progressive cable drawing (desktop only)
-  useEffect(() => {
-    if (!prefs.loaded || (prefs.isMobile || prefs.reduced)) return;
-    const svg = svgRef.current;
-    const host = mapRef.current;
-    if (!svg || !host) return;
-
-    const cableEls = Array.from(svg.querySelectorAll<SVGPathElement>('[data-cable]'));
-    const nodeEls = Array.from(svg.querySelectorAll<SVGGElement>('[data-node]'));
-    if (cableEls.length === 0) return;
-
-    // Measure real path lengths and hide by pushing draw offset to length
-    cableEls.forEach((el) => {
-      const len = el.getTotalLength();
-      el.dataset.len = String(len);
-      el.style.strokeDasharray = `${len}`;
-      el.style.strokeDashoffset = `${len}`;
-    });
-    // Nodes hidden until their cable is drawn
-    nodeEls.forEach((el) => {
-      gsap.set(el, { opacity: 0 });
-    });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: host,
-        start: 'top 80%',
-        end: 'bottom 45%',
-        scrub: 0.6,
-      },
-    });
-
-    tl.to(
-      cableEls,
-      {
-        strokeDashoffset: 0,
-        ease: 'none',
-        duration: 1,
-        stagger: 0.18,
-      },
-      0
-    );
-
-    // Nodes pulse in one-by-one following the cable order
-    tl.fromTo(
-      nodeEls,
-      { opacity: 0 },
-      { opacity: 1, ease: 'power2.out', duration: 0.4, stagger: 0.08 },
-      0.4
-    );
-
-    return () => {
-      tl.scrollTrigger?.kill();
-      tl.kill();
-      cableEls.forEach((el) => {
-        delete el.dataset.len;
-        el.style.strokeDasharray = '';
-        el.style.strokeDashoffset = '';
-      });
-    };
-  }, [prefs]);
-
   const zoomBy = (factor: number) => {
     const svg = svgRef.current;
     if (!svg || !zoomBehaviorRef.current) return;
@@ -307,7 +237,7 @@ export default function NetworkMap() {
 
   return (
     <div className="relative overflow-hidden rounded-[16px] bg-[#132A54] p-3 sm:p-5 md:p-6">
-      <div ref={mapRef} className="relative select-none">
+      <div className="relative select-none">
             <svg
               ref={svgRef}
               role="img"
@@ -462,38 +392,38 @@ export default function NetworkMap() {
 
             {/* Legend */}
             <div
-              className="pointer-events-none absolute bottom-4 left-4 z-20 flex flex-col gap-1.5 rounded-xl bg-[#0D1F3F]/85 px-4 py-3 ring-1 ring-white/10 backdrop-blur-sm sm:left-6 sm:bottom-6"
+              className="pointer-events-none absolute bottom-3 left-3 z-20 flex flex-col gap-1 rounded-lg bg-[#0D1F3F]/85 px-2.5 py-2 ring-1 ring-white/10 backdrop-blur-sm sm:left-4 sm:bottom-4"
               aria-hidden
             >
-              <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#CBD8ED]/70">
+              <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#CBD8ED]/70">
                 Legend
               </div>
               {legendItems.map((item) => (
-                <div key={item.label} className="flex items-center gap-2">
-                  <span className="flex h-3.5 w-6 items-center justify-center">
+                <div key={item.label} className="flex items-center gap-1.5">
+                  <span className="flex h-2.5 w-4 items-center justify-center">
                     {item.shape === 'rect' && (
                       <span
-                        className="block h-2.5 w-2.5 rounded-sm"
+                        className="block h-2 w-2 rounded-[2px]"
                         style={{ background: item.color, boxShadow: `0 0 0 1px #132A54` }}
                       />
                     )}
                     {item.shape === 'circle' && (
                       <span
-                        className="block h-2 w-2 rounded-full"
+                        className="block h-1.5 w-1.5 rounded-full"
                         style={{ background: item.color, boxShadow: `0 0 0 1px #132A54` }}
                       />
                     )}
                     {item.shape === 'dash' && (
                       <span
-                        className="block h-0 w-5 border-t-2"
-                        style={{ borderTop: `2px dashed ${item.color}` }}
+                        className="block h-0 w-4 border-t-[1.5px]"
+                        style={{ borderTop: `1.5px dashed ${item.color}` }}
                       />
                     )}
                     {item.shape === 'line' && (
-                      <span className="block h-0 w-5 border-t-2" style={{ borderTop: `2px solid ${item.color}` }} />
+                      <span className="block h-0 w-4 border-t-[1.5px]" style={{ borderTop: `1.5px solid ${item.color}` }} />
                     )}
                   </span>
-                  <span className="text-[11px] text-[#CBD8ED]">{item.label}</span>
+                  <span className="text-[10px] leading-tight text-[#CBD8ED]">{item.label}</span>
                 </div>
               ))}
             </div>

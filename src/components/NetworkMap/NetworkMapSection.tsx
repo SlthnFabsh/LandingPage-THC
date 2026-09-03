@@ -37,7 +37,7 @@ export default function NetworkMapSection() {
             Filipina melalui jalur submarine dan inland.
           </p>
         </div>
-        <motion.div initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1.3 }} className="mx-auto max-w-2xl rounded-[22px] border border-white/10 bg-[#0d1f3f]/55 p-2 shadow-2xl shadow-black/20 backdrop-blur-sm sm:p-3 md:p-4">
+        <motion.div initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1.3 }} className="mx-auto max-w-3xl rounded-[22px] border border-white/10 bg-[#0d1f3f]/55 p-2 shadow-2xl shadow-black/20 backdrop-blur-sm sm:p-3 md:p-4">
           <NetworkMap />
         </motion.div>
       </div>

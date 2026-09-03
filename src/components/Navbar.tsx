@@ -54,10 +54,10 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="sticky inset-x-4 top-2.5 z-50 -mb-[76px] sm:inset-x-8 sm:top-3 lg:inset-x-12">
+      <div className="sticky inset-x-5 top-2.5 z-50 -mb-[76px] sm:inset-x-10 sm:top-3 lg:inset-x-16">
         <header
           id="navbar"
-          className={`mx-auto flex w-full max-w-[1360px] items-center justify-between rounded-[16px] border px-4 py-2 transition-all duration-300 sm:px-6 sm:py-2.5 ${scrolled ? `border-slate-200/80 bg-white/90 backdrop-blur-xl ${shadowClass}` : 'border-white/20 bg-white/10 backdrop-blur-md'}`}
+          className={`mx-auto flex w-full max-w-[1320px] items-center justify-between rounded-[16px] border px-6 py-2 transition-all duration-300 sm:px-9 sm:py-2.5 ${scrolled ? `border-slate-200/80 bg-white/90 backdrop-blur-xl ${shadowClass}` : 'border-white/20 bg-white/10 backdrop-blur-md'}`}
         >
           {/* Brand Logo */}
           <a href="#beranda" className="flex items-center group shrink-0 pr-4">

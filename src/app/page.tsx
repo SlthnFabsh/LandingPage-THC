@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import CompanySection from '@/components/CompanySection';
+import NetworkMapSection from '@/components/NetworkMap/NetworkMapSection';
 import Services from '@/components/Services';
 import Marquee, { MarqueeLogo } from '@/components/Marquee';
 import NewsSection from '@/components/NewsSection';
@@ -42,6 +43,7 @@ export default function Home() {
       <main>
         <Hero />
         <CompanySection />
+        <NetworkMapSection />
         <Services />
         <Marquee
           titleKey="clients.title"

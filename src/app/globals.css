@@ -329,7 +329,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   inset: -1px;
   z-index: -1;
   border-radius: inherit;
-  background: linear-gradient(135deg, #0256eb, #63a9ff 45%, #e83b42);
+  background: linear-gradient(135deg, #0256eb, #63a9ff 55%, #1e40af);
   content: '';
   opacity: 0;
   transition: opacity 300ms ease;

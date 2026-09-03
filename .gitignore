@@ -5,9 +5,6 @@
 /.next/
 /out/
 
-# assets (terlalu besar, disimpan lokal saja)
-/assets
-/public/assets
 
 # misc
 .DS_Store

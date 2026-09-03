@@ -22,6 +22,18 @@ export const translations = {
       perusahaan: 'Perusahaan / BUMN',
       pengalaman: 'Pengalaman'
     },
+    company: {
+      title: 'PERUSAHAAN',
+      p1: 'Trans Hybrid Communication adalah mitra anda dan dalam dunia yang serba cepat, memulukan komunikasi dan informasi untuk memastikan bisnis Anda berjalan lancar.',
+      p2: 'Kami menyediakan layanan prima, wawasan lokal mendalam, dan koneksi yang kuat, memberdayakan Anda untuk unggul. Dengan dedikasi pada ekuitas jaringan, kami berkomitmen menghadirkan layanan terbaik agar Anda selalu terhubung, kapan pun dan di mana pun.',
+      about: '– Tentang Kami',
+      journey: '– Perjalanan Kami',
+      statPelanggan: 'Pelanggan retail',
+      statPop: 'Titik kehadiran (POP)',
+      statOperasi: 'Beroperasi',
+      statKabel: 'Kilometer Kabel',
+      statTrafik: 'Trafik Internet Dikelola'
+    },
     services: {
       title: 'Layanan Kami',
       desc: 'Solusi infrastruktur telekomunikasi komprehensif yang dirancang untuk keandalan tinggi dan performa bisnis optimal.',
@@ -124,6 +136,18 @@ export const translations = {
       pelanggan: 'Active Customers',
       perusahaan: 'Companies / SOEs',
       pengalaman: 'Years Experience'
+    },
+    company: {
+      title: 'COMPANY',
+      p1: 'Trans Hybrid Communication is your partner in a fast-paced world, prioritizing communication and information to keep your business running smoothly.',
+      p2: 'We deliver premium services, deep local insight, and a strong connection that empowers you to excel. With a dedication to network equity, we are committed to delivering the best service so you stay connected, anytime and anywhere.',
+      about: '– About Us',
+      journey: '– Our Journey',
+      statPelanggan: 'Retail customers',
+      statPop: 'Points of Presence (POP)',
+      statOperasi: 'In Operation',
+      statKabel: 'Kilometers of Cable',
+      statTrafik: 'Internet Traffic Managed'
     },
     services: {
       title: 'Our Services',

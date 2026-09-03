@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 60" width="180" height="60">
+    <rect x="12" y="12" width="36" height="36" rx="6" fill="#EE2E24"/>
+    <path d="M30 18 L20 38 L25 38 L27 33 L33 33 L35 38 L40 38 Z M30 23 L32 30 L28 30 Z" fill="#FFC20E"/>
+    <text x="56" y="38" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="20" fill="#EE2E24">Alfa<tspan fill="#0054A6">mart</tspan></text>
+  </svg>

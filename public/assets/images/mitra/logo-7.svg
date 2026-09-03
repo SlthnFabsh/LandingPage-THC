@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 60" width="190" height="60">
+    <g fill="none" stroke="#06B6D4" stroke-width="3.5" stroke-linecap="round">
+      <path d="M15 24 C 25 14, 35 36, 45 26"/>
+      <path d="M15 36 C 25 26, 35 46, 45 36"/>
+    </g>
+    <text x="54" y="37" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="18" fill="#0891B2">Viber<tspan fill="#0F172A">Link</tspan></text>
+  </svg>

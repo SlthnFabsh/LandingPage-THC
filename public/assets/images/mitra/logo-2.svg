@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60">
+    <g fill="none" stroke="#0256EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 30 L30 15 L45 30 L30 45 Z"/>
+      <path d="M22 30 L30 22 L38 30 L30 38 Z" fill="#0256EB"/>
+    </g>
+    <text x="55" y="37" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="16" fill="#0F172A" letter-spacing="0.5">SUPERCORRIDOR</text>
+  </svg>

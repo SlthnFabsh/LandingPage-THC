@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 60" width="150" height="60">
+    <path d="M15 18 L28 42 L41 18" fill="none" stroke="#6366F1" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="28" cy="18" r="4" fill="#6366F1"/>
+    <text x="50" y="38" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="24" fill="#1E1B4B" letter-spacing="1.5">VELO</text>
+  </svg>

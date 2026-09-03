@@ -1,6 +1,7 @@
 'use client';
 
 import { Calendar, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 
 interface NewsItem {
@@ -59,9 +60,13 @@ export default function NewsSection() {
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-6 lg:grid-cols-4 lg:gap-7">
           {news.map(({ img, alt, dateKey, titleKey, anim }, i) => (
-            <article
+            <motion.article
               key={i}
-              className={`group flex flex-col ${anim}`}
+              initial={{ opacity: 0, y: 36 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1.1, delay: i * 0.12 }}
+              className="group flex flex-col"
             >
               <div className="aspect-square overflow-hidden bg-slate-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -80,7 +85,7 @@ export default function NewsSection() {
                   <ArrowRight className="h-4 w-4" />
                 </a>
               </div>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>

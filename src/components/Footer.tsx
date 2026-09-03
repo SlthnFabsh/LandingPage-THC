@@ -1,13 +1,14 @@
 'use client';
 
 import { Building2, MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 
 export default function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="border-t-4 border-brand-600 bg-[#07152b] text-slate-300">
+    <motion.footer initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1 }} className="border-t-4 border-brand-600 bg-[#07152b] text-slate-300">
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-16 sm:px-6 lg:px-8">
         <div className="mb-14 flex flex-col gap-6 border-b border-white/10 pb-12 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
@@ -130,6 +131,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

@@ -1,13 +1,14 @@
 'use client';
 
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 
 export default function CTASection() {
   const { t } = useLanguage();
 
   return (
-    <section className="py-20 bg-white">
+    <section className="cta-animated-gradient py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title */}
         <div className="text-center mb-10 fade-down">
@@ -41,13 +42,15 @@ export default function CTASection() {
             </div>
 
             <div className="shrink-0 fade-right delay-400">
-              <a
+              <motion.a
                 href="#faq"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-brand-700 font-extrabold text-base hover:bg-brand-50 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-brand-900/30 group"
+                whileHover={{ scale: 1.06, boxShadow: '0 0 30px rgba(99, 169, 255, 0.55)' }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-brand-700 font-extrabold text-base transition-all shadow-xl shadow-brand-900/30 group"
               >
                 <span>{t('nav.hubungi')}</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
+              </motion.a>
             </div>
           </div>
         </div>

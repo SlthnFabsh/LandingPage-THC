@@ -8,6 +8,7 @@ import { geoMercator, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import worldAtlas from 'world-atlas/countries-110m.json';
 import { Minus, Plus, LocateFixed, X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { networkCables, networkNodes, type NetworkNode } from './networkData';
 
 const VB_W = 680;
@@ -435,30 +436,36 @@ export default function NetworkMap() {
                 <option value="pop">POP only</option>
               </select>
               <div className="flex items-center gap-1.5">
-                <button
+                <motion.button
                   type="button"
                   onClick={resetZoom}
                   aria-label="Reset zoom"
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.94 }}
                   className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0D1F3F] text-white ring-1 ring-white/15 transition hover:bg-[#1A3A6E] focus:ring-white/40"
                 >
                   <LocateFixed size={14} />
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   type="button"
                   onClick={() => zoomBy(1.4)}
                   aria-label="Perbesar"
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.94 }}
                   className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0D1F3F] text-white ring-1 ring-white/15 transition hover:bg-[#1A3A6E] focus:ring-white/40"
                 >
                   <Plus size={14} />
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   type="button"
                   onClick={() => zoomBy(1 / 1.4)}
                   aria-label="Perkecil"
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.94 }}
                   className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0D1F3F] text-white ring-1 ring-white/15 transition hover:bg-[#1A3A6E] focus:ring-white/40"
                 >
                   <Minus size={14} />
-                </button>
+                </motion.button>
               </div>
             </div>
 

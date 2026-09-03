@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { LanguageProvider } from '@/components/LanguageProvider';
 import RevealLoader from '@/components/RevealLoader';
+import SmoothScroll from '@/components/SmoothScroll';
+import ScrollProgress from '@/components/ScrollProgress';
 
 export const metadata: Metadata = {
   title: 'Trans Hybrid Communication | Solusi Internet & Infrastruktur Digital #ToTheNextLevel',
@@ -15,6 +17,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-slate-50 text-slate-800 antialiased selection:bg-brand-600 selection:text-white overflow-x-hidden">
         <LanguageProvider>{children}</LanguageProvider>
         <RevealLoader />
+        <SmoothScroll />
+        <ScrollProgress />
       </body>
     </html>
   );

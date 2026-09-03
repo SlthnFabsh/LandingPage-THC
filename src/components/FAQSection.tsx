@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Mail, Minus, Plus } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 
 const faqItems = [
@@ -82,13 +83,21 @@ export default function FAQSection() {
                   <span className="text-base font-semibold leading-snug text-slate-900 sm:text-lg">{t(qKey)}</span>
                   {isOpen ? <Minus className="h-5 w-5 shrink-0 text-slate-500" /> : <Plus className="h-5 w-5 shrink-0 text-slate-500" />}
                 </button>
-                <div
-                  className={`faq-content border-t border-slate-100 px-5 pb-6 pt-4 text-sm leading-relaxed text-slate-600 sm:px-6 sm:text-base ${
-                    isOpen ? '' : 'hidden'
-                  }`}
-                >
-                  {renderAnswer(t, aKey, highlight)}
-                </div>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="border-t border-slate-100 px-5 pb-6 pt-4 text-sm leading-relaxed text-slate-600 sm:px-6 sm:text-base">
+                        {renderAnswer(t, aKey, highlight)}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

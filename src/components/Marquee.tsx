@@ -1,6 +1,7 @@
 'use client';
 
 import { useLanguage } from '@/components/LanguageProvider';
+import { motion } from 'framer-motion';
 
 export interface MarqueeLogo {
   file: string;
@@ -45,10 +46,10 @@ export default function Marquee({ titleKey, descKey, direction, logos, inverseCa
           }
         >
           {loop.map((logo, i) => (
-            <div key={i} className={cardCls}>
+            <motion.div key={i} whileHover={{ y: -4, scale: 1.03 }} className={cardCls}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={logo.file} alt={logo.alt} className="max-h-12 w-auto object-contain" />
-            </div>
+              <img src={logo.file} alt={logo.alt} className="max-h-12 w-auto object-contain grayscale transition duration-500 hover:grayscale-0" />
+            </motion.div>
           ))}
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { Wifi, Network, Cpu, Database, Plus } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 
 const services = [
@@ -37,22 +38,27 @@ export default function Services() {
     <section id="layanan" className="relative bg-white py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 md:mb-16">
-          <h2 className="services-reveal delay-100 text-5xl font-black uppercase tracking-[-0.06em] text-blue-900 md:text-6xl">
+          <motion.h2 initial={{ opacity: 0, y: 38 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1.1 }} className="text-5xl font-black uppercase tracking-[-0.06em] text-blue-900 md:text-6xl">
             {t('services.title')}
-          </h2>
-          <p className="services-reveal delay-200 mt-4 max-w-2xl text-base leading-relaxed text-slate-500 md:text-lg">{t('services.desc')}</p>
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1.1, delay: 0.15 }} className="mt-4 max-w-2xl text-base leading-relaxed text-slate-500 md:text-lg">{t('services.desc')}</motion.p>
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
           {services.map(({ icon: Icon, titleKey, descKey, iconColor }, i) => (
-            <div
+            <motion.div
               key={i}
-              className={`services-reveal delay-${(i + 3) * 100} group flex min-h-[280px] cursor-pointer flex-col justify-between border border-[#d9dce5] bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#123f9b] hover:shadow-xl hover:shadow-[#123f9b]/10 sm:p-7 md:p-8`}
+              initial={{ opacity: 0, y: 38 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1.25, delay: 0.25 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(7, 59, 145, 0.12)' }}
+              className="service-card group flex min-h-[280px] cursor-pointer flex-col justify-between border border-[#d9dce5] bg-white p-6 transition-colors duration-300 hover:border-transparent sm:p-7 md:p-8"
             >
               <div>
-                <div className={`mb-6 flex h-11 w-11 items-center justify-center rounded-full bg-[#eef0f8] transition-transform duration-300 group-hover:scale-105 ${iconColor}`}>
+                <motion.div whileHover={{ scale: 1.12, rotate: 6 }} className={`mb-6 flex h-11 w-11 items-center justify-center rounded-full bg-[#eef0f8] ${iconColor}`}>
                   <Icon className="h-5 w-5" />
-                </div>
+                </motion.div>
                 <h3 className="mb-3 text-2xl font-bold text-[#073b91] transition-colors group-hover:text-[#1259c7] md:text-[28px]">
                   {t(titleKey)}
                 </h3>
@@ -70,7 +76,7 @@ export default function Services() {
                 </span>
                 <span>{t('common.lebihDetail')}</span>
               </a>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

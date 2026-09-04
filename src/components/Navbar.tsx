@@ -1,15 +1,16 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe2 } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 
 export default function Navbar() {
-  const { lang, toggle, t } = useLanguage();
+  const { lang, setLang, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('beranda');
+  const [languageOpen, setLanguageOpen] = useState(false);
 
   useEffect(() => {
     const updateNavbar = () => {
@@ -19,6 +20,19 @@ export default function Navbar() {
     updateNavbar();
     return () => window.removeEventListener('scroll', updateNavbar);
   }, []);
+
+  useEffect(() => {
+    if (!languageOpen) return;
+
+    const closeLanguageMenu = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement).closest('[data-language-selector]')) {
+        setLanguageOpen(false);
+      }
+    };
+
+    document.addEventListener('click', closeLanguageMenu);
+    return () => document.removeEventListener('click', closeLanguageMenu);
+  }, [languageOpen]);
 
   useEffect(() => {
     const sectionIds = ['beranda', 'tentang', 'layanan', 'jaringan', 'berita', 'faq'];
@@ -49,6 +63,11 @@ export default function Navbar() {
     setMenuVisible(false);
     window.setTimeout(() => setMenuOpen(false), 300);
   }, []);
+
+  const selectLanguage = useCallback((nextLanguage: 'id' | 'en') => {
+    setLang(nextLanguage);
+    setLanguageOpen(false);
+  }, [setLang]);
 
   const shadowClass = scrolled ? 'shadow-lg shadow-slate-900/10' : 'shadow-sm';
 
@@ -91,17 +110,32 @@ export default function Navbar() {
 
           {/* Right Action Button & Language Toggle */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
-            <button
-              id="lang-toggle-desktop"
-              onClick={toggle}
-              className="px-4 h-10 rounded-full bg-white hover:bg-slate-100 border border-slate-300/80 font-semibold text-sm text-slate-700 hover:text-slate-900 transition-all shadow-xs"
-              title={lang === 'en' ? 'Switch to Bahasa Indonesia' : 'Switch to English'}
-              aria-label="Ganti Bahasa"
-            >
-              {lang === 'id' ? 'Indonesia (ID)' : 'English (EN)'}
-            </button>
-
+            <div className="relative" data-language-selector>
+              <button
+                id="lang-toggle-desktop"
+                type="button"
+                onClick={() => setLanguageOpen((open) => !open)}
+                className="flex h-10 items-center gap-2 px-1 text-base text-slate-700 transition-colors hover:text-slate-950"
+                aria-label="Pilih bahasa"
+                aria-expanded={languageOpen}
+                aria-haspopup="listbox"
+              >
+                <Globe2 className="h-5 w-5 text-slate-600" />
+                <span>{lang === 'id' ? 'Indonesia (ID)' : 'English (EN)'}</span>
+                <ChevronDown className={`h-4 w-4 text-slate-600 transition-transform ${languageOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {languageOpen && (
+                <div className="absolute right-0 top-[calc(100%+10px)] z-50 w-72 overflow-hidden rounded-md border border-slate-300 bg-white py-2 shadow-lg" role="listbox" aria-label="Pilihan bahasa">
+                  <button type="button" role="option" aria-selected={lang === 'id'} onClick={() => selectLanguage('id')} className="flex w-full px-5 py-4 text-left text-base text-slate-800 transition-colors hover:bg-slate-50">
+                    Indonesia (ID)
+                  </button>
+                  <button type="button" role="option" aria-selected={lang === 'en'} onClick={() => selectLanguage('en')} className="flex w-full px-5 py-4 text-left text-base text-slate-800 transition-colors hover:bg-slate-50">
+                    English (EN)
+                  </button>
+                </div>
+              )}
             </div>
+          </div>
 
           {/* Mobile Hamburger Button */}
           <button
@@ -155,18 +189,32 @@ export default function Navbar() {
               </a>
             </div>
 
-            {/* Mobile Language Toggle */}
+            {/* Mobile Language Selector */}
             <div className="mt-6 pt-4 border-t border-slate-100">
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-slate-500">{t('nav.bahasa')}</span>
+              <div className="relative" data-language-selector>
                 <button
                   id="lang-toggle-mobile"
-                  onClick={toggle}
-                  className="px-4 py-2 rounded-full bg-white hover:bg-slate-100 border border-slate-300/80 font-semibold text-sm text-slate-700 hover:text-slate-900 transition-colors"
-                  aria-label="Ganti Bahasa"
+                  type="button"
+                  onClick={() => setLanguageOpen((open) => !open)}
+                  className="flex w-full items-center gap-2 py-2 text-base text-slate-700"
+                  aria-label="Pilih bahasa"
+                  aria-expanded={languageOpen}
+                  aria-haspopup="listbox"
                 >
-                  {lang === 'id' ? 'Indonesia (ID)' : 'English (EN)'}
+                  <Globe2 className="h-5 w-5 text-slate-600" />
+                  <span>{lang === 'id' ? 'Indonesia (ID)' : 'English (EN)'}</span>
+                  <ChevronDown className={`ml-auto h-4 w-4 transition-transform ${languageOpen ? 'rotate-180' : ''}`} />
                 </button>
+                {languageOpen && (
+                  <div className="mt-2 overflow-hidden rounded-md border border-slate-300 bg-white py-1 shadow-md" role="listbox" aria-label="Pilihan bahasa">
+                    <button type="button" role="option" aria-selected={lang === 'id'} onClick={() => selectLanguage('id')} className="flex w-full px-4 py-3 text-left text-base text-slate-800 hover:bg-slate-50">
+                      Indonesia (ID)
+                    </button>
+                    <button type="button" role="option" aria-selected={lang === 'en'} onClick={() => selectLanguage('en')} className="flex w-full px-4 py-3 text-left text-base text-slate-800 hover:bg-slate-50">
+                      English (EN)
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -24,7 +24,7 @@ export const translations = {
     },
     company: {
       title: 'PERUSAHAAN',
-      p1: 'Trans Hybrid Communication adalah mitra anda dan dalam dunia yang serba cepat, memulukan komunikasi dan informasi untuk memastikan bisnis Anda berjalan lancar.',
+      p1: 'Trans Hybrid Communication adalah mitra Anda di dunia yang serba cepat, memprioritaskan komunikasi dan informasi untuk memastikan bisnis Anda berjalan lancar.',
       p2: 'Kami menyediakan layanan prima, wawasan lokal mendalam, dan koneksi yang kuat, memberdayakan Anda untuk unggul. Dengan dedikasi pada ekuitas jaringan, kami berkomitmen menghadirkan layanan terbaik agar Anda selalu terhubung, kapan pun dan di mana pun.',
       about: '– Tentang Kami',
       journey: '– Perjalanan Kami',

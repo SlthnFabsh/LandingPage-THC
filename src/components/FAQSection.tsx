@@ -35,6 +35,11 @@ export default function FAQSection() {
   const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  // Break the title onto two deliberate lines: never leave a dangling
+  // connector word ("yang") at the end of the first line.
+  const faqTitleWords = t('faq.title').split(' ');
+  const titleBreak = faqTitleWords.length > 3 ? 3 : 2;
+
   const toggle = (index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
   };
@@ -54,13 +59,14 @@ export default function FAQSection() {
               <img src="/assets/images/borneo.png" alt="Jaringan Trans Hybrid" className="h-full w-full object-cover" />
             </div>
           </div>
-          <h2 className="max-w-md text-5xl font-black leading-[0.98] tracking-[-0.06em] text-blue-900 sm:text-6xl">
-            {t('faq.title')}
+          <h2 className="max-w-md text-[clamp(1.75rem,3vw,2.45rem)] font-bold leading-[1.15] tracking-[-0.02em] text-blue-900">
+            <span className="block">{faqTitleWords.slice(0, titleBreak).join(' ')}</span>
+            <span className="block">{faqTitleWords.slice(titleBreak).join(' ')}</span>
           </h2>
           <p className="mt-6 max-w-md text-base leading-relaxed text-slate-600">{t('faq.desc')}</p>
           <a
             href="mailto:info@transhybrid.net.id"
-            className="mt-7 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/15 transition hover:bg-brand-700"
+            className="mt-7 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-[15px] font-medium text-white shadow-lg shadow-slate-900/15 transition hover:bg-brand-700"
           >
             <Mail className="h-4 w-4" />
             <span>{t('nav.hubungi')}</span>

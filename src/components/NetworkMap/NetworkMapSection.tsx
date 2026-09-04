@@ -29,10 +29,10 @@ export default function NetworkMapSection() {
           <TextSplit
             as="h2"
             text="NETWORK MAP"
-            className="text-3xl font-black tracking-[-0.08em] text-white md:text-6xl"
+            className="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.015em] text-white"
             stagger={0.04}
           />
-          <p className="network-fade-up delay-100 mt-3 max-w-2xl text-lg text-[#CBD8ED] md:text-1XL">
+          <p className="network-fade-up delay-100 mt-4 max-w-2xl text-lg leading-relaxed text-[#CBD8ED] md:text-xl">
             Peta jaringan kabel Trans Hybrid menghubungkan Indonesia, Malaysia, Brunei, dan
             Filipina melalui jalur submarine dan inland.
           </p>

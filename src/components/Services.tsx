@@ -44,7 +44,7 @@ export default function Services() {
             key={t('services.title')}
             as="h2"
             text={t('services.title')}
-            className="text-5xl font-black uppercase tracking-[-0.06em] text-blue-900 md:text-6xl"
+            className="text-[clamp(2.25rem,5vw,3.5rem)] font-bold uppercase leading-[1.05] tracking-[-0.02em] text-blue-900"
             stagger={0.028}
           />
           <motion.p initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1.1, delay: 0.15 }} className="mt-4 max-w-2xl text-base leading-relaxed text-slate-500 md:text-lg">{t('services.desc')}</motion.p>
@@ -68,7 +68,7 @@ export default function Services() {
                   <motion.div whileHover={{ scale: 1.12, rotate: 6 }} className={`mb-6 flex h-11 w-11 items-center justify-center rounded-full bg-[#eef0f8] ${iconColor}`}>
                     <Icon className="h-5 w-5" />
                   </motion.div>
-                  <h3 className="mb-3 text-2xl font-bold text-[#073b91] transition-colors group-hover:text-white md:text-[28px]">
+                  <h3 className="mb-3 text-[1.5rem] font-semibold text-[#073b91] transition-colors group-hover:text-white md:text-[1.75rem]">
                     {t(titleKey)}
                   </h3>
                   <p className="max-w-xl text-sm leading-relaxed text-slate-500 transition-colors group-hover:text-white md:text-[15px]">
@@ -78,7 +78,7 @@ export default function Services() {
 
                 <a
                   href="#faq"
-                  className="mt-8 inline-flex w-fit items-center gap-2 text-xs font-bold tracking-wide text-[#073b91] uppercase transition-colors hover:text-[#1259c7] group-hover:text-white"
+                  className="mt-8 inline-flex w-fit items-center gap-2 text-xs font-semibold tracking-[0.08em] text-[#073b91] uppercase transition-colors hover:text-[#1259c7] group-hover:text-white"
                 >
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#073b91] text-white transition-colors group-hover:bg-white group-hover:text-[#0256eb]">
                     <Plus className="h-4 w-4" />

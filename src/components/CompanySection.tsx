@@ -46,12 +46,12 @@ function Stat({ value, suffix, label, index }: { value: number; suffix: string; 
       <motion.div
         animate={bounce ? { scale: [1, 1.14, 1] } : undefined}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="text-[1.65rem] font-black tracking-[-0.05em] text-white md:text-[2.1rem] xl:text-[2.5rem]"
+        className="text-[1.75rem] font-bold tabular-nums leading-none tracking-[-0.02em] text-white md:text-[2.1rem] xl:text-[2.75rem]"
       >
         {count}
         {suffix}
       </motion.div>
-      <div className="mt-0.5 text-xs leading-snug text-white/85 md:text-sm xl:text-base">{label}</div>
+      <div className="mt-1.5 text-xs font-normal leading-snug text-white/80 md:text-sm xl:text-[15px]">{label}</div>
     </motion.div>
   );
 }
@@ -70,21 +70,21 @@ export default function CompanySection() {
                 key={t('company.title')}
                 as="h2"
                 text={t('company.title')}
-                className="text-[clamp(2.25rem,13vw,3.25rem)] font-extrabold leading-[0.94] tracking-[-0.055em] text-blue-900 sm:text-[4.5rem] md:text-[5.2rem] xl:text-[6rem]"
+                className="text-[clamp(2.5rem,6.5vw,5.25rem)] font-bold leading-[1.04] tracking-[-0.02em] text-blue-900"
                 stagger={0.03}
               />
 
-              <div className="mt-8 max-w-[590px] space-y-6 text-base leading-[1.7] text-slate-700 sm:text-lg md:text-[1.1rem] xl:text-[1.2rem]">
+              <div className="mt-7 max-w-[600px] space-y-5 text-base leading-[1.75] text-slate-600 sm:text-lg md:text-[1.125rem]">
                 <p className="company-fade-up delay-200">{t('company.p1')}</p>
 
                 <p className="company-fade-up delay-300">{t('company.p2')}</p>
               </div>
 
               <div className="mt-10 flex flex-wrap gap-4">
-                <button className="rounded-full border border-slate-700 bg-white px-7 py-3 text-base font-medium text-slate-600 transition hover:bg-blue-900 hover:text-white">
+                <button className="rounded-full border border-slate-700 bg-white px-6 py-2.5 text-[15px] font-medium text-slate-600 transition hover:bg-blue-900 hover:text-white">
                   {t('company.about')}
                 </button>
-                <button className="rounded-full border border-slate-700 bg-white px-7 py-3 text-base font-medium text-slate-600 transition hover:bg-blue-900 hover:text-white">
+                <button className="rounded-full border border-slate-700 bg-white px-6 py-2.5 text-[15px] font-medium text-slate-600 transition hover:bg-blue-900 hover:text-white">
                   {t('company.journey')}
                 </button>
               </div>

@@ -16,11 +16,11 @@ export default function Footer() {
               <span className="h-2 w-2 rounded-full bg-[#e83b42]" />
               Trans Hybrid Communication
             </div>
-            <h2 className="max-w-xl text-3xl font-bold leading-tight tracking-[-0.04em] text-white sm:text-4xl">
+            <h2 className="max-w-xl text-3xl font-bold leading-[1.15] tracking-[-0.02em] text-white sm:text-4xl">
               {t('cta.subtitle')}
             </h2>
           </div>
-          <a href="#faq" className="group inline-flex w-fit items-center gap-3 rounded-full bg-[#1263a0] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#197dbd]">
+          <a href="#faq" className="group inline-flex w-fit items-center gap-3 rounded-full bg-[#1263a0] px-6 py-3 text-[15px] font-semibold text-white transition hover:bg-[#197dbd]">
             <span>{t('nav.hubungi')}</span>
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
@@ -39,7 +39,7 @@ export default function Footer() {
 
           {/* Col 2: Layanan */}
           <div className="flip-up delay-200">
-            <h4 className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-white">{t('footer.services')}</h4>
+            <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-white">{t('footer.services')}</h4>
             <ul className="space-y-3 text-sm text-slate-400">
               <li><a href="#layanan" className="transition-colors hover:text-[#63a9ff]">{t('services.internet')}</a></li>
               <li><a href="#layanan" className="transition-colors hover:text-[#63a9ff]">{t('services.konektivitas')}</a></li>
@@ -50,7 +50,7 @@ export default function Footer() {
 
           {/* Col 3: Perusahaan */}
           <div className="flip-up delay-300">
-            <h4 className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-white">{t('footer.company')}</h4>
+            <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-white">{t('footer.company')}</h4>
             <ul className="space-y-3 text-sm text-slate-400">
               <li><a href="#tentang" className="transition-colors hover:text-[#63a9ff]">{t('footer.about')}</a></li>
               <li><a href="#jaringan" className="transition-colors hover:text-[#63a9ff]">{t('nav.jaringan')}</a></li>
@@ -61,7 +61,7 @@ export default function Footer() {
 
           {/* Col 4: Kontak Kami */}
           <div className="flip-up delay-400">
-            <h4 className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-white">{t('footer.contact')}</h4>
+            <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-white">{t('footer.contact')}</h4>
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-2.5">
                 <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-[#63a9ff]" />
@@ -92,7 +92,7 @@ export default function Footer() {
         {/* Social Media & Copyright Bar */}
         <div className="flex flex-col items-center justify-between gap-5 pt-8 text-center sm:flex-row sm:text-left">
           <div className="flex flex-col items-center gap-3 zoom-in-bounce delay-200">
-            <h5 className="text-xs font-bold uppercase tracking-[0.18em] text-white">Our Social Media</h5>
+            <h5 className="text-xs font-semibold uppercase tracking-[0.16em] text-white">Our Social Media</h5>
             <div className="flex items-center gap-4">
               {/* X (Twitter) */}
               <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-slate-300 transition-all hover:scale-110 hover:bg-[#0256eb] hover:text-white" title="X" aria-label="X">

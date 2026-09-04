@@ -89,20 +89,20 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-8 xl:gap-14 font-bold text-slate-700 text-sm sm:text-base tracking-wide">
-            <a href="#beranda" className={`font-extrabold transition-colors hover:text-blue-600 ${activeSection === 'beranda' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : 'text-slate-950'}`}>
+          <nav className="hidden lg:flex items-center gap-8 xl:gap-12 font-medium text-slate-700 text-[15px] xl:text-base">
+            <a href="#beranda" className={`transition-colors hover:text-blue-600 ${activeSection === 'beranda' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : 'text-slate-700'}`}>
               {t('nav.beranda')}
             </a>
-            <a href="#tentang" className={`transition-colors hover:text-blue-600 ${activeSection === 'tentang' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : ''}`}>
+            <a href="#tentang" className={`transition-colors hover:text-blue-600 ${activeSection === 'tentang' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
               {t('nav.tentang')}
             </a>
-            <a href="#layanan" className={`transition-colors hover:text-blue-600 ${activeSection === 'layanan' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : ''}`}>
+            <a href="#layanan" className={`transition-colors hover:text-blue-600 ${activeSection === 'layanan' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
               {t('nav.layanan')}
             </a>
-            <a href="#jaringan" className={`transition-colors hover:text-blue-600 ${activeSection === 'jaringan' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : ''}`}>
+            <a href="#jaringan" className={`transition-colors hover:text-blue-600 ${activeSection === 'jaringan' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
               {t('nav.jaringan')}
             </a>
-            <a href="#berita" className={`flex items-center gap-1.5 transition-colors hover:text-blue-600 ${activeSection === 'berita' ? 'text-blue-600 underline decoration-2 underline-offset-8 decoration-blue-600' : ''}`}>
+            <a href="#berita" className={`flex items-center gap-1.5 transition-colors hover:text-blue-600 ${activeSection === 'berita' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
               <span>{t('nav.berita')}</span>
               <ChevronDown className="w-4 h-4 text-slate-600" />
             </a>
@@ -115,7 +115,7 @@ export default function Navbar() {
                 id="lang-toggle-desktop"
                 type="button"
                 onClick={() => setLanguageOpen((open) => !open)}
-                className="flex h-10 items-center gap-2 px-1 text-base text-slate-700 transition-colors hover:text-slate-950"
+                className="flex h-10 items-center gap-2 px-1 text-[15px] text-slate-700 transition-colors hover:text-slate-950 xl:text-base"
                 aria-label="Pilih bahasa"
                 aria-expanded={languageOpen}
                 aria-haspopup="listbox"

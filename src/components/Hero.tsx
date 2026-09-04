@@ -31,17 +31,17 @@ export default function Hero() {
         <TextSplit
           as="h1"
           text="#To The Next Level !"
-          className="text-[2.8rem] font-black leading-[0.9] tracking-[-0.06em] sm:text-[4.5rem] md:text-[7rem] lg:text-[8.5rem]"
+          className="text-[clamp(2.1rem,8vw,6.75rem)] font-bold leading-[1.02] tracking-[-0.025em]"
           stagger={0.035}
           delay={0.1}
         />
 
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1, ease: 'easeOut' }} className="mt-8 text-[1.4rem] font-semibold tracking-[-0.04em] sm:text-[2rem] md:text-[2.8rem]">
+        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1, ease: 'easeOut' }} className="mt-7 text-[clamp(1.125rem,2.6vw,1.5rem)] font-normal leading-[1.5] text-white/90 sm:mt-8">
           Your Connection, Our Commitment.
         </motion.p>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.8 }}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.8 }} className="mt-8 sm:mt-9">
           <Magnetic>
-            <motion.a href="#layanan" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center gap-3 rounded-full bg-[#1263a0] px-6 py-3 text-sm font-bold text-white shadow-xl shadow-black/20">
+            <motion.a href="#layanan" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center gap-3 rounded-full bg-[#1263a0] px-7 py-3 text-[15px] font-semibold text-white shadow-xl shadow-black/20">
               Mulai Terhubung <ArrowUpRight className="h-4 w-4" />
             </motion.a>
           </Magnetic>

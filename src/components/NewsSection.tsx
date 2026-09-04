@@ -57,10 +57,10 @@ export default function NewsSection() {
               key={t('news.title')}
               as="h2"
               text={t('news.title')}
-              className="mb-3 text-5xl font-black uppercase leading-none tracking-[-0.06em] text-blue-900 sm:text-6xl md:text-7xl"
+              className="mb-3 text-[clamp(2.25rem,5vw,3.5rem)] font-bold uppercase leading-[1.05] tracking-[-0.02em] text-blue-900"
               stagger={0.028}
             />
-            <p className="text-sm font-normal text-slate-700 sm:text-base">{t('news.desc')}</p>
+            <p className="text-sm font-normal text-slate-600 sm:text-base">{t('news.desc')}</p>
           </div>
         </div>
 

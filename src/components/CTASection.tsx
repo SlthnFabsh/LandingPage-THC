@@ -24,7 +24,7 @@ export default function CTASection() {
               />
             </div>
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight">{t('cta.title')}</h2>
+          <h2 className="text-[clamp(2.25rem,5vw,3.5rem)] font-bold tracking-[-0.02em] text-slate-900">{t('cta.title')}</h2>
         </div>
 
         {/* Main CTA Card */}
@@ -40,7 +40,7 @@ export default function CTASection() {
           {/* Content */}
           <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between w-full px-10 py-12 gap-8">
             <div className="flex-1 text-white fade-left delay-300">
-              <h3 className="text-2xl sm:text-3xl font-extrabold mb-3 leading-tight">{t('cta.subtitle')}</h3>
+              <h3 className="mb-3 text-2xl font-semibold leading-tight sm:text-3xl">{t('cta.subtitle')}</h3>
               <p className="text-base text-blue-100 leading-relaxed max-w-xl font-normal">{t('cta.desc')}</p>
             </div>
 
@@ -50,7 +50,7 @@ export default function CTASection() {
                   href="#faq"
                   whileHover={{ scale: 1.06, boxShadow: '0 0 30px rgba(99, 169, 255, 0.55)' }}
                   whileTap={{ scale: 0.98 }}
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-brand-700 font-extrabold text-base transition-all shadow-xl shadow-brand-900/30 group"
+                  className="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-white text-brand-700 font-semibold text-[15px] transition-all shadow-xl shadow-brand-900/30 group"
                 >
                   <span>{t('nav.hubungi')}</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

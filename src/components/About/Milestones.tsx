@@ -115,7 +115,7 @@ export default function Milestones() {
                 <li key={milestone.year} className="relative md:grid md:grid-cols-2 md:gap-x-28">
                   {/* Node */}
                   <span
-                    className="absolute left-[19px] top-6 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-[#63a9ff]/60 bg-brand-950 shadow-[0_0_18px_rgba(2,86,235,0.55)] md:top-7"
+                    className="absolute left-[19px] top-6 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-[#63a9ff]/60 bg-brand-950 shadow-[0_0_18px_rgba(2,86,235,0.55)] md:left-1/2 md:top-7 md:-translate-x-1/2"
                     aria-hidden="true"
                   >
                     <Check className="h-5 w-5 text-[#63a9ff]" strokeWidth={3} />

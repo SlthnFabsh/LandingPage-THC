@@ -129,7 +129,8 @@ export default function Navbar() {
                 <ChevronDown className={`h-4 w-4 transition-transform ${tentangOpen ? 'rotate-180' : ''}`} />
               </button>
               {tentangOpen && (
-                <div className="absolute left-0 top-full z-50 mt-4 w-[340px] overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 p-2 shadow-xl shadow-slate-900/10 backdrop-blur-xl" role="menu" aria-label={`${t('nav.tentang')} menu`}>
+                <div className="absolute left-0 top-full z-50 w-[340px] pt-4">
+                  <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 p-2 shadow-xl shadow-slate-900/10 backdrop-blur-xl" role="menu" aria-label={`${t('nav.tentang')} menu`}>
                   {tentangSubPages.map(({ titleKey, descKey, href }) => (
                     <Link
                       key={href}
@@ -148,6 +149,7 @@ export default function Navbar() {
                       <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-brand-600 opacity-0 transition-opacity group-hover:opacity-100" />
                     </Link>
                   ))}
+                  </div>
                 </div>
               )}
             </div>

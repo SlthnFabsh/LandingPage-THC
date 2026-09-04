@@ -62,15 +62,15 @@ export default function CompanySection() {
   return (
     <section className="overflow-hidden bg-[#f5f5f3]">
       <div className="mx-auto max-w-[1600px] px-0 lg:px-4">
-        <div className="grid min-h-[100vh] items-center lg:grid-cols-[1.25fr_0.75fr]">
-          <div className="px-6 py-12 sm:px-8 md:px-10 lg:pl-16 lg:pr-8 xl:pl-20 xl:pr-10">
+        <div className="grid min-h-[100vh] min-w-0 items-center lg:grid-cols-[1.25fr_0.75fr]">
+          <div className="min-w-0 px-6 py-12 sm:px-8 md:px-10 lg:pl-16 lg:pr-8 xl:pl-20 xl:pr-10">
 
-            <div className="max-w-[620px]">
+            <div className="min-w-0 max-w-[620px]">
               <TextSplit
                 key={t('company.title')}
                 as="h2"
                 text={t('company.title')}
-                className="text-[3.25rem] font-extrabold leading-[0.94] tracking-[-0.055em] text-blue-900 sm:text-[4.5rem] md:text-[5.2rem] xl:text-[6rem]"
+                className="text-[clamp(2.25rem,13vw,3.25rem)] font-extrabold leading-[0.94] tracking-[-0.055em] text-blue-900 sm:text-[4.5rem] md:text-[5.2rem] xl:text-[6rem]"
                 stagger={0.03}
               />
 

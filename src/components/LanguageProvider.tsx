@@ -18,9 +18,22 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Language>('id');
 
   useEffect(() => {
+    // 1) Respect a previously saved manual choice.
     const saved = window.localStorage.getItem(LNG_STORAGE_KEY);
     if (saved === 'en' || saved === 'id') {
       setLangState(saved);
+      return;
+    }
+
+    // 2) Auto-detect for first-time visitors based on browser locale.
+    //    'id'/* -> Indonesian, anything else -> English.
+    const navLang = (navigator.language || navigator.languages?.[0] || '').toLowerCase();
+    const detected: Language = navLang.startsWith('id') ? 'id' : 'en';
+    setLangState(detected);
+    try {
+      window.localStorage.setItem(LNG_STORAGE_KEY, detected);
+    } catch {
+      // ignore storage errors (private mode etc.)
     }
   }, []);
 

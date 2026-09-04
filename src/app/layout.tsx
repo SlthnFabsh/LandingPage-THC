@@ -16,6 +16,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className="scroll-smooth">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem('thc_lang');if(s==='en'||s==='id'){document.documentElement.lang=s;return;}var l=(navigator.language||'').toLowerCase();var d=l.indexOf('id')===0?'id':'en';document.documentElement.lang=d;try{localStorage.setItem('thc_lang',d);}catch(e){}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="bg-slate-50 text-slate-800 antialiased selection:bg-brand-600 selection:text-white overflow-x-hidden">
         <LanguageProvider>{children}</LanguageProvider>
         <Preloader />

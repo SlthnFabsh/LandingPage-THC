@@ -1,16 +1,31 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Menu, X, ChevronDown, Globe2 } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu, X, ChevronDown, Globe2, ArrowUpRight, Building2 } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
+
+const tentangSubPages = [
+  {
+    titleKey: 'nav.informasi',
+    descKey: 'about.desc',
+    href: '/tentang/informasi-perusahaan',
+  },
+];
 
 export default function Navbar() {
   const { lang, setLang, t } = useLanguage();
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+  const inTentangPage = pathname.startsWith('/tentang');
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('beranda');
   const [languageOpen, setLanguageOpen] = useState(false);
+  const [tentangOpen, setTentangOpen] = useState(false);
+  const [mobileTentangOpen, setMobileTentangOpen] = useState(false);
 
   useEffect(() => {
     const updateNavbar = () => {
@@ -22,19 +37,23 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (!languageOpen) return;
+    if (!languageOpen && !tentangOpen) return;
 
-    const closeLanguageMenu = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).closest('[data-language-selector]')) {
-        setLanguageOpen(false);
-      }
+    const closeOpenMenus = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const insideLanguage = Boolean(target.closest('[data-language-selector]'));
+      const insideTentang = Boolean(target.closest('[data-tentang-dropdown]'));
+      if (!insideLanguage) setLanguageOpen(false);
+      if (!insideTentang) setTentangOpen(false);
     };
 
-    document.addEventListener('click', closeLanguageMenu);
-    return () => document.removeEventListener('click', closeLanguageMenu);
-  }, [languageOpen]);
+    document.addEventListener('click', closeOpenMenus);
+    return () => document.removeEventListener('click', closeOpenMenus);
+  }, [languageOpen, tentangOpen]);
 
   useEffect(() => {
+    if (!isHome) return;
+
     const sectionIds = ['beranda', 'tentang', 'layanan', 'jaringan', 'berita', 'faq'];
     const sections = sectionIds
       .map((id) => document.getElementById(id))
@@ -52,7 +71,7 @@ export default function Navbar() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [isHome]);
 
   const openMenu = useCallback(() => {
     setMenuOpen(true);
@@ -69,6 +88,10 @@ export default function Navbar() {
     setLanguageOpen(false);
   }, [setLang]);
 
+  const sectionHref = (id: string) => (isHome ? `#${id}` : `/#${id}`);
+
+  const tentangActive = activeSection === 'tentang' || inTentangPage;
+
   const shadowClass = scrolled ? 'shadow-lg shadow-slate-900/10' : 'shadow-sm';
 
   return (
@@ -79,7 +102,7 @@ export default function Navbar() {
           className={`mx-auto flex w-full max-w-[1320px] items-center justify-between rounded-[16px] border px-6 py-2 transition-all duration-300 sm:px-9 sm:py-2.5 ${scrolled ? `border-slate-200/80 bg-white/90 backdrop-blur-xl ${shadowClass}` : 'border-white/20 bg-white/10 backdrop-blur-md'}`}
         >
           {/* Brand Logo */}
-          <a href="#beranda" className="flex items-center group shrink-0 pr-4">
+          <a href={isHome ? '#beranda' : '/'} className="flex items-center group shrink-0 pr-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/assets/images/logo1.png"
@@ -90,21 +113,52 @@ export default function Navbar() {
 
           {/* Desktop Nav Links */}
           <nav className="hidden lg:flex items-center gap-8 xl:gap-12 font-medium text-slate-700 text-[15px] xl:text-base">
-            <a href="#beranda" className={`transition-colors hover:text-blue-600 ${activeSection === 'beranda' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : 'text-slate-700'}`}>
+            <a href={sectionHref('beranda')} className={`transition-colors hover:text-blue-600 ${activeSection === 'beranda' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : 'text-slate-700'}`}>
               {t('nav.beranda')}
             </a>
-            <a href="#tentang" className={`transition-colors hover:text-blue-600 ${activeSection === 'tentang' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
-              {t('nav.tentang')}
-            </a>
-            <a href="#layanan" className={`transition-colors hover:text-blue-600 ${activeSection === 'layanan' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
+            <div className="relative" data-tentang-dropdown onMouseEnter={() => setTentangOpen(true)} onMouseLeave={() => setTentangOpen(false)}>
+              <button
+                id="tentang-dropdown-btn"
+                type="button"
+                onClick={() => setTentangOpen((open) => !open)}
+                aria-expanded={tentangOpen}
+                aria-haspopup="true"
+                className={`flex items-center gap-1.5 transition-colors hover:text-blue-600 ${tentangActive ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}
+              >
+                <span>{t('nav.tentang')}</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${tentangOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {tentangOpen && (
+                <div className="absolute left-0 top-full z-50 mt-4 w-[340px] overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 p-2 shadow-xl shadow-slate-900/10 backdrop-blur-xl" role="menu" aria-label={`${t('nav.tentang')} menu`}>
+                  {tentangSubPages.map(({ titleKey, descKey, href }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      role="menuitem"
+                      onClick={() => setTentangOpen(false)}
+                      className="group flex items-start gap-3 rounded-xl px-4 py-3.5 transition-colors hover:bg-brand-50"
+                    >
+                      <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-600/10 text-brand-600">
+                        <Building2 className="h-[18px] w-[18px]" />
+                      </span>
+                      <span className="flex-1">
+                        <span className="block text-[15px] font-semibold text-slate-900 transition-colors group-hover:text-brand-700">{t(titleKey)}</span>
+                        <span className="mt-0.5 block text-[13px] leading-snug text-slate-500">{t(descKey)}</span>
+                      </span>
+                      <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-brand-600 opacity-0 transition-opacity group-hover:opacity-100" />
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+            <a href={sectionHref('layanan')} className={`transition-colors hover:text-blue-600 ${activeSection === 'layanan' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
               {t('nav.layanan')}
             </a>
-            <a href="#jaringan" className={`transition-colors hover:text-blue-600 ${activeSection === 'jaringan' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
+            <a href={sectionHref('jaringan')} className={`transition-colors hover:text-blue-600 ${activeSection === 'jaringan' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
               {t('nav.jaringan')}
             </a>
-            <a href="#berita" className={`flex items-center gap-1.5 transition-colors hover:text-blue-600 ${activeSection === 'berita' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
-              <span>{t('nav.berita')}</span>
-              <ChevronDown className="w-4 h-4 text-slate-600" />
+            <a href={sectionHref('berita')} className={`transition-colors hover:text-blue-600 ${activeSection === 'berita' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
+              {t('nav.berita')}
             </a>
           </nav>
 
@@ -160,7 +214,7 @@ export default function Navbar() {
         <div className="fixed right-0 top-0 bottom-0 w-4/5 max-w-sm bg-white shadow-2xl p-6 flex flex-col justify-between z-10">
           <div>
             <div className="flex items-center justify-between mb-8">
-              <a href="#beranda" className="flex items-center" onClick={closeMenu}>
+              <a href={isHome ? '#beranda' : '/'} className="flex items-center" onClick={closeMenu}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/assets/images/logo1.png" alt="Trans Hybrid Logo" className="h-10 w-auto" />
               </a>
@@ -169,22 +223,40 @@ export default function Navbar() {
               </button>
             </div>
             <div className="flex flex-col gap-4 font-medium text-slate-700 text-base">
-              <a href="#beranda" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'beranda' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
+              <a href={sectionHref('beranda')} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'beranda' && isHome ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.beranda')}
               </a>
-              <a href="#tentang" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'tentang' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
-                {t('nav.tentang')}
-              </a>
-              <a href="#layanan" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'layanan' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
+              <div className="border-b border-slate-100 py-2">
+                <button
+                  type="button"
+                  onClick={() => setMobileTentangOpen((open) => !open)}
+                  aria-expanded={mobileTentangOpen}
+                  className={`flex w-full items-center justify-between py-1 text-left transition-colors hover:text-blue-600 ${tentangActive ? 'text-blue-600' : ''}`}
+                >
+                  <span>{t('nav.tentang')}</span>
+                  <ChevronDown className={`h-4 w-4 transition-transform ${mobileTentangOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileTentangOpen && (
+                  <div className="mt-2 flex flex-col gap-2 border-l-2 border-brand-100 pl-4">
+                    {tentangSubPages.map(({ titleKey, href }) => (
+                      <Link key={href} href={href} onClick={closeMenu} className="flex items-center justify-between py-1 text-[15px] text-slate-600 transition-colors hover:text-blue-600">
+                        <span>{t(titleKey)}</span>
+                        <ArrowUpRight className="h-4 w-4 text-slate-400" />
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <a href={sectionHref('layanan')} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'layanan' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.layanan')}
               </a>
-              <a href="#jaringan" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'jaringan' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
+              <a href={sectionHref('jaringan')} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'jaringan' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.jaringan')}
               </a>
-              <a href="#berita" onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'berita' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
+              <a href={sectionHref('berita')} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'berita' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.berita')}
               </a>
-              <a href="#faq" onClick={closeMenu} className={`py-2 hover:text-blue-600 ${activeSection === 'faq' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
+              <a href={sectionHref('faq')} onClick={closeMenu} className={`py-2 hover:text-blue-600 ${activeSection === 'faq' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.faq')}
               </a>
             </div>

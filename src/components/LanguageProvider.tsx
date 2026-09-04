@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Language, metaByLang, translate } from '@/lib/i18n';
 
 const LNG_STORAGE_KEY = 'thc_lang';
@@ -15,6 +16,7 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const [lang, setLangState] = useState<Language>('id');
 
   useEffect(() => {
@@ -39,11 +41,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = lang;
-    const t = metaByLang[lang];
-    document.title = t.title;
+    const pageKey = pathname.startsWith('/tentang') ? 'informasi' : 'home';
+    const pageMeta = metaByLang[lang][pageKey];
+    document.title = pageMeta.title;
     const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) metaDesc.setAttribute('content', t.desc);
-  }, [lang]);
+    if (metaDesc) metaDesc.setAttribute('content', pageMeta.desc);
+  }, [lang, pathname]);
 
   const setLang = useCallback((lng: Language) => {
     setLangState(lng);

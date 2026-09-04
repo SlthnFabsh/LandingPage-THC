@@ -60,7 +60,7 @@ export default function CompanySection() {
   const { t } = useLanguage();
 
   return (
-    <section className="overflow-hidden bg-[#f5f5f3]">
+    <section id="tentang" className="overflow-hidden bg-[#f5f5f3]">
       <div className="mx-auto max-w-[1600px] px-0 lg:px-4">
         <div className="grid min-h-[100vh] min-w-0 items-center lg:grid-cols-[1.25fr_0.75fr]">
           <div className="min-w-0 px-6 py-12 sm:px-8 md:px-10 lg:pl-16 lg:pr-8 xl:pl-20 xl:pr-10">

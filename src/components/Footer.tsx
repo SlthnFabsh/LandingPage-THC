@@ -1,11 +1,16 @@
 'use client';
 
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Building2, MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 
 export default function Footer() {
   const { t } = useLanguage();
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+  const anchor = (id: string) => (isHome ? `#${id}` : `/#${id}`);
 
   return (
     <motion.footer initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1 }} className="border-t-4 border-brand-600 bg-[#07152b] text-slate-300">
@@ -20,7 +25,7 @@ export default function Footer() {
               {t('cta.subtitle')}
             </h2>
           </div>
-          <a href="#faq" className="group inline-flex w-fit items-center gap-3 rounded-full bg-[#1263a0] px-6 py-3 text-[15px] font-semibold text-white transition hover:bg-[#197dbd]">
+          <a href={anchor('faq')} className="group inline-flex w-fit items-center gap-3 rounded-full bg-[#1263a0] px-6 py-3 text-[15px] font-semibold text-white transition hover:bg-[#197dbd]">
             <span>{t('nav.hubungi')}</span>
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
@@ -41,10 +46,10 @@ export default function Footer() {
           <div className="flip-up delay-200">
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-white">{t('footer.services')}</h4>
             <ul className="space-y-3 text-sm text-slate-400">
-              <li><a href="#layanan" className="transition-colors hover:text-[#63a9ff]">{t('services.internet')}</a></li>
-              <li><a href="#layanan" className="transition-colors hover:text-[#63a9ff]">{t('services.konektivitas')}</a></li>
-              <li><a href="#layanan" className="transition-colors hover:text-[#63a9ff]">{t('services.solusi')}</a></li>
-              <li><a href="#layanan" className="transition-colors hover:text-[#63a9ff]">{t('services.data')}</a></li>
+              <li><a href={anchor('layanan')} className="transition-colors hover:text-[#63a9ff]">{t('services.internet')}</a></li>
+              <li><a href={anchor('layanan')} className="transition-colors hover:text-[#63a9ff]">{t('services.konektivitas')}</a></li>
+              <li><a href={anchor('layanan')} className="transition-colors hover:text-[#63a9ff]">{t('services.solusi')}</a></li>
+              <li><a href={anchor('layanan')} className="transition-colors hover:text-[#63a9ff]">{t('services.data')}</a></li>
             </ul>
           </div>
 
@@ -52,10 +57,13 @@ export default function Footer() {
           <div className="flip-up delay-300">
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-white">{t('footer.company')}</h4>
             <ul className="space-y-3 text-sm text-slate-400">
-              <li><a href="#tentang" className="transition-colors hover:text-[#63a9ff]">{t('footer.about')}</a></li>
-              <li><a href="#jaringan" className="transition-colors hover:text-[#63a9ff]">{t('nav.jaringan')}</a></li>
-              <li><a href="#berita" className="transition-colors hover:text-[#63a9ff]">{t('nav.berita')}</a></li>
-              <li><a href="#faq" className="transition-colors hover:text-[#63a9ff]">{t('nav.faq')}</a></li>
+              <li>
+                <Link href="/tentang/informasi-perusahaan" className="transition-colors hover:text-[#63a9ff]">{t('nav.informasi')}</Link>
+              </li>
+              <li><a href={anchor('tentang')} className="transition-colors hover:text-[#63a9ff]">{t('footer.about')}</a></li>
+              <li><a href={anchor('jaringan')} className="transition-colors hover:text-[#63a9ff]">{t('nav.jaringan')}</a></li>
+              <li><a href={anchor('berita')} className="transition-colors hover:text-[#63a9ff]">{t('nav.berita')}</a></li>
+              <li><a href={anchor('faq')} className="transition-colors hover:text-[#63a9ff]">{t('nav.faq')}</a></li>
             </ul>
           </div>
 

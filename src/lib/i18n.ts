@@ -8,6 +8,7 @@ export const translations = {
       layanan: 'Layanan',
       jaringan: 'Jaringan',
       berita: 'Berita',
+      informasi: 'Informasi Perusahaan',
       hubungi: 'Hubungi Kami',
       faq: 'FAQ',
       bahasa: 'Bahasa'
@@ -33,6 +34,31 @@ export const translations = {
       statOperasi: 'Beroperasi',
       statKabel: 'Kilometer Kabel',
       statTrafik: 'Trafik Internet Dikelola'
+    },
+    about: {
+      desc: 'Profil, lisensi, visi, misi, dan perjalanan perusahaan sejak 2006.',
+      breadcrumbHome: 'Rumah',
+      intro: 'PT Trans Hybrid Communication (THC), sebuah perusahaan penanaman modal asing (PMA), didirikan pada tahun 2006. Bisnis utamanya adalah menyediakan akses jaringan berbasis teknologi internet IP (NAP) kepada Penyedia Layanan Internet. Pada tahun 2017, THC mulai mengembangkan bisnisnya di bidang TIK menyusul tingginya kebutuhan akan internet sebagai media yang berperan penting dalam industri telekomunikasi dan bidang-bidang lainnya.',
+      lisensi: 'Lisensi',
+      licenses: [
+        'Jartaptup – (003/TEL.01,02/2017)',
+        'Jartup International – (6/TEL.01.02/2019)',
+        'Jartaplok – (234/TEL.01.02/2020)',
+        'NAP – (1022 Tahun 2014)',
+        'ISP – (11/TEL.02.02/2019)'
+      ],
+      visiTitle: 'Visi',
+      visi: 'Kami berusaha untuk menjadi mitra yang andal dan penyedia layanan internet terkemuka serta solusi digital inovatif yang memenuhi meningkatnya tuntutan individu di Indonesia dan Asia Tenggara. Kami bertujuan untuk memberikan nilai berkelanjutan kepada pelanggan, mitra bisnis, dan komunitas lokal kami.',
+      misiTitle: 'Misi',
+      misi: [
+        'Memberikan kualitas layanan terbaik kepada pelanggan.',
+        'Mempercepat pertumbuhan ekonomi digital di kawasan.',
+        'Memberikan hasil yang maksimal kepada pemegang saham, karyawan, dan komunitas.',
+        'Mengembangkan kapasitas dan kemampuan sumber daya manusia melalui program pengembangan untuk tim internal, pelanggan, mitra, dan masyarakat.',
+        'Mengintegrasikan prinsip-prinsip keberlanjutan ke dalam operasi perusahaan dengan mengurangi dampak lingkungan, menerapkan energi terbarukan, dan mendukung inisiatif keberlanjutan sosial.'
+      ],
+      timelineEyebrow: 'Perjalanan Perusahaan',
+      timeline: 'Timeline'
     },
     services: {
       title: 'Layanan Kami',
@@ -123,6 +149,7 @@ export const translations = {
       layanan: 'Services',
       jaringan: 'Network',
       berita: 'News',
+      informasi: 'Company Information',
       hubungi: 'Contact Us',
       faq: 'FAQ',
       bahasa: 'Language'
@@ -148,6 +175,31 @@ export const translations = {
       statOperasi: 'In Operation',
       statKabel: 'Kilometers of Cable',
       statTrafik: 'Internet Traffic Managed'
+    },
+    about: {
+      desc: 'Company profile, licenses, vision, mission, and journey since 2006.',
+      breadcrumbHome: 'Home',
+      intro: 'PT Trans Hybrid Communication (THC), a foreign investment company (PMA), was established in 2006. Its core business is providing IP-based internet network access (NAP) to Internet Service Providers. In 2017, THC began expanding into the ICT sector following the growing demand for internet as a medium that plays an important role in the telecommunications industry and other fields.',
+      lisensi: 'Licenses',
+      licenses: [
+        'Jartaptup – (003/TEL.01,02/2017)',
+        'Jartup International – (6/TEL.01.02/2019)',
+        'Jartaplok – (234/TEL.01.02/2020)',
+        'NAP – (1022 of 2014)',
+        'ISP – (11/TEL.02.02/2019)'
+      ],
+      visiTitle: 'Vision',
+      visi: 'We strive to become a reliable partner and a leading internet service provider with innovative digital solutions that meet the growing demands of individuals across Indonesia and Southeast Asia. We aim to deliver sustainable value to our customers, business partners, and local communities.',
+      misiTitle: 'Mission',
+      misi: [
+        'Provide the best service quality to our customers.',
+        'Accelerate digital economic growth in the region.',
+        'Deliver maximum results to shareholders, employees, and the community.',
+        'Develop human resource capacity and capability through development programs for internal teams, customers, partners, and the community.',
+        'Integrate sustainability principles into company operations by reducing environmental impact, adopting renewable energy, and supporting social sustainability initiatives.'
+      ],
+      timelineEyebrow: 'Company Journey',
+      timeline: 'Timeline'
     },
     services: {
       title: 'Our Services',
@@ -235,12 +287,24 @@ export const translations = {
 
 const meta = {
   id: {
-    title: 'Trans Hybrid Communication | Solusi Internet & Infrastruktur Digital #ToTheNextLevel',
-    desc: 'PT Trans Hybrid Communication (THC) menyediakan solusi Internet Dedicated, Konektivitas, ICT Managed Services, dan Pusat Data terdepan untuk transformasi digital bisnis Anda.'
+    home: {
+      title: 'Trans Hybrid Communication | Solusi Internet & Infrastruktur Digital #ToTheNextLevel',
+      desc: 'PT Trans Hybrid Communication (THC) menyediakan solusi Internet Dedicated, Konektivitas, ICT Managed Services, dan Pusat Data terdepan untuk transformasi digital bisnis Anda.'
+    },
+    informasi: {
+      title: 'Informasi Perusahaan | Trans Hybrid Communication',
+      desc: 'Profil PT Trans Hybrid Communication (THC): profil perusahaan, lisensi, visi, misi, dan perjalanan perusahaan sejak 2006.'
+    }
   },
   en: {
-    title: 'Trans Hybrid Communication | Internet Solutions & Digital Infrastructure #ToTheNextLevel',
-    desc: 'PT Trans Hybrid Communication (THC) provides leading Dedicated Internet, Connectivity, ICT Managed Services, and Data Center solutions for your business digital transformation.'
+    home: {
+      title: 'Trans Hybrid Communication | Internet Solutions & Digital Infrastructure #ToTheNextLevel',
+      desc: 'PT Trans Hybrid Communication (THC) provides leading Dedicated Internet, Connectivity, ICT Managed Services, and Data Center solutions for your business digital transformation.'
+    },
+    informasi: {
+      title: 'Company Information | Trans Hybrid Communication',
+      desc: 'PT Trans Hybrid Communication (THC) company profile: profile, licenses, vision, mission, and company journey since 2006.'
+    }
   }
 } as const;
 

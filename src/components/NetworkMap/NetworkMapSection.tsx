@@ -5,16 +5,13 @@ import { motion } from 'framer-motion';
 import TextSplit from '@/components/TextSplit';
 import NoiseOverlay from '@/components/NoiseOverlay';
 import Parallax from '@/components/Parallax';
+import NetworkLegendPanel from './NetworkLegendPanel';
 
 const NetworkMap = dynamic(() => import('./NetworkMap'), {
   ssr: false,
   loading: () => (
-    <div
-      className="relative overflow-hidden rounded-[14px] bg-[#132A54] p-4 sm:p-6"
-      role="img"
-      aria-label="Memuat peta jaringan Trans Hybrid"
-    >
-      <div className="aspect-[680/430] w-full animate-pulse rounded bg-[#1E3E73]" />
+    <div className="w-full h-full min-h-[460px] md:min-h-[520px] rounded-[18px] border border-white/10 bg-[#0b2545] p-4 shadow-2xl shadow-black/10 flex items-center justify-center">
+      <div className="h-full w-full animate-pulse rounded-xl bg-[#0d1f3f]/50" />
     </div>
   ),
 });
@@ -37,9 +34,18 @@ export default function NetworkMapSection() {
             Filipina melalui jalur submarine dan inland.
           </p>
         </div>
-        <motion.div initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1.3 }} className="mx-auto max-w-3xl rounded-[22px] border border-white/10 bg-[#0d1f3f]/55 p-2 shadow-2xl shadow-black/20 backdrop-blur-sm sm:p-3 md:p-4">
-          <NetworkMap />
-        </motion.div>
+        <div className="grid gap-5 md:grid-cols-[280px_1fr] lg:grid-cols-[300px_1fr] items-stretch">
+          <NetworkLegendPanel />
+          <motion.div
+            initial={{ opacity: 0, y: 36 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 1.3 }}
+            className="w-full h-full min-w-0"
+          >
+            <NetworkMap />
+          </motion.div>
+        </div>
       </div>
     </section>
   );

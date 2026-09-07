@@ -1,11 +1,16 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function RevealLoader() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const selector =
       '.fade-up, .fade-down, .fade-left, .fade-right, .zoom-in-bounce, .scale-in, .company-fade-up, .network-fade-up, .services-reveal, .map-reveal, .flip-up';
+
+    const activate = (el: Element) => el.classList.add('active');
 
     const revealElements = document.querySelectorAll<HTMLElement>(selector);
     if (revealElements.length === 0) return;
@@ -21,9 +26,16 @@ export default function RevealLoader() {
       { threshold: 0.1 }
     );
 
-    revealElements.forEach((el) => observer.observe(el));
+    revealElements.forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        activate(el);
+      } else {
+        observer.observe(el);
+      }
+    });
+
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   return null;
 }

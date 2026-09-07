@@ -54,6 +54,7 @@ export default function Services() {
           {services.map(({ icon: Icon, titleKey, descKey, iconColor }, i) => (
             <TiltCard
               key={i}
+              glare={false}
               className="group flex min-h-[280px] cursor-pointer flex-col justify-between border border-[#d9dce5] bg-white p-6 transition-colors duration-300 hover:border-transparent hover:bg-[#0256eb] sm:p-7 md:p-8"
             >
               <motion.div
@@ -61,7 +62,7 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 1.25, delay: 0.25 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(7, 59, 145, 0.12)' }}
+                whileHover={{ y: -6 }}
                 className="service-card flex h-full flex-col justify-between"
               >
                 <div>
@@ -78,9 +79,9 @@ export default function Services() {
 
                 <a
                   href="#faq"
-                  className="mt-8 inline-flex w-fit items-center gap-2 text-xs font-semibold tracking-[0.08em] text-[#073b91] uppercase transition-colors hover:text-[#1259c7] group-hover:text-white"
+                  className="mt-8 inline-flex w-fit items-center gap-2 text-xs font-semibold tracking-[0.08em] text-[#073b91] uppercase transition-colors group-hover:text-white"
                 >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#073b91] text-white transition-colors group-hover:bg-white group-hover:text-[#0256eb]">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0256eb] text-white transition-colors group-hover:bg-[#0256eb] group-hover:text-white">
                     <Plus className="h-4 w-4" />
                   </span>
                   <span>{t('common.lebihDetail')}</span>

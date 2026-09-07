@@ -8,6 +8,7 @@ interface TiltCardProps {
   children: ReactNode;
   className?: string;
   glareColor?: string;
+  glare?: boolean;
   scale?: number;
 }
 
@@ -19,6 +20,7 @@ export default function TiltCard({
   children,
   className = '',
   glareColor = 'rgba(99,169,255,0.25)',
+  glare = true,
   scale = 1.02,
 }: TiltCardProps) {
   const prefs = useMotionPrefs();
@@ -38,7 +40,7 @@ export default function TiltCard({
       perspective={1000}
       scale={scale}
       transitionSpeed={1200}
-      glareEnable
+      glareEnable={glare}
       glareMaxOpacity={0.15}
       glareColor={glareColor}
       glarePosition="all"

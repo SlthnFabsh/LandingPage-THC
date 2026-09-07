@@ -105,6 +105,36 @@ export default function NetworkMap() {
       const p = projection([n.lng, n.lat]);
       if (p) map[n.id] = { x: p[0], y: p[1] };
     }
+
+    // Sumatra diagrammatic spacing matching the reference diagram
+    map['lampung'] = { x: 205, y: 245 };
+    map['palembang'] = { x: 216, y: 205 };
+    map['jambi'] = { x: 192, y: 168 };
+
+    // Java diagrammatic fan layout radiating from Jakarta, matching the reference diagram
+    const jk = map['jakarta'];
+    if (jk) {
+      map['banten'] = { x: jk.x - 38, y: jk.y - 3 };
+      map['depok'] = { x: jk.x - 18, y: jk.y + 18 };
+      map['bogor'] = { x: jk.x - 8, y: jk.y + 32 };
+      map['cianjur'] = { x: jk.x + 12, y: jk.y + 34 };
+      map['bandung'] = { x: jk.x + 28, y: jk.y + 24 };
+      map['cirebon'] = { x: jk.x + 48, y: jk.y + 12 };
+      map['indramayu'] = { x: jk.x + 40, y: jk.y - 1 };
+    }
+
+    // West Kalimantan coastal & inland branches matching reference diagram
+    const ptk = map['pontianak'];
+    if (ptk) {
+      map['mempawah'] = { x: ptk.x - 8, y: ptk.y - 18 };
+      map['singkawang'] = { x: ptk.x - 14, y: ptk.y - 36 };
+      map['sambas'] = { x: ptk.x - 10, y: ptk.y - 52 };
+      map['aruk'] = { x: ptk.x + 8, y: ptk.y - 60 };
+      map['entikong'] = { x: ptk.x + 32, y: ptk.y - 26 };
+      map['sanggau'] = { x: ptk.x + 35, y: ptk.y + 5 };
+      map['sintang'] = { x: ptk.x + 70, y: ptk.y - 2 };
+    }
+
     return map;
   }, [projection]);
 
@@ -197,95 +227,79 @@ export default function NetworkMap() {
     }));
   }, [filter, nodePos, isMobile]);
 
-  // Label layout: place labels near each node with collision avoidance
+  // Deterministic, perfectly calibrated label layout matching reference map
   const labelLayout = useMemo(() => {
-    const fs = isMobile ? 7 : 8.5;
-    const cw = fs * 0.6;
-    const lineH = fs * 1.1 + 1;
-    const placed: { x: number; y: number; w: number; h: number }[] = [];
     const out: {
       node: NetworkNode;
       x: number;
       y: number;
       textAnchor: 'start' | 'middle' | 'end';
-      leader: Pt[] | null;
     }[] = [];
-    const pad = 1.5;
+
+    // Dedicated label offsets and anchors relative to each node's dot center
+    const LABEL_RULES: Record<string, { dx: number; dy: number; anchor: 'start' | 'middle' | 'end' }> = {
+      // Java nodes
+      jakarta: { dx: -8, dy: 11, anchor: 'end' },
+      banten: { dx: -6, dy: 2, anchor: 'end' },
+      depok: { dx: -6, dy: 3, anchor: 'end' },
+      bogor: { dx: -6, dy: 3, anchor: 'end' },
+      cianjur: { dx: 0, dy: 12, anchor: 'middle' },
+      bandung: { dx: 6, dy: 5, anchor: 'start' },
+      cirebon: { dx: 6, dy: 4, anchor: 'start' },
+      indramayu: { dx: 6, dy: 2, anchor: 'start' },
+      surabaya: { dx: 0, dy: 13, anchor: 'middle' },
+
+      // Sumatra & Malaysia
+      medan: { dx: -6, dy: 11, anchor: 'end' },
+      padang: { dx: -7, dy: 3, anchor: 'end' },
+      jambi: { dx: 0, dy: 13, anchor: 'middle' },
+      palembang: { dx: -7, dy: 3, anchor: 'end' },
+      lampung: { dx: -7, dy: 2, anchor: 'end' },
+      batam: { dx: -8, dy: 3, anchor: 'end' },
+      singapore: { dx: 8, dy: 3, anchor: 'start' },
+      mersing: { dx: -7, dy: 3, anchor: 'end' },
+
+      // Kalimantan & Sarawak & Brunei
+      pontianak: { dx: 8, dy: 4, anchor: 'start' },
+      mempawah: { dx: -6, dy: 3, anchor: 'end' },
+      singkawang: { dx: -6, dy: 3, anchor: 'end' },
+      sambas: { dx: -6, dy: 3, anchor: 'end' },
+      aruk: { dx: -6, dy: -2, anchor: 'end' },
+      kuching: { dx: 8, dy: 10, anchor: 'start' },
+      entikong: { dx: 6, dy: 3, anchor: 'start' },
+      sanggau: { dx: 6, dy: 8, anchor: 'start' },
+      sintang: { dx: 6, dy: 3, anchor: 'start' },
+      bintulu: { dx: 6, dy: 9, anchor: 'start' },
+      miri: { dx: 6, dy: 9, anchor: 'start' },
+      brunei: { dx: -8, dy: -4, anchor: 'end' },
+
+      // East Kalimantan & Sulawesi
+      balikpapan: { dx: 6, dy: 9, anchor: 'start' },
+      samarinda: { dx: 0, dy: -7, anchor: 'middle' },
+      palopo: { dx: 0, dy: -7, anchor: 'middle' },
+      makassar: { dx: 6, dy: 3, anchor: 'start' },
+
+      // Hong Kong
+      hongkong: { dx: 0, dy: -11, anchor: 'middle' },
+    };
 
     for (const { node, pos, labelHidden } of visibleNodes) {
       if (!pos || labelHidden || node.hideLabel) continue;
-      const gateway = node.type === 'gateway';
-      const m = gateway ? 6 : 4.5;
-      const w = Math.max(node.city.length * cw, 16);
-      const pref = node.labelPos ?? 'top';
-      const order = [pref, 'top', 'bottom', 'left', 'right'].filter(
-        (v, i, a) => a.indexOf(v) === i
-      );
+      const rule = LABEL_RULES[node.id] ?? {
+        dx: node.labelPos === 'left' ? -7 : node.labelPos === 'right' ? 7 : 0,
+        dy: node.labelPos === 'top' ? -8 : node.labelPos === 'bottom' ? 12 : 3,
+        anchor: node.labelPos === 'left' ? 'end' : node.labelPos === 'right' ? 'start' : 'middle',
+      };
 
-      let chosen: { side: string; x: number; y: number; anchor: 'start' | 'middle' | 'end'; off: number; shift: number } | null = null;
-      for (const side of order) {
-        const off = node.labelOffset ?? 4;
-        const shift = node.labelShift ?? 0;
-        let x: number;
-        let y: number;
-        let anchor: 'start' | 'middle' | 'end';
-        let box: { x: number; y: number; w: number; h: number };
-
-        if (side === 'top') {
-          x = pos.x + shift;
-          y = pos.y - m - 2 - off;
-          anchor = 'middle';
-          box = { x: x - w / 2, y: y - lineH + 2, w, h: lineH };
-        } else if (side === 'bottom') {
-          x = pos.x + shift;
-          y = pos.y + m + 7 + off;
-          anchor = 'middle';
-          box = { x: x - w / 2, y: y - lineH + 2, w, h: lineH };
-        } else if (side === 'left') {
-          x = pos.x - m - 3 - off;
-          y = pos.y + shift + 3;
-          anchor = 'end';
-          box = { x: x - w, y: y - lineH / 2, w, h: lineH };
-        } else {
-          x = pos.x + m + 3 + off;
-          y = pos.y + shift + 3;
-          anchor = 'start';
-          box = { x, y: y - lineH / 2, w, h: lineH };
-        }
-
-        const collides = placed.some(
-          (p) =>
-            box.x < p.x + p.w + pad &&
-            box.x + box.w > p.x - pad &&
-            box.y < p.y + p.h + pad &&
-            box.y + box.h > p.y - pad
-        );
-
-        if (!collides) {
-          placed.push(box);
-          chosen = { side, x, y, anchor, off, shift };
-          break;
-        }
-      }
-
-      if (!chosen) {
-        // Fallback: place regardless of collision
-        const off = node.labelOffset ?? 4;
-        const shift = node.labelShift ?? 0;
-        chosen = {
-          side: pref,
-          x: pref === 'left' ? pos.x - m - 3 - off : pref === 'right' ? pos.x + m + 3 + off : pos.x + shift,
-          y: pref === 'top' ? pos.y - m - 2 - off : pref === 'bottom' ? pos.y + m + 7 + off : pos.y + shift + 3,
-          anchor: pref === 'left' ? 'end' : pref === 'right' ? 'start' : 'middle',
-          off,
-          shift,
-        };
-      }
-
-      out.push({ node, x: chosen.x, y: chosen.y, textAnchor: chosen.anchor, leader: null });
+      out.push({
+        node,
+        x: pos.x + rule.dx,
+        y: pos.y + rule.dy,
+        textAnchor: rule.anchor,
+      });
     }
     return out;
-  }, [visibleNodes, isMobile]);
+  }, [visibleNodes]);
 
   const activeNode = activeId ? nodeById.get(activeId) : null;
   const selectedNode = selectedId ? nodeById.get(selectedId) : null;
@@ -464,11 +478,11 @@ export default function NetworkMap() {
                   x={x}
                   y={y}
                   textAnchor={textAnchor}
-                  fontSize={isMobile ? 7 : 8.5}
+                  fontSize={isMobile ? 6.5 : 7.8}
                   fontWeight={700}
                   fill="#FFFFFF"
                   stroke="#0b2545"
-                  strokeWidth={2.5}
+                  strokeWidth={2}
                   paintOrder="stroke fill"
                   strokeLinejoin="round"
                   letterSpacing="0.02em"

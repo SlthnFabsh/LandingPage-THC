@@ -51,8 +51,8 @@ export default function CustomCursor() {
     const onEnterDoc = () => setVisible(true);
 
     const loop = () => {
-      ring.current.x += (mouse.current.x - ring.current.x) * 0.18;
-      ring.current.y += (mouse.current.y - ring.current.y) * 0.18;
+      ring.current.x += (mouse.current.x - ring.current.x) * 0.35;
+      ring.current.y += (mouse.current.y - ring.current.y) * 0.35;
       if (ringRef.current) {
         ringRef.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%,-50%) scale(${
           hovering ? 1.5 : 1

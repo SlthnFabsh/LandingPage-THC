@@ -45,7 +45,7 @@ async function getNews() {
     const news = await prisma.newsPost.findMany({
       where: { published: true },
       orderBy: { date: 'desc' },
-      take: 4,
+      take: 12,
     });
 
     if (news.length === 0) return newsFallback;

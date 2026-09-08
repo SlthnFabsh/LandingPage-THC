@@ -58,14 +58,14 @@ model User {
 
 model NewsPost {
   id          String   @id @default(cuid())
-  titleId     String
-  titleEn     String
-  slug        String   @unique
-  summaryId   String
-  summaryEn   String
-  contentId   String?
-  contentEn   String?
-  coverImage  String
+  titleId     String   @db.VarChar(255)
+  titleEn     String   @db.VarChar(255)
+  slug        String   @unique @db.VarChar(255)
+  summaryId   String   @db.LongText
+  summaryEn   String   @db.LongText
+  contentId   String?  @db.LongText
+  contentEn   String?  @db.LongText
+  coverImage  String   @db.LongText
   date        DateTime @default(now())
   published   Boolean  @default(false)
   authorId    String

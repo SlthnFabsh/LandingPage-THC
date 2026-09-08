@@ -5,48 +5,18 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 import TextSplit from '@/components/TextSplit';
 import TiltCard from '@/components/TiltCard';
+import type { NewsFallback } from '@/lib/news-data';
 
-interface NewsItem {
-  img: string;
-  alt: string;
-  dateKey: string;
-  titleKey: string;
-  anim: string;
+function formatDate(date: string, lang: string): string {
+  return new Date(date).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 }
 
-const news: NewsItem[] = [
-  {
-    img: '/assets/images/news-1.jpg',
-    alt: 'Trans Hybrid Communication Dukung Penguatan Digitalisasi',
-    dateKey: 'news.date1',
-    titleKey: 'news.title1',
-    anim: 'fade-up delay-100',
-  },
-  {
-    img: '/assets/images/news-2.jpg',
-    alt: 'PT Trans Hybrid Communication (THC) Resmi Meluncurkan Node Maritim',
-    dateKey: 'news.date2',
-    titleKey: 'news.title2',
-    anim: 'fade-up delay-200',
-  },
-  {
-    img: '/assets/images/news-3.jpg',
-    alt: 'PT Trans Hybrid Communication Hadir di Jawa',
-    dateKey: 'news.date3',
-    titleKey: 'news.title3',
-    anim: 'fade-up delay-300',
-  },
-  {
-    img: '/assets/images/news-4.jpg',
-    alt: 'THC Hadirkan Internet Gratis untuk Sekolah di Perbatasan Kalimantan Barat',
-    dateKey: 'news.date4',
-    titleKey: 'news.title4',
-    anim: 'fade-up delay-400',
-  },
-];
-
-export default function NewsSection() {
-  const { t } = useLanguage();
+export default function NewsSection({ items }: { items: NewsFallback[] }) {
+  const { lang, t } = useLanguage();
 
   return (
     <section id="berita" className="bg-white py-20 md:py-28">
@@ -65,36 +35,50 @@ export default function NewsSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-6 lg:grid-cols-4 lg:gap-7">
-          {news.map(({ img, alt, dateKey, titleKey }, i) => (
-            <motion.article
-              key={i}
-              initial={{ opacity: 0, y: 36 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 1.1, delay: i * 0.12 }}
-              className="group flex flex-col"
-            >
-              <TiltCard className="flex h-full flex-col">
-                <div className="aspect-square overflow-hidden bg-slate-100">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt={alt} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                </div>
-                <div className="flex flex-1 flex-col pt-4">
-                  <div className="mb-3 flex items-center gap-2 text-xs font-medium text-slate-500">
-                    <Calendar className="h-3.5 w-3.5" />
-                    <span>{t(dateKey)}</span>
+          {items.map((item, i) => {
+            const title = lang === 'id' ? item.titleId : item.titleEn;
+            const summary = lang === 'id' ? item.summaryId : item.summaryEn;
+            return (
+              <motion.article
+                key={item.id}
+                initial={{ opacity: 0, y: 36 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 1.1, delay: i * 0.12 }}
+                className="group flex flex-col"
+              >
+                <TiltCard className="flex h-full flex-col">
+                  <div className="aspect-square overflow-hidden bg-slate-100">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.coverImage}
+                      alt={title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
                   </div>
-                  <h3 className="mb-6 text-xl font-medium leading-snug text-slate-900 transition-colors group-hover:text-brand-600 md:text-[22px]">
-                    {t(titleKey)}
-                  </h3>
-                  <a href="#" className="mt-auto inline-flex w-fit items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700">
-                    <span>{t('news.readmore')}</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                </div>
-              </TiltCard>
-            </motion.article>
-          ))}
+                  <div className="flex flex-1 flex-col pt-4">
+                    <div className="mb-3 flex items-center gap-2 text-xs font-medium text-slate-500">
+                      <Calendar className="h-3.5 w-3.5" />
+                      <span>{formatDate(item.date, lang)}</span>
+                    </div>
+                    <h3 className="mb-3 text-xl font-medium leading-snug text-slate-900 transition-colors group-hover:text-brand-600 md:text-[22px]">
+                      {title}
+                    </h3>
+                    <p className="mb-6 text-sm leading-relaxed text-slate-500 line-clamp-3">
+                      {summary}
+                    </p>
+                    <a
+                      href="#"
+                      className="mt-auto inline-flex w-fit items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700"
+                    >
+                      <span>{t('news.readmore')}</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </div>
+                </TiltCard>
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>

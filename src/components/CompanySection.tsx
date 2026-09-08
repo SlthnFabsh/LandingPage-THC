@@ -93,7 +93,7 @@ export default function CompanySection() {
 
           <div className="relative h-[72vh] min-h-[420px] w-[94%] overflow-hidden justify-self-end lg:h-[78vh] lg:min-h-[620px] lg:w-[96%] lg:translate-x-[-1.5rem]">
             <img
-              src="/assets/images/borneo.png"
+              src="/assets/images/borneo.webp"
               alt={t('company.title')}
               className="absolute inset-0 h-full w-full object-cover"
               style={{ objectPosition: 'right center' }}

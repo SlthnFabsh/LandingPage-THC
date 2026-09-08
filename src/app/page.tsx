@@ -3,12 +3,16 @@ import Hero from '@/components/Hero';
 import CompanySection from '@/components/CompanySection';
 import NetworkMapSection from '@/components/NetworkMap/NetworkMapSection';
 import Services from '@/components/Services';
-import Marquee, { MarqueeLogo } from '@/components/Marquee';
+import Marquee, { type MarqueeLogo } from '@/components/Marquee';
 import NewsSection from '@/components/NewsSection';
 import FAQSection from '@/components/FAQSection';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
+import { prisma } from '@/lib/prisma';
+import { newsFallback } from '@/lib/news-data';
+
+export const dynamic = 'force-dynamic';
 
 const pelangganLogos: MarqueeLogo[] = [
   { file: '/assets/images/pelanggan/logo-1.svg', alt: 'Matahari' },
@@ -36,7 +40,37 @@ const mitraLogos: MarqueeLogo[] = [
   { file: '/assets/images/mitra/logo-10.svg', alt: 'Indomaret' },
 ];
 
-export default function Home() {
+async function getNews() {
+  try {
+    const news = await prisma.newsPost.findMany({
+      where: { published: true },
+      orderBy: { date: 'desc' },
+      take: 4,
+    });
+
+    if (news.length === 0) return newsFallback;
+
+    return news.map((n, i) => ({
+      id: n.id,
+      titleId: n.titleId,
+      titleEn: n.titleEn,
+      summaryId: n.summaryId,
+      summaryEn: n.summaryEn,
+      contentId: n.contentId,
+      contentEn: n.contentEn,
+      coverImage: n.coverImage,
+      date: n.date.toISOString(),
+      slug: n.slug,
+      anim: `fade-up delay-${(i + 1) * 100}`,
+    }));
+  } catch {
+    return newsFallback;
+  }
+}
+
+export default async function Home() {
+  const newsItems = await getNews();
+
   return (
     <>
       <Navbar />
@@ -58,7 +92,7 @@ export default function Home() {
           logos={mitraLogos}
           inverseCards
         />
-        <NewsSection />
+        <NewsSection items={newsItems} />
         <FAQSection />
         <CTASection />
       </main>

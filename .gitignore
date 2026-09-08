@@ -16,3 +16,4 @@ yarn-debug.log*
 
 # env
 .env*
+/src/generated/prisma

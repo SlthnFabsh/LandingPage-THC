@@ -37,7 +37,7 @@ export default function Footer() {
           <div className="space-y-5 flip-up delay-100">
             <div className="flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/logo1.png" alt="PT Trans Hybrid Communication Logo" className="h-14 w-auto object-contain brightness-0 invert" />
+              <img src="/assets/images/logo1.webp" alt="PT Trans Hybrid Communication Logo" className="h-14 w-auto object-contain brightness-0 invert" />
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-slate-400">{t('footer.desc')}</p>
           </div>

@@ -18,7 +18,7 @@ export default function CTASection() {
             <div className="cta-logo-sweep-wrapper">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/assets/images/logo1.png"
+                src="/assets/images/logo1.webp"
                 alt="Trans Hybrid Communication"
                 className="cta-logo-sweep h-24 sm:h-32 md:h-36 w-auto object-contain"
               />
@@ -32,7 +32,7 @@ export default function CTASection() {
           {/* Background */}
           <div className="absolute inset-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/images/sutet-network.jpg" alt="Jaringan Infrastruktur THC" className="w-full h-full object-cover" />
+            <img src="/assets/images/sutet-network.webp" alt="Jaringan Infrastruktur THC" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-brand-900/95 via-brand-800/80 to-brand-700/40"></div>
             <NoiseOverlay />
           </div>

@@ -61,10 +61,6 @@ export default function NetworkLegendPanel() {
             ))}
           </ul>
         </div>
-
-        <div className="border-t border-white/10 pt-4 text-[11px] leading-relaxed text-[#cdd9ee]/60">
-          Legenda dan daftar cable routes dipindahkan ke panel sebelah kiri agar peta dapat lebih lebar dan tidak membuang ruang kosong.
-        </div>
       </div>
     </div>
   );

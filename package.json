@@ -7,24 +7,38 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@node-rs/argon2": "^2.2.0",
+    "@prisma/adapter-mariadb": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "d3-geo": "^3.1.1",
     "d3-selection": "^3.0.0",
     "d3-transition": "^3.0.1",
     "d3-zoom": "^3.0.0",
+    "dotenv": "^17.4.2",
     "framer-motion": "^13.2.0",
     "gsap": "^3.15.0",
+    "jose": "^6.2.12",
     "lenis": "^1.3.26",
     "lucide-react": "^0.469.0",
+    "mariadb": "^3.5.4",
+    "mysql2": "^3.24.3",
     "next": "^15.1.6",
+    "otplib": "^13.5.0",
+    "prisma": "^7.10.0",
+    "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-parallax-tilt": "^1.7.340",
     "split-type": "^0.3.4",
     "topojson-client": "^3.1.0",
-    "world-atlas": "^2.0.2"
+    "world-atlas": "^2.0.2",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
@@ -34,11 +48,14 @@
     "@types/d3-zoom": "^3.0.8",
     "@types/geojson": "^7946.0.16",
     "@types/node": "^22.10.7",
+    "@types/otplib": "^7.0.0",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
     "@types/topojson-client": "^3.1.5",
     "postcss": "^8.4.49",
     "tailwindcss": "^4.0.0",
+    "tsx": "^4.23.13",
     "typescript": "^5.7.3"
   }
 }

@@ -105,7 +105,7 @@ export default function Navbar() {
           <a href={isHome ? '#beranda' : '/'} className="flex items-center group shrink-0 pr-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/assets/images/logo1.png"
+              src="/assets/images/logo1.webp"
               alt="Trans Hybrid - Your Trusted Partner"
               className="h-10 w-auto object-contain transition-transform group-hover:scale-105 sm:h-12 md:h-14"
             />
@@ -218,7 +218,7 @@ export default function Navbar() {
             <div className="flex items-center justify-between mb-8">
               <a href={isHome ? '#beranda' : '/'} className="flex items-center" onClick={closeMenu}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/images/logo1.png" alt="Trans Hybrid Logo" className="h-10 w-auto" />
+                <img src="/assets/images/logo1.webp" alt="Trans Hybrid Logo" className="h-10 w-auto" />
               </a>
               <button onClick={closeMenu} className="p-2 text-slate-500 hover:text-slate-800" aria-label="Tutup Menu">
                 <X className="w-6 h-6" />

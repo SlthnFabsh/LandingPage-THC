@@ -81,7 +81,7 @@ export default function Preloader() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/assets/images/logo1.png"
+          src="/assets/images/logo1.webp"
           alt=""
           className="h-28 w-auto object-contain sm:h-36"
         />

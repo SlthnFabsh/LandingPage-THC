@@ -52,11 +52,11 @@ export default function FAQSection() {
           <div className="mb-7 flex items-end gap-3">
             <div className="h-20 w-24 overflow-hidden rounded-xl bg-slate-200 shadow-sm sm:h-24 sm:w-28">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/news-1.jpg" alt="Infrastruktur Trans Hybrid" className="h-full w-full object-cover" />
+              <img src="/assets/images/news-1.webp" alt="Infrastruktur Trans Hybrid" className="h-full w-full object-cover" />
             </div>
             <div className="mb-[-12px] h-20 w-24 overflow-hidden rounded-xl bg-slate-200 shadow-sm sm:h-24 sm:w-28">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/borneo.png" alt="Jaringan Trans Hybrid" className="h-full w-full object-cover" />
+              <img src="/assets/images/borneo.webp" alt="Jaringan Trans Hybrid" className="h-full w-full object-cover" />
             </div>
           </div>
           <h2 className="max-w-md text-[clamp(1.75rem,3vw,2.45rem)] font-bold leading-[1.15] tracking-[-0.02em] text-blue-900">

@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum AuditAction {
+  LOGIN_SUCCESS
+  LOGIN_FAILED
+  LOGIN_2FA_PENDING
+  LOGIN_2FA_SUCCESS
+  LOGIN_2FA_FAILED
+  LOGOUT
+  PASSWORD_CHANGED
+  PASSWORD_EXPIRED
+  PASSWORD_RESET_FORCED
+  TWO_FA_ENABLED
+  TWO_FA_DISABLED
+  NEWS_CREATED
+  NEWS_UPDATED
+  NEWS_DELETED
+  NEWS_PUBLISHED
+  NEWS_UNPUBLISHED
+  ACCOUNT_LOCKED
+}
+
+model User {
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  name                String
+  role                Role      @default(EDITOR)
+  passwordHash        String
+  passwordChangedAt   DateTime  @default(now())
+  is2faEnabled        Boolean   @default(false)
+  totpSecretEncrypted String?
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+  lastLoginAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  news     NewsPost[]
+  auditLogs AuditLog[]
+
+  @@index([email])
+}
+
+model NewsPost {
+  id          String   @id @default(cuid())
+  titleId     String
+  titleEn     String
+  slug        String   @unique
+  summaryId   String
+  summaryEn   String
+  contentId   String?
+  contentEn   String?
+  coverImage  String
+  date        DateTime @default(now())
+  published   Boolean  @default(false)
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published])
+  @@index([authorId])
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  userId    String?
+  user      User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    AuditAction
+  entity    String?
+  entityId  String?
+  detail    String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime    @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}

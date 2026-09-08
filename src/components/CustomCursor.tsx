@@ -7,11 +7,15 @@ import { useMotionPrefs } from '@/lib/motion';
  * Custom cursor: small dot + lagging ring.
  * Only enabled on fine-pointer, non-mobile, non-reduced-motion.
  * Grows into outline ring when hovering interactive elements.
+ *
+ * Performance notes:
+ * - hover state lives in a ref (read inside the rAF loop) so the effect
+ *   never re-subscribes when moving over interactive elements.
+ * - ring follow lerp is high enough to feel snappy without losing the trail.
  */
 export default function CustomCursor() {
   const prefs = useMotionPrefs();
   const [enabled, setEnabled] = useState(false);
-  const [hovering, setHovering] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const dotRef = useRef<HTMLDivElement>(null);
@@ -20,6 +24,7 @@ export default function CustomCursor() {
 
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
+  const hoveringRef = useRef(false);
   const base = 32;
 
   useEffect(() => {
@@ -44,16 +49,17 @@ export default function CustomCursor() {
       const target = (e.target as HTMLElement).closest(
         'a, button, [data-cursor="link"], [role="button"], select, input, textarea'
       );
-      setHovering(!!target);
+      hoveringRef.current = !!target;
     };
 
     const onLeave = () => setVisible(false);
     const onEnterDoc = () => setVisible(true);
 
     const loop = () => {
-      ring.current.x += (mouse.current.x - ring.current.x) * 0.35;
-      ring.current.y += (mouse.current.y - ring.current.y) * 0.35;
+      ring.current.x += (mouse.current.x - ring.current.x) * 0.55;
+      ring.current.y += (mouse.current.y - ring.current.y) * 0.55;
       if (ringRef.current) {
+        const hovering = hoveringRef.current;
         ringRef.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%,-50%) scale(${
           hovering ? 1.5 : 1
         })`;
@@ -77,7 +83,7 @@ export default function CustomCursor() {
       document.removeEventListener('mouseenter', onEnterDoc);
       cancelAnimationFrame(rafRef.current);
     };
-  }, [enabled, hovering]);
+  }, [enabled]);
 
   if (!enabled) return null;
 
@@ -87,7 +93,7 @@ export default function CustomCursor() {
       <div
         ref={dotRef}
         aria-hidden="true"
-        className={`pointer-events-none fixed left-0 top-0 z-[5000] h-1.5 w-1.5 rounded-full bg-[#63a9ff] transition-opacity duration-300 ${
+        className={`pointer-events-none fixed left-0 top-0 z-[5000] h-1.5 w-1.5 rounded-full bg-[#63a9ff] transition-opacity duration-150 ${
           visible ? 'opacity-100' : 'opacity-0'
         }`}
       />
@@ -95,7 +101,7 @@ export default function CustomCursor() {
       <div
         ref={ringRef}
         aria-hidden="true"
-        className={`pointer-events-none fixed left-0 top-0 z-[5000] rounded-full border-[1.5px] transition-opacity duration-300 ${
+        className={`pointer-events-none fixed left-0 top-0 z-[5000] rounded-full border-[1.5px] transition-opacity duration-150 ${
           visible ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ width: base, height: base }}

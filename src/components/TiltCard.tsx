@@ -39,9 +39,9 @@ export default function TiltCard({
       tiltMaxAngleY={9}
       perspective={1000}
       scale={scale}
-      transitionSpeed={1200}
+      transitionSpeed={250}
       glareEnable={glare}
-      glareMaxOpacity={0.15}
+      glareMaxOpacity={0.08}
       glareColor={glareColor}
       glarePosition="all"
     >

@@ -58,8 +58,8 @@ export default function Magnetic({
     };
 
     const loop = () => {
-      elPos.current.x += (mouse.current.x - elPos.current.x) * 0.2;
-      elPos.current.y += (mouse.current.y - elPos.current.y) * 0.2;
+      elPos.current.x += (mouse.current.x - elPos.current.x) * 0.35;
+      elPos.current.y += (mouse.current.y - elPos.current.y) * 0.35;
       el.style.transform = `translate3d(${elPos.current.x}px, ${elPos.current.y}px, 0)`;
       raf.current = requestAnimationFrame(loop);
     };

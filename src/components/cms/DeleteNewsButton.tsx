@@ -6,9 +6,16 @@ import { deleteNews } from '@/app/cms/actions/news';
 interface DeleteNewsButtonProps {
   id: string;
   disabled?: boolean;
+  label?: string;
+  className?: string;
 }
 
-export default function DeleteNewsButton({ id, disabled }: DeleteNewsButtonProps) {
+export default function DeleteNewsButton({
+  id,
+  disabled,
+  label,
+  className,
+}: DeleteNewsButtonProps) {
   return (
     <form action={deleteNews}>
       <input type="hidden" name="id" value={id} />
@@ -17,9 +24,12 @@ export default function DeleteNewsButton({ id, disabled }: DeleteNewsButtonProps
         onClick={(e) => {
           if (!confirm('Hapus berita ini?')) e.preventDefault();
         }}
-        title="Hapus"
+        title={label ?? 'Hapus'}
         disabled={disabled}
-        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-red-600 hover:bg-red-50 disabled:opacity-40"
+        className={
+          className ??
+          'flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-red-600 hover:bg-red-50 disabled:opacity-40'
+        }
       >
         <Trash2 className="h-4 w-4" />
       </button>

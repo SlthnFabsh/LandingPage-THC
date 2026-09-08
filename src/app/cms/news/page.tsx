@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { Plus, Pencil, Eye, EyeOff } from 'lucide-react';
+import { Plus, Pencil, Eye, EyeOff, ArrowUpRight } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import { isPasswordExpired } from '@/lib/password';
@@ -79,21 +79,12 @@ export default async function NewsListPage({
           <ul className="divide-y divide-slate-100">
             {news.map((item) => (
               <li key={item.id} className="flex items-center gap-4 px-5 py-4">
-                {item.coverImage.startsWith('/') ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.coverImage}
-                    alt=""
-                    className="h-14 w-20 shrink-0 rounded-lg bg-slate-100 object-cover"
-                  />
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.coverImage}
-                    alt=""
-                    className="h-14 w-20 shrink-0 rounded-lg bg-slate-100 object-cover"
-                  />
-                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.coverImage}
+                  alt=""
+                  className="h-14 w-20 shrink-0 rounded-lg bg-slate-100 object-cover"
+                />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     {item.published ? (
@@ -109,10 +100,22 @@ export default async function NewsListPage({
                       {new Date(item.date).toLocaleDateString('id-ID')}
                     </span>
                   </div>
-                  <p className="truncate text-sm font-semibold text-slate-900">{item.titleId}</p>
+                  <Link
+                    href={`/cms/news/${item.id}`}
+                    className="block truncate text-sm font-semibold text-slate-900 hover:text-brand-600"
+                  >
+                    {item.titleId}
+                  </Link>
                   <p className="truncate text-xs text-slate-500">oleh {item.author?.email}</p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
+                  <Link
+                    href={`/cms/news/${item.id}`}
+                    title="Lihat detail"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
+                  >
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
                   <Link
                     href={`/cms/news/${item.id}/edit`}
                     title="Edit"

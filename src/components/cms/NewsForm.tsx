@@ -2,6 +2,7 @@
 
 import { useActionState } from 'react';
 import type { NewsPost } from '@/generated/prisma/client';
+import SubmitButton from '@/components/cms/SubmitButton';
 
 interface NewsFormProps {
   mode: 'create' | 'edit';
@@ -18,7 +19,7 @@ function formatDate(date: Date | string | undefined): string {
 }
 
 export default function NewsForm({ mode, action, initial }: NewsFormProps) {
-  const [state, formAction, pending] = useActionState(action as any, {} as { error?: string });
+  const [state, formAction] = useActionState(action as any, {} as { error?: string });
   const stateObj = (state || {}) as { error?: string };
 
   return (
@@ -178,13 +179,11 @@ export default function NewsForm({ mode, action, initial }: NewsFormProps) {
       </div>
 
       <div className="flex items-center gap-3 border-t border-slate-100 pt-5">
-        <button
-          type="submit"
-          disabled={pending}
+        <SubmitButton
+          label={mode === 'create' ? 'Simpan Berita' : 'Perbarui Berita'}
+          pendingLabel="Menyimpan..."
           className="rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
-        >
-          {pending ? 'Menyimpan...' : mode === 'create' ? 'Simpan Berita' : 'Perbarui Berita'}
-        </button>
+        />
         <a
           href="/cms/news"
           className="rounded-lg px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100"

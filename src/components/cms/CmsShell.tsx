@@ -8,11 +8,11 @@ import {
   ScrollText,
   ShieldCheck,
   KeyRound,
-  LogOut,
   AlertTriangle,
   Home,
 } from 'lucide-react';
 import { logoutAction } from '@/app/cms/actions/auth';
+import SubmitButton from '@/components/cms/SubmitButton';
 
 interface ShellUser {
   name?: string;
@@ -39,7 +39,7 @@ export default function CmsShell({
 }) {
   const pathname = usePathname();
 
-  if (!user) {
+  if (!user || pathname === '/cms/login' || pathname === '/cms/login/verify') {
     return <div className="min-h-screen bg-slate-100">{children}</div>;
   }
 
@@ -96,13 +96,11 @@ export default function CmsShell({
                 Lihat Website
               </Link>
               <form action={logoutAction}>
-                <button
-                  type="submit"
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Keluar
-                </button>
+                <SubmitButton
+                  label="Keluar"
+                  pendingLabel="Keluar..."
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-50"
+                />
               </form>
             </div>
           </div>
@@ -118,12 +116,11 @@ export default function CmsShell({
                 Website
               </Link>
               <form action={logoutAction}>
-                <button
-                  type="submit"
-                  className="rounded-full bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600"
-                >
-                  Keluar
-                </button>
+                <SubmitButton
+                  label="Keluar"
+                  pendingLabel="Keluar..."
+                  className="rounded-full bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 disabled:opacity-50"
+                />
               </form>
             </div>
           </div>

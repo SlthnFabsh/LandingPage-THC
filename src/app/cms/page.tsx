@@ -3,6 +3,7 @@ import { Newspaper, Eye, PenLine, ScrollText } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import { start2faAction } from '@/app/cms/actions/twofa';
+import SubmitButton from '@/components/cms/SubmitButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,12 +33,11 @@ export default async function CmsDashboardPage() {
         </div>
         {needs2fa && (
           <form action={start2faAction}>
-            <button
-              type="submit"
-              className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600"
-            >
-              Aktifkan 2FA Sekarang
-            </button>
+            <SubmitButton
+              label="Aktifkan 2FA Sekarang"
+              pendingLabel="Menyiapkan..."
+              className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-50"
+            />
           </form>
         )}
       </div>

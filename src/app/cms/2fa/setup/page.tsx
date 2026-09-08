@@ -1,11 +1,12 @@
 import QRCode from 'qrcode';
 import { redirect } from 'next/navigation';
-import { ShieldCheck, ShieldOff } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import { totpSecretUri } from '@/lib/totp';
 import { getPendingTotpSecret, start2faAction, disable2faAction } from '@/app/cms/actions/twofa';
 import TwoFaVerifyForm from '@/components/cms/TwoFaVerifyForm';
+import SubmitButton from '@/components/cms/SubmitButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,13 +49,11 @@ export default async function TwoFaSetupPage({
             </div>
           </div>
           <form action={disable2faAction}>
-            <button
-              type="submit"
-              className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-100"
-            >
-              <ShieldOff className="h-4 w-4" />
-              Nonaktifkan 2FA
-            </button>
+            <SubmitButton
+              label="Nonaktifkan 2FA"
+              pendingLabel="Menyimpan..."
+              className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-100 disabled:opacity-50"
+            />
           </form>
         </div>
       </div>
@@ -114,12 +113,11 @@ export default async function TwoFaSetupPage({
           </div>
         </div>
         <form action={start2faAction}>
-          <button
-            type="submit"
-            className="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700"
-          >
-            Mulai Setup 2FA
-          </button>
+          <SubmitButton
+            label="Mulai Setup 2FA"
+            pendingLabel="Menyiapkan..."
+            className="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
+          />
         </form>
       </div>
     </div>

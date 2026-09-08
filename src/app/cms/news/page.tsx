@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { Plus, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Plus, Pencil, Eye, EyeOff } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import { isPasswordExpired } from '@/lib/password';
-import { deleteNews } from '@/app/cms/actions/news';
+import DeleteNewsButton from '@/components/cms/DeleteNewsButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -120,20 +120,7 @@ export default async function NewsListPage({
                   >
                     <Pencil className="h-4 w-4" />
                   </Link>
-                  <form action={deleteNews}>
-                    <input type="hidden" name="id" value={item.id} />
-                    <button
-                      type="submit"
-                      onClick={(e) => {
-                        if (!confirm('Hapus berita ini?')) e.preventDefault();
-                      }}
-                      title="Hapus"
-                      disabled={passwordExpired}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-red-600 hover:bg-red-50 disabled:opacity-40"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </form>
+                  <DeleteNewsButton id={item.id} disabled={passwordExpired} />
                 </div>
               </li>
             ))}

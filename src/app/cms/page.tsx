@@ -1,5 +1,18 @@
 import Link from 'next/link';
-import { Newspaper, Eye, PenLine, ScrollText } from 'lucide-react';
+import {
+  Newspaper,
+  Eye,
+  PenLine,
+  ScrollText,
+  Images,
+  Building2,
+  Layers,
+  Users,
+  Handshake,
+  HelpCircle,
+  PhoneCall,
+  Share2,
+} from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import { start2faAction } from '@/app/cms/actions/twofa';
@@ -9,10 +22,27 @@ export const dynamic = 'force-dynamic';
 
 export default async function CmsDashboardPage() {
   const user = await getCurrentUser();
-  const [totalNews, publishedNews, totalAudit, recentAudits] = await Promise.all([
+  const [
+    totalNews,
+    publishedNews,
+    totalAudit,
+    totalSlides,
+    totalServices,
+    totalProducts,
+    totalPartners,
+    totalFaqs,
+    totalSocials,
+    recentAudits,
+  ] = await Promise.all([
     prisma.newsPost.count(),
     prisma.newsPost.count({ where: { published: true } }),
     prisma.auditLog.count(),
+    prisma.heroSlide.count(),
+    prisma.serviceItem.count(),
+    prisma.customerLogo.count(),
+    prisma.partnerLogo.count(),
+    prisma.faqEntry.count(),
+    prisma.socialMediaLink.count(),
     prisma.auditLog.findMany({
       orderBy: { createdAt: 'desc' },
       take: 8,
@@ -21,6 +51,17 @@ export default async function CmsDashboardPage() {
   ]);
 
   const needs2fa = user ? !user.is2faEnabled : false;
+
+  const quickSections = [
+    { href: '/cms/slider', label: 'Slider', count: totalSlides, icon: Images },
+    { href: '/cms/profil', label: 'Profil', icon: Building2 },
+    { href: '/cms/layanan', label: 'Layanan', count: totalServices, icon: Layers },
+    { href: '/cms/pelanggan', label: 'Pelanggan', count: totalProducts, icon: Users },
+    { href: '/cms/mitra', label: 'Mitra', count: totalPartners, icon: Handshake },
+    { href: '/cms/faq', label: 'FAQ', count: totalFaqs, icon: HelpCircle },
+    { href: '/cms/kontak', label: 'Kontak', icon: PhoneCall },
+    { href: '/cms/sosmed', label: 'Sosial Media', count: totalSocials, icon: Share2 },
+  ];
 
   return (
     <div className="space-y-6">
@@ -40,6 +81,27 @@ export default async function CmsDashboardPage() {
             />
           </form>
         )}
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {quickSections.map((section) => {
+          const Icon = section.icon;
+          return (
+            <Link
+              key={section.href}
+              href={section.href}
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-colors hover:border-brand-400"
+            >
+              <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600/10 text-brand-600">
+                <Icon className="h-5 w-5" />
+              </div>
+              <p className="text-xl font-bold text-slate-900">
+                {section.count ?? '—'}
+              </p>
+              <p className="text-sm text-slate-500">{section.label}</p>
+            </Link>
+          );
+        })}
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">

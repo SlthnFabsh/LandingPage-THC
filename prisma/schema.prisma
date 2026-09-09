@@ -32,6 +32,9 @@ enum AuditAction {
   NEWS_DELETED
   NEWS_PUBLISHED
   NEWS_UNPUBLISHED
+  CONTENT_CREATED
+  CONTENT_UPDATED
+  CONTENT_DELETED
   ACCOUNT_LOCKED
 }
 
@@ -91,4 +94,136 @@ model AuditLog {
 
   @@index([userId])
   @@index([createdAt])
+}
+
+model HeroSlide {
+  id         String   @id @default(cuid())
+  order      Int      @default(0)
+  titleId    String   @db.VarChar(255)
+  titleEn    String   @db.VarChar(255)
+  subtitleId String?  @db.LongText
+  subtitleEn String?  @db.LongText
+  ctaLabelId String?  @db.VarChar(255)
+  ctaLabelEn String?  @db.VarChar(255)
+  ctaHref    String?  @db.VarChar(255)
+  image      String   @db.LongText
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([active])
+}
+
+model CompanyContent {
+  id         String   @id @default(cuid())
+  titleId    String   @db.VarChar(255)
+  titleEn    String   @db.VarChar(255)
+  p1Id       String   @db.LongText
+  p1En       String   @db.LongText
+  p2Id       String   @db.LongText
+  p2En       String   @db.LongText
+  homeImage  String?  @db.LongText
+  introId    String   @db.LongText
+  introEn    String   @db.LongText
+  visiId     String   @db.LongText
+  visiEn     String   @db.LongText
+  misiId     String   @db.LongText
+  misiEn     String   @db.LongText
+  licensesId Json     @db.Json
+  licensesEn Json     @db.Json
+  updatedAt  DateTime @updatedAt
+
+  stats CompanyStat[]
+}
+
+model CompanyStat {
+  id        String         @id @default(cuid())
+  companyId String
+  company   CompanyContent @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  order     Int            @default(0)
+  value     Int
+  suffix    String         @db.VarChar(20)
+  labelId   String         @db.VarChar(255)
+  labelEn   String         @db.VarChar(255)
+
+  @@index([companyId])
+}
+
+model ServiceItem {
+  id        String   @id @default(cuid())
+  order     Int      @default(0)
+  titleId   String   @db.VarChar(255)
+  titleEn   String   @db.VarChar(255)
+  descId    String   @db.LongText
+  descEn    String   @db.LongText
+  icon      String   @db.VarChar(50)
+  iconColor String   @db.VarChar(50)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+}
+
+model CustomerLogo {
+  id        String   @id @default(cuid())
+  name      String   @db.VarChar(255)
+  image     String   @db.LongText
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+}
+
+model PartnerLogo {
+  id        String   @id @default(cuid())
+  name      String   @db.VarChar(255)
+  image     String   @db.LongText
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+}
+
+model FaqEntry {
+  id         String   @id @default(cuid())
+  order      Int      @default(0)
+  questionId String   @db.LongText
+  questionEn String   @db.LongText
+  answerId   String   @db.LongText
+  answerEn   String   @db.LongText
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([active])
+}
+
+model ContactSetting {
+  id                   String   @id @default(cuid())
+  officeAddressId      String   @db.LongText
+  officeAddressEn      String   @db.LongText
+  operationalAddressId String   @db.LongText
+  operationalAddressEn String   @db.LongText
+  phone                String   @db.VarChar(50)
+  phoneDisplay         String   @db.VarChar(50)
+  email                String   @db.VarChar(255)
+  whatsapp             String?  @db.VarChar(50)
+  updatedAt            DateTime @updatedAt
+}
+
+model SocialMediaLink {
+  id        String   @id @default(cuid())
+  platform  String   @db.VarChar(30)
+  url       String   @db.VarChar(255)
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
 }

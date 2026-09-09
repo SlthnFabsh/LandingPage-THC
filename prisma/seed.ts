@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '../src/generated/prisma/client';
 import { hash } from '@node-rs/argon2';
+import { translations, translate } from '../src/lib/i18n';
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL as string);
 const prisma = new PrismaClient({ adapter });
@@ -100,6 +101,185 @@ async function main() {
       console.log(`✓ Berita ditambahkan: "${news.titleId}"`);
     } else {
       console.log(`✓ Berita sudah ada: "${news.titleId}"`);
+    }
+  }
+
+  console.log('\n--- Seeding konten situs ---');
+
+  // 3. Profil perusahaan (single row)
+  await prisma.companyContent.upsert({
+    where: { id: 'company' },
+    update: {},
+    create: {
+      id: 'company',
+      titleId: translations.id.company.title,
+      titleEn: translations.en.company.title,
+      p1Id: translations.id.company.p1,
+      p1En: translations.en.company.p1,
+      p2Id: translations.id.company.p2,
+      p2En: translations.en.company.p2,
+      homeImage: '/assets/images/borneo.webp',
+      introId: translations.id.about.intro,
+      introEn: translations.en.about.intro,
+      visiId: translations.id.about.visi,
+      visiEn: translations.en.about.visi,
+      misiId: translations.id.about.misi.join('\n'),
+      misiEn: translations.en.about.misi.join('\n'),
+      licensesId: translations.id.about.licenses,
+      licensesEn: translations.en.about.licenses,
+    },
+  });
+  console.log('✓ Profil perusahaan: company');
+
+  // 4. Statistik
+  const statValues = [50, 100, 19, 1, 500];
+  const statSuffixes = ['RB+', '+', 'Thn+', 'RB+', '+'];
+  const statLabelKeys = [
+    'company.statPelanggan',
+    'company.statPop',
+    'company.statOperasi',
+    'company.statKabel',
+    'company.statTrafik',
+  ];
+  for (let i = 0; i < statValues.length; i++) {
+    const existing = await prisma.companyStat.findFirst({ where: { order: i + 1 } });
+    if (!existing) {
+      await prisma.companyStat.create({
+        data: {
+          companyId: 'company',
+          order: i + 1,
+          value: statValues[i],
+          suffix: statSuffixes[i],
+          labelId: translate('id', statLabelKeys[i]),
+          labelEn: translate('en', statLabelKeys[i]),
+        },
+      });
+      console.log(`✓ Statistik #${i + 1}`);
+    }
+  }
+
+  // 5. Layanan
+  const serviceKeys: { icon: string; iconColor: string; titleKey: string; descKey: string }[] = [
+    { icon: 'wifi', iconColor: 'text-violet-600', titleKey: 'services.internet', descKey: 'services.internet.desc' },
+    { icon: 'network', iconColor: 'text-emerald-500', titleKey: 'services.konektivitas', descKey: 'services.konektivitas.desc' },
+    { icon: 'cpu', iconColor: 'text-yellow-400', titleKey: 'services.solusi', descKey: 'services.solusi.desc' },
+    { icon: 'database', iconColor: 'text-red-500', titleKey: 'services.data', descKey: 'services.data.desc' },
+  ];
+  for (let i = 0; i < serviceKeys.length; i++) {
+    const item = serviceKeys[i];
+    const existing = await prisma.serviceItem.findFirst({ where: { order: i + 1 } });
+    if (!existing) {
+      await prisma.serviceItem.create({
+        data: {
+          order: i + 1,
+          titleId: translate('id', item.titleKey),
+          titleEn: translate('en', item.titleKey),
+          descId: translate('id', item.descKey),
+          descEn: translate('en', item.descKey),
+          icon: item.icon,
+          iconColor: item.iconColor,
+          active: true,
+        },
+      });
+      console.log(`✓ Layanan "${translate('id', item.titleKey)}"`);
+    }
+  }
+
+  // 6. Logo pelanggan & mitra
+  const pelangganFiles = [
+    '/assets/images/pelanggan/logo-1.svg', 'Matahari',
+    '/assets/images/pelanggan/logo-2.svg', 'Suppercorridor',
+    '/assets/images/pelanggan/logo-3.svg', 'Surge',
+    '/assets/images/pelanggan/logo-4.svg', 'Telkom Indonesia',
+    '/assets/images/pelanggan/logo-5.svg', 'TM',
+    '/assets/images/pelanggan/logo-6.svg', 'Velo',
+    '/assets/images/pelanggan/logo-7.svg', 'Viberlink',
+    '/assets/images/pelanggan/logo-8.svg', 'WGS',
+    '/assets/images/pelanggan/logo-9.svg', 'Zenlayer',
+    '/assets/images/pelanggan/logo-10.svg', 'Alfamart',
+  ];
+  for (let i = 0; i < pelangganFiles.length; i += 2) {
+    const file = pelangganFiles[i];
+    const name = pelangganFiles[i + 1];
+    const existing = await prisma.customerLogo.findFirst({ where: { image: file } });
+    if (!existing) {
+      await prisma.customerLogo.create({ data: { name, image: file, order: i / 2 + 1, active: true } });
+      console.log(`✓ Pelanggan "${name}"`);
+    }
+  }
+
+  const mitraFiles = [
+    '/assets/images/mitra/logo-1.svg', 'Matahari',
+    '/assets/images/mitra/logo-2.svg', 'Suppercorridor',
+    '/assets/images/mitra/logo-3.svg', 'Surge',
+    '/assets/images/mitra/logo-4.svg', 'Telkom Indonesia',
+    '/assets/images/mitra/logo-5.svg', 'TM',
+    '/assets/images/mitra/logo-6.svg', 'Velo',
+    '/assets/images/mitra/logo-7.svg', 'Viberlink',
+    '/assets/images/mitra/logo-8.svg', 'WGS',
+    '/assets/images/mitra/logo-9.svg', 'Gramedia',
+    '/assets/images/mitra/logo-10.svg', 'Indomaret',
+  ];
+  for (let i = 0; i < mitraFiles.length; i += 2) {
+    const file = mitraFiles[i];
+    const name = mitraFiles[i + 1];
+    const existing = await prisma.partnerLogo.findFirst({ where: { image: file } });
+    if (!existing) {
+      await prisma.partnerLogo.create({ data: { name, image: file, order: i / 2 + 1, active: true } });
+      console.log(`✓ Mitra "${name}"`);
+    }
+  }
+
+  // 7. FAQ
+  for (let n = 1; n <= 6; n++) {
+    const questionId = translate('id', `faq.q${n}`);
+    const existing = await prisma.faqEntry.findFirst({ where: { questionId } });
+    if (!existing) {
+      await prisma.faqEntry.create({
+        data: {
+          order: n,
+          questionId,
+          questionEn: translate('en', `faq.q${n}`),
+          answerId: translate('id', `faq.a${n}`),
+          answerEn: translate('en', `faq.a${n}`),
+          active: true,
+        },
+      });
+      console.log(`✓ FAQ #${n}`);
+    }
+  }
+
+  // 8. Kontak (single row)
+  await prisma.contactSetting.upsert({
+    where: { id: 'kontak' },
+    update: {},
+    create: {
+      id: 'kontak',
+      officeAddressId: translations.id.footer.office,
+      officeAddressEn: translations.en.footer.office,
+      operationalAddressId: translations.id.footer.op,
+      operationalAddressEn: translations.en.footer.op,
+      phone: '08111222808',
+      phoneDisplay: '0811-1222-808',
+      email: 'info@transhybrid.net.id',
+      whatsapp: null,
+    },
+  });
+  console.log('✓ Kontak: kontak');
+
+  // 9. Sosial media
+  const socialSeeds: { platform: string; url: string; order: number }[] = [
+    { platform: 'x', url: '#', order: 1 },
+    { platform: 'facebook', url: '#', order: 2 },
+    { platform: 'youtube', url: '#', order: 3 },
+    { platform: 'linkedin', url: '#', order: 4 },
+    { platform: 'instagram', url: '#', order: 5 },
+  ];
+  for (const social of socialSeeds) {
+    const existing = await prisma.socialMediaLink.findFirst({ where: { platform: social.platform } });
+    if (!existing) {
+      await prisma.socialMediaLink.create({ data: { ...social, active: true } });
+      console.log(`✓ Sosial media "${social.platform}"`);
     }
   }
 

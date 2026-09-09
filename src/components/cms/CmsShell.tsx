@@ -10,6 +10,14 @@ import {
   KeyRound,
   AlertTriangle,
   Home,
+  Images,
+  Building2,
+  Layers,
+  Users,
+  Handshake,
+  HelpCircle,
+  PhoneCall,
+  Share2,
 } from 'lucide-react';
 import { logoutAction } from '@/app/cms/actions/auth';
 import SubmitButton from '@/components/cms/SubmitButton';
@@ -22,6 +30,15 @@ interface ShellUser {
 
 const navItems = [
   { href: '/cms', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/cms/slider', label: 'Slider', icon: Images },
+  { href: '/cms/profil', label: 'Profil Perusahaan', icon: Building2 },
+  { href: '/cms/profil/statistik', label: 'Statistik', icon: LayoutDashboard },
+  { href: '/cms/layanan', label: 'Layanan', icon: Layers },
+  { href: '/cms/pelanggan', label: 'Pelanggan', icon: Users },
+  { href: '/cms/mitra', label: 'Mitra', icon: Handshake },
+  { href: '/cms/faq', label: 'FAQ', icon: HelpCircle },
+  { href: '/cms/kontak', label: 'Kontak', icon: PhoneCall },
+  { href: '/cms/sosmed', label: 'Sosial Media', icon: Share2 },
   { href: '/cms/news', label: 'Berita', icon: Newspaper },
   { href: '/cms/audit', label: 'Audit Trail', icon: ScrollText },
   { href: '/cms/2fa/setup', label: 'Keamanan 2FA', icon: ShieldCheck },

@@ -4,21 +4,18 @@ import { useState } from 'react';
 import { Mail, Minus, Plus } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
+import type { FaqEntryData } from '@/lib/content';
 
-const faqItems = [
-  { qKey: 'faq.q1', aKey: 'faq.a1', anim: 'fade-left delay-100', highlight: true },
-  { qKey: 'faq.q2', aKey: 'faq.a2', anim: 'fade-right delay-200', highlight: false },
-  { qKey: 'faq.q3', aKey: 'faq.a3', anim: 'fade-left delay-300', highlight: false },
-  { qKey: 'faq.q4', aKey: 'faq.a4', anim: 'fade-right delay-100', highlight: false },
-  { qKey: 'faq.q5', aKey: 'faq.a5', anim: 'fade-left delay-200', highlight: false },
-  { qKey: 'faq.q6', aKey: 'faq.a6', anim: 'fade-right delay-300', highlight: false },
-];
+interface FAQSectionProps {
+  faqs: FaqEntryData[];
+  contactEmail?: string;
+}
 
-function renderAnswer(t: (k: string) => string, aKey: string, highlight: boolean) {
-  const text = t(aKey);
-  if (!highlight) return <>{text}</>;
+const anims = ['fade-left delay-100', 'fade-right delay-200', 'fade-left delay-300', 'fade-right delay-100', 'fade-left delay-200', 'fade-right delay-300'];
 
-  const email = 'info@transhybrid.net.id';
+function renderAnswer(text: string, email?: string) {
+  if (!email || !text.includes(email)) return <>{text}</>;
+
   const parts = text.split(email);
   return (
     <>
@@ -31,13 +28,17 @@ function renderAnswer(t: (k: string) => string, aKey: string, highlight: boolean
   );
 }
 
-export default function FAQSection() {
-  const { t } = useLanguage();
+export default function FAQSection({ faqs, contactEmail = 'info@transhybrid.net.id' }: FAQSectionProps) {
+  const { lang } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  // Break the title onto two deliberate lines: never leave a dangling
-  // connector word ("yang") at the end of the first line.
-  const faqTitleWords = t('faq.title').split(' ');
+  const faqTitle = lang === 'id' ? 'Pertanyaan yang Sering Diajukan' : 'Frequently Asked Questions';
+  const faqDesc =
+    lang === 'id'
+      ? 'Punya pertanyaan? Kami telah menyediakan jawaban umum untuk membantu Anda.'
+      : 'Have questions? We\'ve provided common answers to help you.';
+
+  const faqTitleWords = faqTitle.split(' ');
   const titleBreak = faqTitleWords.length > 3 ? 3 : 2;
 
   const toggle = (index: number) => {
@@ -48,7 +49,7 @@ export default function FAQSection() {
     <section id="faq" className="border-t border-slate-100 bg-[#f8f7ff] py-20 md:py-28">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16 lg:px-8">
         <div className="fade-left">
-          <div className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{t('nav.faq')}</div>
+          <div className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{lang === 'id' ? 'FAQ' : 'FAQ'}</div>
           <div className="mb-7 flex items-end gap-3">
             <div className="h-20 w-24 overflow-hidden rounded-xl bg-slate-200 shadow-sm sm:h-24 sm:w-28">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -63,30 +64,32 @@ export default function FAQSection() {
             <span className="block">{faqTitleWords.slice(0, titleBreak).join(' ')}</span>
             <span className="block">{faqTitleWords.slice(titleBreak).join(' ')}</span>
           </h2>
-          <p className="mt-6 max-w-md text-base leading-relaxed text-slate-600">{t('faq.desc')}</p>
+          <p className="mt-6 max-w-md text-base leading-relaxed text-slate-600">{faqDesc}</p>
           <a
-            href="mailto:info@transhybrid.net.id"
+            href={`mailto:${contactEmail}`}
             className="mt-7 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-[15px] font-medium text-white shadow-lg shadow-slate-900/15 transition hover:bg-brand-700"
           >
             <Mail className="h-4 w-4" />
-            <span>{t('nav.hubungi')}</span>
+            <span>{lang === 'id' ? 'Hubungi Kami' : 'Contact Us'}</span>
           </a>
         </div>
 
         <div className="space-y-3 fade-right">
-          {faqItems.map(({ qKey, aKey, anim, highlight }, i) => {
+          {faqs.map((item, i) => {
             const isOpen = openIndex === i;
             return (
               <div
-                key={i}
-                className={`faq-item overflow-hidden rounded-xl border border-white bg-white shadow-sm transition-all hover:shadow-md ${anim}`}
+                key={item.id}
+                className={`faq-item overflow-hidden rounded-xl border border-white bg-white shadow-sm transition-all hover:shadow-md ${anims[i % anims.length]}`}
               >
                 <button
                   className="faq-header flex min-h-[72px] w-full cursor-pointer items-center justify-between gap-4 px-5 py-5 text-left focus:outline-none sm:px-6"
                   onClick={() => toggle(i)}
                   aria-expanded={isOpen}
                 >
-                  <span className="text-base font-semibold leading-snug text-slate-900 sm:text-lg">{t(qKey)}</span>
+                  <span className="text-base font-semibold leading-snug text-slate-900 sm:text-lg">
+                    {lang === 'id' ? item.questionId : item.questionEn}
+                  </span>
                   {isOpen ? <Minus className="h-5 w-5 shrink-0 text-slate-500" /> : <Plus className="h-5 w-5 shrink-0 text-slate-500" />}
                 </button>
                 <AnimatePresence initial={false}>
@@ -99,7 +102,7 @@ export default function FAQSection() {
                       className="overflow-hidden"
                     >
                       <div className="border-t border-slate-100 px-5 pb-6 pt-4 text-sm leading-relaxed text-slate-600 sm:px-6 sm:text-base">
-                        {renderAnswer(t, aKey, highlight)}
+                        {renderAnswer(lang === 'id' ? item.answerId : item.answerEn, contactEmail)}
                       </div>
                     </motion.div>
                   )}

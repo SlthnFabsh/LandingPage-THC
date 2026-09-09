@@ -17,15 +17,39 @@ interface MarqueeProps {
   inverseCards?: boolean;
 }
 
+const COPIES = 8; // jumlah duplikasi set — semakin banyak, semakin luas area geser manual
 const MOVE_STEP = 1.2; // px per frame selama auto-scroll
 const SPEED = 1000 / 60; // target ~60fps interval ms
 
-// Batasi offset ke rentang [-half, half] dengan wrap (modulo) agar selalu seamless.
-function wrap(value: number, half: number): number {
-  if (half <= 0) return 0;
-  const period = half * 2;
-  let v = ((value + half) % period + period) % period - half;
+// Batasi offset ke rentang [-period, 0] dengan wrap (modulo) agar selalu seamless.
+// period = lebar persis SATU set penuh (konten identik berulang).
+function wrap(value: number, period: number): number {
+  if (period <= 0) return 0;
+  let v = value % period;
+  if (v > 0) v -= period; // hasil selalu di [-period, 0]
   return v;
+}
+
+function LogoCard({
+  logo,
+  inverseCards,
+  cardCls,
+}: {
+  logo: MarqueeLogo;
+  inverseCards: boolean;
+  cardCls: string;
+}) {
+  return (
+    <motion.div whileHover={{ y: -4, scale: 1.03 }} className={cardCls}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={logo.file}
+        alt={logo.alt}
+        draggable={false}
+        className="max-h-12 w-auto object-contain"
+      />
+    </motion.div>
+  );
 }
 
 export default function Marquee({
@@ -37,24 +61,27 @@ export default function Marquee({
 }: MarqueeProps) {
   const { t } = useLanguage();
 
-  // Duplikasi konten 4x agar punya ruang geser manual luas sekaligus seamless saat auto-scroll.
-  const loop = [...logos, ...logos, ...logos, ...logos];
-
   const [offset, setOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
   const trackRef = useRef<HTMLDivElement>(null);
-  const halfWidthRef = useRef(0);
+  const periodRef = useRef(0);
   const dragStartX = useRef(0);
   const dragStartOffset = useRef(0);
 
-  // Ukur setengah lebar (lebar satu set penuh "logos" = loop/4) setelah muat & saat logo berubah.
+  const cardCls = `w-48 h-20 px-5 py-3 rounded-2xl border border-slate-200/80 ${
+    inverseCards
+      ? 'bg-white hover:shadow-md hover:border-brand-300'
+      : 'bg-slate-50/50 hover:bg-white hover:shadow-md hover:border-brand-300'
+  } transition-all flex items-center justify-center shrink-0`;
+
+  // Ukur lebar persis satu set penuh: total scrollWidth / jumlah kopi.
+  // Gap dibuat via margin kanan pada tiap kartu (bukan gap kontainer) agar pengukuran presisi.
   useEffect(() => {
     const el = trackRef.current;
     if (!el || logos.length === 0) return;
     const measure = () => {
-      // setengah total = lebar 2x logos (dari total 4x logos)
-      halfWidthRef.current = el.scrollWidth / 2;
+      periodRef.current = el.scrollWidth / COPIES;
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -62,13 +89,13 @@ export default function Marquee({
     return () => ro.disconnect();
   }, [logos.length]);
 
-  // Auto-scroll: jalan hanya saat tidak drag; loop seamless modulo setengah lebar.
+  // Auto-scroll: jalan hanya saat tidak drag; loop seamless modulo satu set.
   useEffect(() => {
-    if (isDragging || logos.length === 0 || halfWidthRef.current === 0) return;
+    if (isDragging || logos.length === 0 || periodRef.current === 0) return;
     const id = setInterval(() => {
       setOffset((prev) => {
         const next = direction === 'left' ? prev - MOVE_STEP : prev + MOVE_STEP;
-        return wrap(next, halfWidthRef.current);
+        return wrap(next, periodRef.current);
       });
     }, SPEED);
     return () => clearInterval(id);
@@ -89,7 +116,7 @@ export default function Marquee({
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (!isDragging) return;
       const delta = e.clientX - dragStartX.current;
-      setOffset(wrap(dragStartOffset.current + delta, halfWidthRef.current));
+      setOffset(wrap(dragStartOffset.current + delta, periodRef.current));
     },
     [isDragging]
   );
@@ -97,12 +124,6 @@ export default function Marquee({
   const handlePointerUp = useCallback(() => {
     setIsDragging(false);
   }, []);
-
-  const cardCls = `w-48 h-20 px-5 py-3 rounded-2xl border border-slate-200/80 ${
-    inverseCards
-      ? 'bg-white hover:shadow-md hover:border-brand-300'
-      : 'bg-slate-50/50 hover:bg-white hover:shadow-md hover:border-brand-300'
-  } transition-all flex items-center justify-center shrink-0`;
 
   return (
     <section
@@ -129,19 +150,17 @@ export default function Marquee({
       >
         <div
           ref={trackRef}
-          className="flex items-center gap-8 sm:gap-12"
+          className="flex"
           style={{ width: 'max-content', transform: `translateX(${offset}px)` }}
         >
-          {loop.map((logo, i) => (
-            <motion.div key={i} whileHover={{ y: -4, scale: 1.03 }} className={cardCls}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={logo.file}
-                alt={logo.alt}
-                draggable={false}
-                className="max-h-12 w-auto object-contain"
-              />
-            </motion.div>
+          {Array.from({ length: COPIES }).map((_, c) => (
+            <div key={c} className="flex shrink-0">
+              {logos.map((logo, i) => (
+                <div key={i} className="shrink-0 pr-8 sm:pr-12">
+                  <LogoCard logo={logo} inverseCards={inverseCards} cardCls={cardCls} />
+                </div>
+              ))}
+            </div>
           ))}
         </div>
       </div>

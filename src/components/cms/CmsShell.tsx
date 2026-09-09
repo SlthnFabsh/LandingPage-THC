@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { logoutAction } from '@/app/cms/actions/auth';
 import SubmitButton from '@/components/cms/SubmitButton';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 interface ShellUser {
   name?: string;
@@ -113,6 +114,7 @@ export default function CmsShell({
                 Lihat Website
               </Link>
               <form action={logoutAction}>
+                <LoadingOverlay />
                 <SubmitButton
                   label="Keluar"
                   pendingLabel="Keluar..."
@@ -133,6 +135,7 @@ export default function CmsShell({
                 Website
               </Link>
               <form action={logoutAction}>
+                <LoadingOverlay />
                 <SubmitButton
                   label="Keluar"
                   pendingLabel="Keluar..."

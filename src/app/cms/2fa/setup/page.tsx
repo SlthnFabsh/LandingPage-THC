@@ -7,6 +7,7 @@ import { totpSecretUri } from '@/lib/totp';
 import { getPendingTotpSecret, start2faAction, disable2faAction } from '@/app/cms/actions/twofa';
 import TwoFaVerifyForm from '@/components/cms/TwoFaVerifyForm';
 import SubmitButton from '@/components/cms/SubmitButton';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,6 +50,7 @@ export default async function TwoFaSetupPage({
             </div>
           </div>
           <form action={disable2faAction}>
+            <LoadingOverlay />
             <SubmitButton
               label="Nonaktifkan 2FA"
               pendingLabel="Menyimpan..."
@@ -113,6 +115,7 @@ export default async function TwoFaSetupPage({
           </div>
         </div>
         <form action={start2faAction}>
+          <LoadingOverlay />
           <SubmitButton
             label="Mulai Setup 2FA"
             pendingLabel="Menyiapkan..."

@@ -4,6 +4,7 @@ import { useActionState } from 'react';
 import Link from 'next/link';
 import { loginAction } from '@/app/cms/actions/auth';
 import SubmitButton from '@/components/cms/SubmitButton';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 const initialState = { error: '' as string };
 
@@ -33,6 +34,7 @@ export default function LoginPage() {
           )}
 
           <form action={formAction} className="space-y-4">
+            <LoadingOverlay />
             <div>
               <label htmlFor="email" className="mb-1 block text-sm font-medium text-slate-700">
                 Email

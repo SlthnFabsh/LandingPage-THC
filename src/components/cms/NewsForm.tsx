@@ -3,6 +3,7 @@
 import { useActionState } from 'react';
 import type { NewsPost } from '@/generated/prisma/client';
 import SubmitButton from '@/components/cms/SubmitButton';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 interface NewsFormProps {
   mode: 'create' | 'edit';
@@ -27,6 +28,7 @@ export default function NewsForm({ mode, action, initial }: NewsFormProps) {
       action={formAction}
       className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
     >
+      <LoadingOverlay />
       {initial && <input type="hidden" name="id" value={initial.id} />}
 
       {stateObj.error && (

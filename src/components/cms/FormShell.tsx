@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import SubmitButton from '@/components/cms/SubmitButton';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 interface ContentFormProps {
   title: string;
@@ -28,6 +29,7 @@ export default function ContentForm({
 }: ContentFormProps) {
   return (
     <form action={action} className="max-w-3xl space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <LoadingOverlay />
       {id && <input type="hidden" name="id" value={id} />}
 
       {error && <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}

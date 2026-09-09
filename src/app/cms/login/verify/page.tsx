@@ -3,6 +3,7 @@
 import { useActionState } from 'react';
 import { verify2faAction } from '@/app/cms/actions/auth';
 import SubmitButton from '@/components/cms/SubmitButton';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 const initialState = { error: '' as string };
 
@@ -30,6 +31,7 @@ export default function Verify2faPage() {
           )}
 
           <form action={formAction} className="space-y-4">
+            <LoadingOverlay />
             <div>
               <input
                 name="token"

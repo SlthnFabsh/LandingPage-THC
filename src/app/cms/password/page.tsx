@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { AlertTriangle } from 'lucide-react';
 import { changePasswordAction } from '@/app/cms/actions/auth';
 import SubmitButton from '@/components/cms/SubmitButton';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 const initialState: { error?: string; success?: boolean } = {};
 
@@ -41,6 +42,7 @@ export default function ChangePasswordPage() {
           action={formAction}
           className="max-w-lg space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
         >
+          <LoadingOverlay />
           {state.error && (
             <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
               {state.error}

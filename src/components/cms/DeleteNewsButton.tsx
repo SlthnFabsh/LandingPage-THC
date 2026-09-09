@@ -3,6 +3,7 @@
 import { useFormStatus } from 'react-dom';
 import { Trash2, Loader2 } from 'lucide-react';
 import { deleteNews } from '@/app/cms/actions/news';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 interface DeleteNewsButtonProps {
   id: string;
@@ -24,6 +25,7 @@ export default function DeleteNewsButton({
 
   return (
     <form action={deleteNews}>
+      <LoadingOverlay />
       <input type="hidden" name="id" value={id} />
       <button
         type="submit"

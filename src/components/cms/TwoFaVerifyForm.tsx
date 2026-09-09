@@ -3,6 +3,7 @@
 import { useActionState } from 'react';
 import { enable2faAction } from '@/app/cms/actions/twofa';
 import SubmitButton from '@/components/cms/SubmitButton';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 const initialState: { error?: string } = {};
 
@@ -11,6 +12,7 @@ export default function TwoFaVerifyForm() {
 
   return (
     <form action={formAction} className="mt-6 space-y-4">
+      <LoadingOverlay />
       {state.error && (
         <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{state.error}</div>
       )}

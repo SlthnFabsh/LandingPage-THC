@@ -17,6 +17,7 @@ import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import { start2faAction } from '@/app/cms/actions/twofa';
 import SubmitButton from '@/components/cms/SubmitButton';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 export const dynamic = 'force-dynamic';
 
@@ -74,6 +75,7 @@ export default async function CmsDashboardPage() {
         </div>
         {needs2fa && (
           <form action={start2faAction}>
+            <LoadingOverlay />
             <SubmitButton
               label="Aktifkan 2FA Sekarang"
               pendingLabel="Menyiapkan..."

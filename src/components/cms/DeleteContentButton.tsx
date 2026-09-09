@@ -2,6 +2,7 @@
 
 import { useFormStatus } from 'react-dom';
 import { Trash2, Loader2 } from 'lucide-react';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
 
 type DeleteAction = (formData: FormData) => Promise<void> | void;
 
@@ -27,6 +28,7 @@ export default function DeleteContentButton({
 
   return (
     <form action={action}>
+      <LoadingOverlay />
       <input type="hidden" name="id" value={id} />
       <button
         type="submit"

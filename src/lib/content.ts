@@ -118,32 +118,6 @@ const serviceKeys: { icon: string; iconColor: string; titleKey: string; descKey:
   { icon: 'database', iconColor: 'text-red-500', titleKey: 'services.data', descKey: 'services.data.desc' },
 ];
 
-const pelangganLogos: { file: string; alt: string }[] = [
-  { file: '/assets/images/pelanggan/logo-1.svg', alt: 'Matahari' },
-  { file: '/assets/images/pelanggan/logo-2.svg', alt: 'Suppercorridor' },
-  { file: '/assets/images/pelanggan/logo-3.svg', alt: 'Surge' },
-  { file: '/assets/images/pelanggan/logo-4.svg', alt: 'Telkom Indonesia' },
-  { file: '/assets/images/pelanggan/logo-5.svg', alt: 'TM' },
-  { file: '/assets/images/pelanggan/logo-6.svg', alt: 'Velo' },
-  { file: '/assets/images/pelanggan/logo-7.svg', alt: 'Viberlink' },
-  { file: '/assets/images/pelanggan/logo-8.svg', alt: 'WGS' },
-  { file: '/assets/images/pelanggan/logo-9.svg', alt: 'Zenlayer' },
-  { file: '/assets/images/pelanggan/logo-10.svg', alt: 'Alfamart' },
-];
-
-const mitraLogos: { file: string; alt: string }[] = [
-  { file: '/assets/images/mitra/logo-1.svg', alt: 'Matahari' },
-  { file: '/assets/images/mitra/logo-2.svg', alt: 'Suppercorridor' },
-  { file: '/assets/images/mitra/logo-3.svg', alt: 'Surge' },
-  { file: '/assets/images/mitra/logo-4.svg', alt: 'Telkom Indonesia' },
-  { file: '/assets/images/mitra/logo-5.svg', alt: 'TM' },
-  { file: '/assets/images/mitra/logo-6.svg', alt: 'Velo' },
-  { file: '/assets/images/mitra/logo-7.svg', alt: 'Viberlink' },
-  { file: '/assets/images/mitra/logo-8.svg', alt: 'WGS' },
-  { file: '/assets/images/mitra/logo-9.svg', alt: 'Gramedia' },
-  { file: '/assets/images/mitra/logo-10.svg', alt: 'Indomaret' },
-];
-
 function fallbackCompany(): CompanyContentData {
   return {
     id: 'company',
@@ -191,14 +165,6 @@ function fallbackServices(): ServiceItemData[] {
     descEn: translate('en', item.descKey),
     icon: item.icon,
     iconColor: item.iconColor,
-  }));
-}
-
-function toLogoData(list: { file: string; alt: string }[]): LogoData[] {
-  return list.map((item, index) => ({
-    id: `logo-${index}`,
-    name: item.alt,
-    image: item.file,
   }));
 }
 
@@ -315,14 +281,8 @@ export async function getSiteContent(): Promise<SiteContent> {
     about,
     stats: (stats as unknown as CompanyStatData[]) ?? [],
     services: (services as unknown as ServiceItemData[]) ?? [],
-    customers:
-      (customers as unknown as LogoData[] | null)?.length
-        ? (customers as unknown as LogoData[])
-        : toLogoData(pelangganLogos),
-    partners:
-      (partners as unknown as LogoData[] | null)?.length
-        ? (partners as unknown as LogoData[])
-        : toLogoData(mitraLogos),
+    customers: (customers as unknown as LogoData[] | null) ?? [],
+    partners: (partners as unknown as LogoData[] | null) ?? [],
     faqs: (faqs as unknown as FaqEntryData[] | null)?.length
       ? (faqs as unknown as FaqEntryData[])
       : fallbackFaqs(),

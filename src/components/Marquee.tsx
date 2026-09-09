@@ -20,6 +20,14 @@ interface MarqueeProps {
 const MOVE_STEP = 1.2; // px per frame selama auto-scroll
 const SPEED = 1000 / 60; // target ~60fps interval ms
 
+// Batasi offset ke rentang [-half, half] dengan wrap (modulo) agar selalu seamless.
+function wrap(value: number, half: number): number {
+  if (half <= 0) return 0;
+  const period = half * 2;
+  let v = ((value + half) % period + period) % period - half;
+  return v;
+}
+
 export default function Marquee({
   titleKey,
   descKey,
@@ -60,13 +68,7 @@ export default function Marquee({
     const id = setInterval(() => {
       setOffset((prev) => {
         const next = direction === 'left' ? prev - MOVE_STEP : prev + MOVE_STEP;
-        const half = halfWidthRef.current;
-        // Keep in [-half, 0] for left, or [0, half] range handling.
-        const max = half;
-        const min = -half;
-        if (next > max) return next - (max - min);
-        if (next < min) return next + (max - min);
-        return next;
+        return wrap(next, halfWidthRef.current);
       });
     }, SPEED);
     return () => clearInterval(id);
@@ -87,7 +89,7 @@ export default function Marquee({
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (!isDragging) return;
       const delta = e.clientX - dragStartX.current;
-      setOffset(dragStartOffset.current + delta);
+      setOffset(wrap(dragStartOffset.current + delta, halfWidthRef.current));
     },
     [isDragging]
   );

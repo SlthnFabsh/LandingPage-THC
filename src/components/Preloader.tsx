@@ -83,7 +83,7 @@ export default function Preloader() {
         <img
           src="/assets/images/logo1.webp"
           alt=""
-          className="h-28 w-auto object-contain sm:h-36"
+          className="h-28 w-auto object-contain brightness-0 invert sm:h-36"
         />
       </div>
 

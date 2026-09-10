@@ -8,13 +8,6 @@ import {
   Router as RouterIcon,
   Wifi,
   Activity,
-  BellRing,
-  FileSpreadsheet,
-  Search,
-  Layers,
-  Flame,
-  Globe,
-  Monitor,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -150,122 +143,14 @@ export default function ManagedServices() {
             </div>
           </div>
 
-          {/* Interactive Topology Container */}
-          <div className="mt-6 overflow-x-auto rounded-2xl border border-slate-200/80 bg-slate-900 p-6 text-white shadow-inner sm:p-8">
-            <div className="min-w-[760px] flex flex-col gap-8">
-              {/* Row 1: Core Flow Exporters & Network Nodes */}
-              <div className="flex items-center justify-between gap-4">
-                {/* 1. Internet Cloud */}
-                <div className="flex flex-col items-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-blue-400/30 bg-blue-950/60 p-3 shadow-glow-blue">
-                    <Globe className="h-10 w-10 text-sky-400 animate-pulse" />
-                  </div>
-                  <span className="mt-2 text-xs font-bold uppercase tracking-wider text-slate-300">
-                    Internet
-                  </span>
-                </div>
-
-                {/* Bi-directional arrow */}
-                <div className="flex flex-col items-center text-sky-400">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Flows</span>
-                  <div className="h-0.5 w-14 bg-gradient-to-r from-sky-400 via-blue-500 to-sky-400" />
-                </div>
-
-                {/* 2. Firewall */}
-                <div className="flex flex-col items-center">
-                  <div className="flex h-20 w-28 flex-col items-center justify-center rounded-2xl border border-rose-500/30 bg-rose-950/40 p-2 text-center shadow-sm">
-                    <Flame className="h-6 w-6 text-rose-400" />
-                    <span className="mt-1 text-xs font-bold text-white">Firewall</span>
-                    <span className="text-[9px] text-rose-300">(Flow Exporter)</span>
-                  </div>
-                </div>
-
-                {/* Bi-directional arrow */}
-                <div className="flex flex-col items-center text-sky-400">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Flows</span>
-                  <div className="h-0.5 w-14 bg-gradient-to-r from-sky-400 via-blue-500 to-sky-400" />
-                </div>
-
-                {/* 3. Central Router with Subnets */}
-                <div className="flex flex-col items-center">
-                  {/* Top Subnets */}
-                  <div className="mb-2 flex items-center gap-2">
-                    <span className="rounded-md border border-blue-500/30 bg-blue-900/40 px-2 py-0.5 text-[10px] font-medium text-blue-200">
-                      Subnet 1
-                    </span>
-                    <span className="rounded-md border border-blue-500/30 bg-blue-900/40 px-2 py-0.5 text-[10px] font-medium text-blue-200">
-                      Subnet 2
-                    </span>
-                  </div>
-
-                  {/* Router Node */}
-                  <div className="flex h-20 w-32 flex-col items-center justify-center rounded-2xl border border-brand-500/50 bg-[#12285e] p-2 text-center shadow-glow-blue">
-                    <RouterIcon className="h-6 w-6 text-sky-400" />
-                    <span className="mt-1 text-xs font-bold text-white">Router</span>
-                    <span className="text-[9px] text-sky-300">(Flow Exporter)</span>
-                  </div>
-
-                  {/* Wireless Controller below */}
-                  <div className="mt-2 flex flex-col items-center">
-                    <div className="h-3 w-0.5 bg-sky-400" />
-                    <div className="flex items-center gap-1.5 rounded-lg border border-purple-500/30 bg-purple-950/40 px-2.5 py-1 text-[10px] font-bold text-purple-200">
-                      <Wifi className="h-3 w-3" />
-                      <span>Wireless Controller (Flow Exporter)</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Forward Arrow */}
-                <div className="flex flex-col items-center text-sky-400">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Flows</span>
-                  <div className="h-0.5 w-14 bg-gradient-to-r from-sky-400 via-blue-500 to-sky-400" />
-                </div>
-
-                {/* 4. On-Premise Poller */}
-                <div className="flex flex-col items-center">
-                  <div className="flex h-24 w-36 flex-col items-center justify-center rounded-2xl border border-emerald-500/40 bg-emerald-950/40 p-2 text-center shadow-sm">
-                    <ServerCog className="h-6 w-6 text-emerald-400" />
-                    <span className="mt-1 text-xs font-bold text-white">Site24x7</span>
-                    <span className="text-[10px] text-emerald-300">On-Premise Poller</span>
-                    <span className="text-[9px] text-slate-400">(Flow Collector)</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Row 2: Analytics & Actionable Outputs */}
-              <div className="flex items-center justify-end gap-6 border-t border-white/10 pt-6">
-                {/* Central Analytics Platform */}
-                <div className="flex items-center gap-3 rounded-2xl border border-sky-400/30 bg-sky-950/50 px-5 py-3 shadow-md">
-                  <Monitor className="h-7 w-7 text-sky-400" />
-                  <div>
-                    <span className="block text-xs font-bold uppercase tracking-wide text-white">
-                      Site24x7 Central Engine
-                    </span>
-                    <span className="text-[11px] text-slate-300">
-                      Flow Analyzing, Bandwidth Profiling & Telemetry Reporting
-                    </span>
-                  </div>
-                </div>
-
-                <div className="h-0.5 w-8 bg-sky-400" />
-
-                {/* Action Output Badges */}
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-950/40 px-3 py-2 text-xs font-semibold text-amber-300">
-                    <BellRing className="h-4 w-4" />
-                    <span>Real-time Alerting</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 rounded-xl border border-blue-500/30 bg-blue-950/40 px-3 py-2 text-xs font-semibold text-sky-300">
-                    <FileSpreadsheet className="h-4 w-4" />
-                    <span>Automated Reporting</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 rounded-xl border border-violet-500/30 bg-violet-950/40 px-3 py-2 text-xs font-semibold text-violet-300">
-                    <Search className="h-4 w-4" />
-                    <span>Deep Forensics Analysis</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Network Architecture Flow Diagram */}
+          <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-soft">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/images/topologi-manage-service.webp"
+              alt="Network Flow & Telemetry Architecture topology"
+              className="h-auto w-full object-contain"
+            />
           </div>
         </motion.div>
       </div>

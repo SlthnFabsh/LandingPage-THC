@@ -55,13 +55,13 @@ export default async function CmsDashboardPage() {
 
   const quickSections = [
     { href: '/cms/slider', label: 'Slider', count: totalSlides, icon: Images },
-    { href: '/cms/profil', label: 'Profil', icon: Building2 },
-    { href: '/cms/layanan', label: 'Layanan', count: totalServices, icon: Layers },
-    { href: '/cms/pelanggan', label: 'Pelanggan', count: totalProducts, icon: Users },
-    { href: '/cms/mitra', label: 'Mitra', count: totalPartners, icon: Handshake },
+    { href: '/cms/profil', label: 'Profile', icon: Building2 },
+    { href: '/cms/layanan', label: 'Services', count: totalServices, icon: Layers },
+    { href: '/cms/pelanggan', label: 'Customers', count: totalProducts, icon: Users },
+    { href: '/cms/mitra', label: 'Partners', count: totalPartners, icon: Handshake },
     { href: '/cms/faq', label: 'FAQ', count: totalFaqs, icon: HelpCircle },
-    { href: '/cms/kontak', label: 'Kontak', icon: PhoneCall },
-    { href: '/cms/sosmed', label: 'Sosial Media', count: totalSocials, icon: Share2 },
+    { href: '/cms/kontak', label: 'Contact', icon: PhoneCall },
+    { href: '/cms/sosmed', label: 'Social Media', count: totalSocials, icon: Share2 },
   ];
 
   return (
@@ -69,16 +69,16 @@ export default async function CmsDashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">
-            Halo, {user?.name ?? user?.email}
+            Hello, {user?.name ?? user?.email}
           </h1>
-          <p className="text-sm text-slate-500">Ringkasan konten situs Anda.</p>
+          <p className="text-sm text-slate-500">Summary of your site content.</p>
         </div>
         {needs2fa && (
           <form action={start2faAction}>
             <LoadingOverlay />
             <SubmitButton
-              label="Aktifkan 2FA Sekarang"
-              pendingLabel="Menyiapkan..."
+              label="Enable 2FA Now"
+              pendingLabel="Setting up..."
               className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-50"
             />
           </form>
@@ -112,21 +112,21 @@ export default async function CmsDashboardPage() {
             <Newspaper className="h-5 w-5" />
           </div>
           <p className="text-2xl font-bold text-slate-900">{totalNews}</p>
-          <p className="text-sm text-slate-500">Total Berita</p>
+          <p className="text-sm text-slate-500">Total News</p>
         </div>
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-600">
             <Eye className="h-5 w-5" />
           </div>
           <p className="text-2xl font-bold text-slate-900">{publishedNews}</p>
-          <p className="text-sm text-slate-500">Berita Terbit</p>
+          <p className="text-sm text-slate-500">Published News</p>
         </div>
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-600/10 text-sky-600">
             <ScrollText className="h-5 w-5" />
           </div>
           <p className="text-2xl font-bold text-slate-900">{totalAudit}</p>
-          <p className="text-sm text-slate-500">Catatan Audit</p>
+          <p className="text-sm text-slate-500">Audit Logs</p>
         </div>
       </div>
 
@@ -136,17 +136,17 @@ export default async function CmsDashboardPage() {
           className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
         >
           <PenLine className="h-4 w-4" />
-          Tambah Berita
+          Add News
         </Link>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-100 px-5 py-4">
-          <h2 className="text-sm font-bold text-slate-900">Aktivitas Terbaru</h2>
+          <h2 className="text-sm font-bold text-slate-900">Recent Activity</h2>
         </div>
         {recentAudits.length === 0 ? (
           <p className="px-5 py-6 text-sm text-slate-500">
-            Belum ada aktivitas tercatat.
+            No activity recorded yet.
           </p>
         ) : (
           <ul className="divide-y divide-slate-100">
@@ -157,7 +157,7 @@ export default async function CmsDashboardPage() {
                   <p className="truncate text-xs text-slate-500">{log.detail ?? '—'}</p>
                 </div>
                 <span className="shrink-0 text-xs text-slate-400">
-                  {new Date(log.createdAt).toLocaleString('id-ID')}
+                  {new Date(log.createdAt).toLocaleString('en-US')}
                 </span>
               </li>
             ))}

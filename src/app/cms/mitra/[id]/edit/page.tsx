@@ -13,5 +13,5 @@ export default async function MitraEditPage({ params }: { params: Promise<{ id: 
   if (!logo) notFound();
 
   const action = updateLogo.bind(null, 'PartnerLogo');
-  return <LogoForm entityLabel="Mitra" mode="edit" action={action as never} initial={logo} />;
+  return <LogoForm entityLabel="Partner" mode="edit" action={action as never} initial={logo} />;
 }

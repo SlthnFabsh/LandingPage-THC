@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown, Globe2, ArrowUpRight, Building2 } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowUpRight, Building2 } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 
 const tentangSubPages = [
@@ -15,7 +15,7 @@ const tentangSubPages = [
 ];
 
 export default function Navbar() {
-  const { lang, setLang, t } = useLanguage();
+  const { lang, t } = useLanguage();
   const pathname = usePathname();
   const isHome = pathname === '/';
   const inTentangPage = pathname.startsWith('/tentang');
@@ -23,7 +23,6 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('beranda');
-  const [languageOpen, setLanguageOpen] = useState(false);
   const [tentangOpen, setTentangOpen] = useState(false);
   const [mobileTentangOpen, setMobileTentangOpen] = useState(false);
 
@@ -37,19 +36,17 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (!languageOpen && !tentangOpen) return;
+    if (!tentangOpen) return;
 
     const closeOpenMenus = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      const insideLanguage = Boolean(target.closest('[data-language-selector]'));
       const insideTentang = Boolean(target.closest('[data-tentang-dropdown]'));
-      if (!insideLanguage) setLanguageOpen(false);
       if (!insideTentang) setTentangOpen(false);
     };
 
     document.addEventListener('click', closeOpenMenus);
     return () => document.removeEventListener('click', closeOpenMenus);
-  }, [languageOpen, tentangOpen]);
+  }, [tentangOpen]);
 
   useEffect(() => {
     if (!isHome) return;
@@ -82,11 +79,6 @@ export default function Navbar() {
     setMenuVisible(false);
     window.setTimeout(() => setMenuOpen(false), 300);
   }, []);
-
-  const selectLanguage = useCallback((nextLanguage: 'id' | 'en') => {
-    setLang(nextLanguage);
-    setLanguageOpen(false);
-  }, [setLang]);
 
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/#${id}`);
 
@@ -166,31 +158,6 @@ export default function Navbar() {
 
           {/* Right Action Button & Language Toggle */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
-            <div className="relative" data-language-selector>
-              <button
-                id="lang-toggle-desktop"
-                type="button"
-                onClick={() => setLanguageOpen((open) => !open)}
-                className="flex h-10 items-center gap-2 px-1 text-[15px] text-slate-700 transition-colors hover:text-slate-950 xl:text-base"
-                aria-label="Pilih bahasa"
-                aria-expanded={languageOpen}
-                aria-haspopup="listbox"
-              >
-                <Globe2 className="h-5 w-5 text-slate-600" />
-                <span>{lang === 'id' ? 'Indonesia (ID)' : 'English (EN)'}</span>
-                <ChevronDown className={`h-4 w-4 text-slate-600 transition-transform ${languageOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {languageOpen && (
-                <div className="absolute right-0 top-[calc(100%+10px)] z-50 w-72 overflow-hidden rounded-md border border-slate-300 bg-white py-2 shadow-lg" role="listbox" aria-label="Pilihan bahasa">
-                  <button type="button" role="option" aria-selected={lang === 'id'} onClick={() => selectLanguage('id')} className="flex w-full px-5 py-4 text-left text-base text-slate-800 transition-colors hover:bg-slate-50">
-                    Indonesia (ID)
-                  </button>
-                  <button type="button" role="option" aria-selected={lang === 'en'} onClick={() => selectLanguage('en')} className="flex w-full px-5 py-4 text-left text-base text-slate-800 transition-colors hover:bg-slate-50">
-                    English (EN)
-                  </button>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Mobile Hamburger Button */}
@@ -263,34 +230,7 @@ export default function Navbar() {
               </a>
             </div>
 
-            {/* Mobile Language Selector */}
-            <div className="mt-6 pt-4 border-t border-slate-100">
-              <div className="relative" data-language-selector>
-                <button
-                  id="lang-toggle-mobile"
-                  type="button"
-                  onClick={() => setLanguageOpen((open) => !open)}
-                  className="flex w-full items-center gap-2 py-2 text-base text-slate-700"
-                  aria-label="Pilih bahasa"
-                  aria-expanded={languageOpen}
-                  aria-haspopup="listbox"
-                >
-                  <Globe2 className="h-5 w-5 text-slate-600" />
-                  <span>{lang === 'id' ? 'Indonesia (ID)' : 'English (EN)'}</span>
-                  <ChevronDown className={`ml-auto h-4 w-4 transition-transform ${languageOpen ? 'rotate-180' : ''}`} />
-                </button>
-                {languageOpen && (
-                  <div className="mt-2 overflow-hidden rounded-md border border-slate-300 bg-white py-1 shadow-md" role="listbox" aria-label="Pilihan bahasa">
-                    <button type="button" role="option" aria-selected={lang === 'id'} onClick={() => selectLanguage('id')} className="flex w-full px-4 py-3 text-left text-base text-slate-800 hover:bg-slate-50">
-                      Indonesia (ID)
-                    </button>
-                    <button type="button" role="option" aria-selected={lang === 'en'} onClick={() => selectLanguage('en')} className="flex w-full px-4 py-3 text-left text-base text-slate-800 hover:bg-slate-50">
-                      English (EN)
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>

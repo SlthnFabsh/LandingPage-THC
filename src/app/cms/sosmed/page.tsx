@@ -23,14 +23,14 @@ export default async function SosmedListPage() {
   return (
     <div className="space-y-6">
       <ListHeader
-        title="Sosial Media"
-        subtitle="Tautan sosial media di footer."
+        title="Social Media"
+        subtitle="Social media links in the footer."
         addHref="/cms/sosmed/new"
-        addLabel="Tambah Tautan"
+        addLabel="Add Link"
       />
       {passwordExpired && <PasswordExpiredBanner />}
       {socials.length === 0 ? (
-        <EmptyState message="Belum ada tautan sosial media." />
+        <EmptyState message="No social media links yet." />
       ) : (
         <ListCard>
           {socials.map((social) => (
@@ -52,7 +52,7 @@ export default async function SosmedListPage() {
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
-                <DeleteContentButton action={deleteSocial} id={social.id} disabled={passwordExpired} confirmText="Hapus tautan ini?" />
+                <DeleteContentButton action={deleteSocial} id={social.id} disabled={passwordExpired} confirmText="Delete this link?" />
               </div>
             </Row>
           ))}

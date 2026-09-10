@@ -15,14 +15,14 @@ export default async function LayananListPage() {
   return (
     <div className="space-y-6">
       <ListHeader
-        title="Layanan"
-        subtitle="Kartu layanan di halaman utama."
+        title="Services"
+        subtitle="Service cards on the home page."
         addHref="/cms/layanan/new"
-        addLabel="Tambah Layanan"
+        addLabel="Add Service"
       />
       {passwordExpired && <PasswordExpiredBanner />}
       {services.length === 0 ? (
-        <EmptyState message="Belum ada layanan. Tambahkan layanan pertama Anda." />
+        <EmptyState message="No services yet. Add your first service." />
       ) : (
         <ListCard>
           {services.map((service) => (
@@ -38,11 +38,11 @@ export default async function LayananListPage() {
                     href={`/cms/layanan/${service.id}/edit`}
                     className="truncate text-sm font-semibold text-slate-900 hover:text-brand-600"
                   >
-                    {service.titleId}
+                    {service.titleEn}
                   </Link>
                   <ActiveBadge active={service.active} />
                 </div>
-                <p className="truncate text-xs text-slate-500">Ikon {service.icon} · Urutan {service.order}</p>
+                <p className="truncate text-xs text-slate-500">Icon {service.icon} · Order {service.order}</p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <Link
@@ -52,7 +52,7 @@ export default async function LayananListPage() {
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
-                <DeleteContentButton action={deleteService} id={service.id} disabled={passwordExpired} confirmText="Hapus layanan ini?" />
+                <DeleteContentButton action={deleteService} id={service.id} disabled={passwordExpired} confirmText="Delete this service?" />
               </div>
             </Row>
           ))}

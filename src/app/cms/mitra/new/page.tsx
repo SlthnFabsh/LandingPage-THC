@@ -7,5 +7,5 @@ export const dynamic = 'force-dynamic';
 export default async function MitraNewPage() {
   await requireCms();
   const action = createLogo.bind(null, 'PartnerLogo');
-  return <LogoForm entityLabel="Mitra" mode="create" action={action as never} />;
+  return <LogoForm entityLabel="Partner" mode="create" action={action as never} />;
 }

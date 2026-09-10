@@ -36,22 +36,20 @@ export default function ServiceForm({ mode, action, initial }: ServiceFormProps)
 
   return (
     <ContentForm
-      title={mode === 'create' ? 'Tambah Layanan' : 'Edit Layanan'}
-      subtitle="Kartu layanan di halaman utama (ID & EN)."
+      title={mode === 'create' ? 'Add Service' : 'Edit Service'}
+      subtitle="Service card on the home page."
       error={state.error}
-      submitLabel={mode === 'create' ? 'Simpan Layanan' : 'Perbarui Layanan'}
+      submitLabel={mode === 'create' ? 'Save Service' : 'Update Service'}
       cancelHref="/cms/layanan"
       action={formAction}
       id={initial?.id}
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <TextInput name="titleId" label="Judul (ID) *" defaultValue={initial?.titleId} required />
-        <TextInput name="titleEn" label="Judul (EN) *" defaultValue={initial?.titleEn} required />
+        <TextInput name="titleEn" label="Title *" defaultValue={initial?.titleEn} required />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <TextArea name="descId" label="Deskripsi (ID) *" defaultValue={initial?.descId} required rows={4} />
-        <TextArea name="descEn" label="Deskripsi (EN) *" defaultValue={initial?.descEn} required rows={4} />
+        <TextArea name="descEn" label="Description *" defaultValue={initial?.descEn} required rows={4} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

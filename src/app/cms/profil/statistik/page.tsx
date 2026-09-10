@@ -15,14 +15,14 @@ export default async function StatistikListPage() {
   return (
     <div className="space-y-6">
       <ListHeader
-        title="Statistik"
-        subtitle="Angka pendukung di section profil perusahaan (mis. 150+ klien)."
+        title="Statistics"
+        subtitle="Supporting numbers in the company profile section (e.g. 150+ clients)."
         addHref="/cms/profil/statistik/new"
-        addLabel="Tambah Statistik"
+        addLabel="Add Statistic"
       />
       {passwordExpired && <PasswordExpiredBanner />}
       {stats.length === 0 ? (
-        <EmptyState message="Belum ada statistik. Tambahkan statistik pertama Anda." />
+        <EmptyState message="No statistics yet. Add your first one." />
       ) : (
         <ListCard>
           {stats.map((stat) => (
@@ -33,9 +33,9 @@ export default async function StatistikListPage() {
                     {stat.value}
                     {stat.suffix}
                   </span>
-                  <span className="text-xs text-slate-400">Urutan {stat.order}</span>
+                  <span className="text-xs text-slate-400">Order {stat.order}</span>
                 </div>
-                <p className="text-sm text-slate-600">{stat.labelId}</p>
+                <p className="text-sm text-slate-600">{stat.labelEn}</p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <Link
@@ -45,7 +45,7 @@ export default async function StatistikListPage() {
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
-                <DeleteContentButton action={deleteStat} id={stat.id} disabled={passwordExpired} confirmText="Hapus statistik ini?" />
+                <DeleteContentButton action={deleteStat} id={stat.id} disabled={passwordExpired} confirmText="Delete this statistic?" />
               </div>
             </Row>
           ))}

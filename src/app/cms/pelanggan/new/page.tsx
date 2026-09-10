@@ -7,5 +7,5 @@ export const dynamic = 'force-dynamic';
 export default async function PelangganNewPage() {
   await requireCms();
   const action = createLogo.bind(null, 'CustomerLogo');
-  return <LogoForm entityLabel="Pelanggan" mode="create" action={action as never} />;
+  return <LogoForm entityLabel="Customer" mode="create" action={action as never} />;
 }

@@ -16,14 +16,14 @@ export default async function PelangganListPage() {
   return (
     <div className="space-y-6">
       <ListHeader
-        title="Pelanggan"
-        subtitle="Logo pelanggan pada baris berjalan di halaman utama."
+        title="Customers"
+        subtitle="Customer logos in the scrolling row on the home page."
         addHref="/cms/pelanggan/new"
-        addLabel="Tambah Pelanggan"
+        addLabel="Add Customer"
       />
       {passwordExpired && <PasswordExpiredBanner />}
       {logos.length === 0 ? (
-        <EmptyState message="Belum ada pelanggan. Tambahkan logo pelanggan pertama." />
+        <EmptyState message="No customers yet. Add your first customer logo." />
       ) : (
         <ListCard>
           {logos.map((logo) => (
@@ -40,7 +40,7 @@ export default async function PelangganListPage() {
                   </Link>
                   <ActiveBadge active={logo.active} />
                 </div>
-                <p className="text-xs text-slate-500">Urutan {logo.order}</p>
+                <p className="text-xs text-slate-500">Order {logo.order}</p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <Link
@@ -50,7 +50,7 @@ export default async function PelangganListPage() {
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
-                <DeleteContentButton action={deleteAction} id={logo.id} disabled={passwordExpired} confirmText="Hapus pelanggan ini?" />
+                <DeleteContentButton action={deleteAction} id={logo.id} disabled={passwordExpired} confirmText="Delete this customer?" />
               </div>
             </Row>
           ))}

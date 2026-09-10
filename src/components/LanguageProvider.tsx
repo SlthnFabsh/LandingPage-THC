@@ -17,23 +17,13 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [lang, setLangState] = useState<Language>('id');
+  const [lang, setLangState] = useState<Language>('en');
 
   useEffect(() => {
-    // 1) Respect a previously saved manual choice.
-    const saved = window.localStorage.getItem(LNG_STORAGE_KEY);
-    if (saved === 'en' || saved === 'id') {
-      setLangState(saved);
-      return;
-    }
-
-    // 2) Auto-detect for first-time visitors based on browser locale.
-    //    'id'/* -> Indonesian, anything else -> English.
-    const navLang = (navigator.language || navigator.languages?.[0] || '').toLowerCase();
-    const detected: Language = navLang.startsWith('id') ? 'id' : 'en';
-    setLangState(detected);
+    // Site is English-only: force English, ignore previous/locale detection.
+    setLangState('en');
     try {
-      window.localStorage.setItem(LNG_STORAGE_KEY, detected);
+      window.localStorage.setItem(LNG_STORAGE_KEY, 'en');
     } catch {
       // ignore storage errors (private mode etc.)
     }
@@ -49,24 +39,21 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }, [lang, pathname]);
 
   const setLang = useCallback((lng: Language) => {
-    setLangState(lng);
+    setLangState('en');
     try {
-      window.localStorage.setItem(LNG_STORAGE_KEY, lng);
+      window.localStorage.setItem(LNG_STORAGE_KEY, 'en');
     } catch {
       // ignore storage errors (private mode etc.)
     }
   }, []);
 
   const toggle = useCallback(() => {
-    setLangState((prev) => {
-      const next: Language = prev === 'en' ? 'id' : 'en';
-      try {
-        window.localStorage.setItem(LNG_STORAGE_KEY, next);
-      } catch {
-        // ignore
-      }
-      return next;
-    });
+    setLangState('en');
+    try {
+      window.localStorage.setItem(LNG_STORAGE_KEY, 'en');
+    } catch {
+      // ignore
+    }
   }, []);
 
   const t = useCallback((key: string) => translate(lang, key), [lang]);

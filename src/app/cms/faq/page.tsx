@@ -16,13 +16,13 @@ export default async function FaqListPage() {
     <div className="space-y-6">
       <ListHeader
         title="FAQ"
-        subtitle="Pertanyaan yang sering diajukan di halaman utama."
+        subtitle="Frequently asked questions on the home page."
         addHref="/cms/faq/new"
-        addLabel="Tambah FAQ"
+        addLabel="Add FAQ"
       />
       {passwordExpired && <PasswordExpiredBanner />}
       {faqs.length === 0 ? (
-        <EmptyState message="Belum ada FAQ. Tambahkan pertanyaan pertama." />
+        <EmptyState message="No FAQs yet. Add your first question." />
       ) : (
         <ListCard>
           {faqs.map((faq) => (
@@ -33,11 +33,11 @@ export default async function FaqListPage() {
                     href={`/cms/faq/${faq.id}/edit`}
                     className="truncate text-sm font-semibold text-slate-900 hover:text-brand-600"
                   >
-                    {faq.questionId}
+                    {faq.questionEn}
                   </Link>
                   <ActiveBadge active={faq.active} />
                 </div>
-                <p className="truncate text-xs text-slate-500">Urutan {faq.order}</p>
+                <p className="truncate text-xs text-slate-500">Order {faq.order}</p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <Link
@@ -47,7 +47,7 @@ export default async function FaqListPage() {
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
-                <DeleteContentButton action={deleteFaq} id={faq.id} disabled={passwordExpired} confirmText="Hapus FAQ ini?" />
+                <DeleteContentButton action={deleteFaq} id={faq.id} disabled={passwordExpired} confirmText="Delete this FAQ?" />
               </div>
             </Row>
           ))}

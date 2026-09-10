@@ -16,14 +16,14 @@ export default async function MitraListPage() {
   return (
     <div className="space-y-6">
       <ListHeader
-        title="Mitra"
-        subtitle="Logo mitra pada baris berjalan di halaman utama."
+        title="Partners"
+        subtitle="Partner logos in the scrolling row on the home page."
         addHref="/cms/mitra/new"
-        addLabel="Tambah Mitra"
+        addLabel="Add Partner"
       />
       {passwordExpired && <PasswordExpiredBanner />}
       {logos.length === 0 ? (
-        <EmptyState message="Belum ada mitra. Tambahkan logo mitra pertama." />
+        <EmptyState message="No partners yet. Add your first partner logo." />
       ) : (
         <ListCard>
           {logos.map((logo) => (
@@ -40,7 +40,7 @@ export default async function MitraListPage() {
                   </Link>
                   <ActiveBadge active={logo.active} />
                 </div>
-                <p className="text-xs text-slate-500">Urutan {logo.order}</p>
+                <p className="text-xs text-slate-500">Order {logo.order}</p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <Link
@@ -50,7 +50,7 @@ export default async function MitraListPage() {
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
-                <DeleteContentButton action={deleteAction} id={logo.id} disabled={passwordExpired} confirmText="Hapus mitra ini?" />
+                <DeleteContentButton action={deleteAction} id={logo.id} disabled={passwordExpired} confirmText="Delete this partner?" />
               </div>
             </Row>
           ))}

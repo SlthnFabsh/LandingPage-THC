@@ -33,23 +33,23 @@ export default async function NewsListPage({
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Berita</h1>
-          <p className="text-sm text-slate-500">Kelola berita yang tampil di halaman utama.</p>
+          <h1 className="text-2xl font-bold text-slate-900">News</h1>
+          <p className="text-sm text-slate-500">Manage the news shown on the home page.</p>
         </div>
         <Link
           href="/cms/news/new"
           className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
         >
           <Plus className="h-4 w-4" />
-          Tambah Berita
+          Add News
         </Link>
       </div>
 
       {passwordExpired && (
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          Kata sandi kedaluwarsa. Aksi perubahan diblokir sampai Anda{' '}
+          Password expired. Changes are blocked until you{' '}
           <Link href="/cms/password" className="font-bold underline">
-            mengganti kata sandi
+            change your password
           </Link>
           .
         </div>
@@ -60,19 +60,19 @@ export default async function NewsListPage({
           href="/cms/news"
           className={`rounded-full px-4 py-1.5 font-semibold ${!status ? 'bg-brand-600 text-white' : 'bg-white text-slate-600'}`}
         >
-          Semua ({countPublished + countDraft})
+          All ({countPublished + countDraft})
         </Link>
         <Link
           href="/cms/news?status=draft"
           className={`rounded-full px-4 py-1.5 font-semibold ${status === 'draft' ? 'bg-brand-600 text-white' : 'bg-white text-slate-600'}`}
         >
-          Draf ({countDraft})
+          Draft ({countDraft})
         </Link>
       </div>
 
       {news.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-          <p className="text-sm text-slate-500">Belum ada berita. Tambahkan berita pertama Anda.</p>
+          <p className="text-sm text-slate-500">No news yet. Add your first news.</p>
         </div>
       ) : (
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -89,29 +89,29 @@ export default async function NewsListPage({
                   <div className="flex items-center gap-2">
                     {item.published ? (
                       <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700">
-                        <Eye className="h-3 w-3" /> Terbit
+                        <Eye className="h-3 w-3" /> Published
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700">
-                        <EyeOff className="h-3 w-3" /> Draf
+                        <EyeOff className="h-3 w-3" /> Draft
                       </span>
                     )}
                     <span className="text-xs text-slate-400">
-                      {new Date(item.date).toLocaleDateString('id-ID')}
+                      {new Date(item.date).toLocaleDateString('en-US')}
                     </span>
                   </div>
                   <Link
                     href={`/cms/news/${item.id}`}
                     className="block truncate text-sm font-semibold text-slate-900 hover:text-brand-600"
                   >
-                    {item.titleId}
+                    {item.titleEn}
                   </Link>
-                  <p className="truncate text-xs text-slate-500">oleh {item.author?.email}</p>
+                  <p className="truncate text-xs text-slate-500">by {item.author?.email}</p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   <Link
                     href={`/cms/news/${item.id}`}
-                    title="Lihat detail"
+                    title="View details"
                     className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
                   >
                     <ArrowUpRight className="h-4 w-4" />

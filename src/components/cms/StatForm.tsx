@@ -20,8 +20,8 @@ export default function StatForm({ mode, action, initial }: StatFormProps) {
 
   return (
     <ContentForm
-      title={mode === 'create' ? 'Tambah Statistik' : 'Edit Statistik'}
-      subtitle="Statistik yang tampil di samping section 'PERUSAHAAN'."
+      title={mode === 'create' ? 'Add Statistic' : 'Edit Statistic'}
+      subtitle="Statistics displayed alongside the Company section."
       error={state.error}
       submitLabel={mode === 'create' ? 'Simpan Statistik' : 'Perbarui Statistik'}
       cancelHref="/cms/profil/statistik"
@@ -37,8 +37,7 @@ export default function StatForm({ mode, action, initial }: StatFormProps) {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <TextInput name="labelId" label="Label (ID) *" defaultValue={initial?.labelId} required />
-        <TextInput name="labelEn" label="Label (EN) *" defaultValue={initial?.labelEn} required />
+        <TextInput name="labelEn" label="Label *" defaultValue={initial?.labelEn} required />
       </div>
     </ContentForm>
   );

@@ -23,11 +23,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${inter.variable} scroll-smooth`}>
+    <html lang="en" className={`${inter.variable} scroll-smooth`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem('thc_lang');if(s==='en'||s==='id'){document.documentElement.lang=s;return;}var l=(navigator.language||'').toLowerCase();var d=l.indexOf('id')===0?'id':'en';document.documentElement.lang=d;try{localStorage.setItem('thc_lang',d);}catch(e){}}catch(e){}})();`,
+            __html: `(function(){try{document.documentElement.lang='en';localStorage.setItem('thc_lang','en');}catch(e){}})();`,
           }}
         />
       </head>

@@ -8,8 +8,8 @@ import { isPasswordExpired } from '@/lib/password';
 import { processImageUpload } from '@/lib/upload';
 import { writeAudit } from '@/lib/audit';
 
-const ERROR_NOT_AUTH = 'Anda tidak berhak melakukan aksi ini.';
-const ERROR_EXPIRED = 'Kata sandi kedaluwarsa. Ganti kata sandi terlebih dahulu.';
+const ERROR_NOT_AUTH = 'You are not allowed to perform this action.';
+const ERROR_EXPIRED = 'Password expired. Change your password first.';
 
 export interface ContentFormState {
   error?: string;
@@ -63,21 +63,20 @@ export async function createHeroSlide(
   if (!user) return { error: ERROR_NOT_AUTH };
   if (expired) return { error: ERROR_EXPIRED };
 
-  const titleId = text(formData, 'titleId');
   const titleEn = text(formData, 'titleEn');
-  if (!titleId || !titleEn) return { error: 'Judul slide (ID & EN) wajib diisi.' };
+  if (!titleEn) return { error: 'Slide title is required.' };
 
   const imageResult = await resolveImage(formData);
   if (imageResult.error) return { error: imageResult.error };
-  if (!imageResult.image) return { error: 'Gambar slide wajib diisi (upload atau URL).' };
+  if (!imageResult.image) return { error: 'Slide image is required (upload or URL).' };
 
   const slide = await prisma.heroSlide.create({
     data: {
-      titleId,
+      titleId: titleEn,
       titleEn,
-      subtitleId: text(formData, 'subtitleId') || null,
+      subtitleId: text(formData, 'subtitleEn') || null,
       subtitleEn: text(formData, 'subtitleEn') || null,
-      ctaLabelId: text(formData, 'ctaLabelId') || null,
+      ctaLabelId: text(formData, 'ctaLabelEn') || null,
       ctaLabelEn: text(formData, 'ctaLabelEn') || null,
       ctaHref: text(formData, 'ctaHref') || null,
       image: imageResult.image,
@@ -90,7 +89,7 @@ export async function createHeroSlide(
     userId: user.id,
     entity: 'HeroSlide',
     entityId: slide.id,
-    detail: `Slide hero "${slide.titleId}" ditambahkan`,
+    detail: `Hero slide "${slide.titleEn}" added`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/slider');
@@ -102,15 +101,14 @@ export async function updateHeroSlide(
 ): Promise<ContentFormState> {
   const id = text(formData, 'id');
   const existing = await prisma.heroSlide.findUnique({ where: { id } });
-  if (!existing) return { error: 'Slide tidak ditemukan.' };
+  if (!existing) return { error: 'Slide not found.' };
 
   const { user, expired } = await requireUser();
   if (!user) return { error: ERROR_NOT_AUTH };
   if (expired) return { error: ERROR_EXPIRED };
 
-  const titleId = text(formData, 'titleId');
   const titleEn = text(formData, 'titleEn');
-  if (!titleId || !titleEn) return { error: 'Judul slide (ID & EN) wajib diisi.' };
+  if (!titleEn) return { error: 'Slide title is required.' };
 
   const imageResult = await resolveImage(formData, existing.image);
   if (imageResult.error) return { error: imageResult.error };
@@ -118,11 +116,11 @@ export async function updateHeroSlide(
   const slide = await prisma.heroSlide.update({
     where: { id },
     data: {
-      titleId,
+      titleId: titleEn,
       titleEn,
-      subtitleId: text(formData, 'subtitleId') || null,
+      subtitleId: text(formData, 'subtitleEn') || null,
       subtitleEn: text(formData, 'subtitleEn') || null,
-      ctaLabelId: text(formData, 'ctaLabelId') || null,
+      ctaLabelId: text(formData, 'ctaLabelEn') || null,
       ctaLabelEn: text(formData, 'ctaLabelEn') || null,
       ctaHref: text(formData, 'ctaHref') || null,
       image: imageResult.image || existing.image,
@@ -135,7 +133,7 @@ export async function updateHeroSlide(
     userId: user.id,
     entity: 'HeroSlide',
     entityId: slide.id,
-    detail: `Slide hero "${slide.titleId}" diperbarui`,
+    detail: `Hero slide "${slide.titleEn}" updated`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/slider');
@@ -155,7 +153,7 @@ export async function deleteHeroSlide(formData: FormData) {
     userId: user.id,
     entity: 'HeroSlide',
     entityId: id,
-    detail: `Slide hero "${slide.titleId}" dihapus`,
+    detail: `Hero slide "${slide.titleEn}" deleted`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/slider');
@@ -171,17 +169,13 @@ export async function upsertProfile(
   if (!user) return { error: ERROR_NOT_AUTH };
   if (expired) return { error: ERROR_EXPIRED };
 
-  const titleId = text(formData, 'titleId');
   const titleEn = text(formData, 'titleEn');
-  const p1Id = text(formData, 'p1Id');
   const p1En = text(formData, 'p1En');
-  if (!titleId || !titleEn || !p1Id || !p1En) {
-    return { error: 'Judul (ID & EN) dan paragraf pertama (ID & EN) wajib diisi.' };
+  if (!titleEn || !p1En) {
+    return { error: 'Title and first paragraph are required.' };
   }
 
-  const licensesId = linesToArray(text(formData, 'licensesId'));
   const licensesEn = linesToArray(text(formData, 'licensesEn'));
-  const misiId = text(formData, 'misiId');
   const misiEn = text(formData, 'misiEn');
   const existingId = text(formData, 'id');
 
@@ -198,19 +192,19 @@ export async function upsertProfile(
   })();
 
   const data = {
-    titleId,
+    titleId: titleEn,
     titleEn,
-    p1Id,
+    p1Id: p1En,
     p1En,
-    p2Id: text(formData, 'p2Id'),
+    p2Id: text(formData, 'p2En'),
     p2En: text(formData, 'p2En'),
-    introId: text(formData, 'introId'),
+    introId: text(formData, 'introEn'),
     introEn: text(formData, 'introEn'),
-    visiId: text(formData, 'visiId'),
+    visiId: text(formData, 'visiEn'),
     visiEn: text(formData, 'visiEn'),
-    misiId,
+    misiId: misiEn,
     misiEn,
-    licensesId: licensesId.length ? licensesId : [],
+    licensesId: licensesEn.length ? licensesEn : [],
     licensesEn: licensesEn.length ? licensesEn : [],
     ...(homeImage ? { homeImage } : {}),
   };
@@ -226,7 +220,7 @@ export async function upsertProfile(
     userId: user.id,
     entity: 'CompanyContent',
     entityId: company.id,
-    detail: 'Profil perusahaan disimpan',
+    detail: 'Company profile saved',
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/profil');
@@ -240,7 +234,7 @@ async function getCompanyId(): Promise<string> {
   const created = await prisma.companyContent.create({
     data: {
       id: 'company',
-      titleId: 'PERUSAHAAN',
+      titleId: 'COMPANY',
       titleEn: 'COMPANY',
       p1Id: '',
       p1En: '',
@@ -267,11 +261,10 @@ export async function createStat(
   if (!user) return { error: ERROR_NOT_AUTH };
   if (expired) return { error: ERROR_EXPIRED };
 
-  const labelId = text(formData, 'labelId');
   const labelEn = text(formData, 'labelEn');
   const value = Number(text(formData, 'value'));
-  if (!labelId || !labelEn || Number.isNaN(value)) {
-    return { error: 'Angka dan label statistik (ID & EN) wajib diisi.' };
+  if (!labelEn || Number.isNaN(value)) {
+    return { error: 'Value and statistic label are required.' };
   }
 
   const stat = await prisma.companyStat.create({
@@ -280,7 +273,7 @@ export async function createStat(
       order: Number(text(formData, 'order') || 0),
       value,
       suffix: text(formData, 'suffix') || '',
-      labelId,
+      labelId: labelEn,
       labelEn,
     },
   });
@@ -289,7 +282,7 @@ export async function createStat(
     userId: user.id,
     entity: 'CompanyStat',
     entityId: stat.id,
-    detail: `Statistik "${stat.labelId}" ditambahkan`,
+    detail: `Statistic "${stat.labelEn}" added`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/profil/statistik');
@@ -301,17 +294,16 @@ export async function updateStat(
 ): Promise<ContentFormState> {
   const id = text(formData, 'id');
   const existing = await prisma.companyStat.findUnique({ where: { id } });
-  if (!existing) return { error: 'Statistik tidak ditemukan.' };
+  if (!existing) return { error: 'Statistic not found.' };
 
   const { user, expired } = await requireUser();
   if (!user) return { error: ERROR_NOT_AUTH };
   if (expired) return { error: ERROR_EXPIRED };
 
-  const labelId = text(formData, 'labelId');
   const labelEn = text(formData, 'labelEn');
   const value = Number(text(formData, 'value'));
-  if (!labelId || !labelEn || Number.isNaN(value)) {
-    return { error: 'Angka dan label statistik (ID & EN) wajib diisi.' };
+  if (!labelEn || Number.isNaN(value)) {
+    return { error: 'Value and statistic label are required.' };
   }
 
   const stat = await prisma.companyStat.update({
@@ -320,7 +312,7 @@ export async function updateStat(
       order: Number(text(formData, 'order') || 0),
       value,
       suffix: text(formData, 'suffix') || '',
-      labelId,
+      labelId: labelEn,
       labelEn,
     },
   });
@@ -329,7 +321,7 @@ export async function updateStat(
     userId: user.id,
     entity: 'CompanyStat',
     entityId: stat.id,
-    detail: `Statistik "${stat.labelId}" diperbarui`,
+    detail: `Statistic "${stat.labelEn}" updated`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/profil/statistik');
@@ -349,7 +341,7 @@ export async function deleteStat(formData: FormData) {
     userId: user.id,
     entity: 'CompanyStat',
     entityId: id,
-    detail: `Statistik "${stat.labelId}" dihapus`,
+    detail: `Statistic "${stat.labelEn}" deleted`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/profil/statistik');
@@ -365,19 +357,17 @@ export async function createService(
   if (!user) return { error: ERROR_NOT_AUTH };
   if (expired) return { error: ERROR_EXPIRED };
 
-  const titleId = text(formData, 'titleId');
   const titleEn = text(formData, 'titleEn');
-  const descId = text(formData, 'descId');
   const descEn = text(formData, 'descEn');
-  if (!titleId || !titleEn || !descId || !descEn) {
-    return { error: 'Judul (ID & EN) dan deskripsi (ID & EN) wajib diisi.' };
+  if (!titleEn || !descEn) {
+    return { error: 'Title and description are required.' };
   }
 
   const service = await prisma.serviceItem.create({
     data: {
-      titleId,
+      titleId: titleEn,
       titleEn,
-      descId,
+      descId: descEn,
       descEn,
       icon: text(formData, 'icon') || 'layers',
       iconColor: text(formData, 'iconColor') || 'text-brand-600',
@@ -390,7 +380,7 @@ export async function createService(
     userId: user.id,
     entity: 'ServiceItem',
     entityId: service.id,
-    detail: `Layanan "${service.titleId}" ditambahkan`,
+    detail: `Service "${service.titleEn}" added`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/layanan');
@@ -402,26 +392,24 @@ export async function updateService(
 ): Promise<ContentFormState> {
   const id = text(formData, 'id');
   const existing = await prisma.serviceItem.findUnique({ where: { id } });
-  if (!existing) return { error: 'Layanan tidak ditemukan.' };
+  if (!existing) return { error: 'Service not found.' };
 
   const { user, expired } = await requireUser();
   if (!user) return { error: ERROR_NOT_AUTH };
   if (expired) return { error: ERROR_EXPIRED };
 
-  const titleId = text(formData, 'titleId');
   const titleEn = text(formData, 'titleEn');
-  const descId = text(formData, 'descId');
   const descEn = text(formData, 'descEn');
-  if (!titleId || !titleEn || !descId || !descEn) {
-    return { error: 'Judul (ID & EN) dan deskripsi (ID & EN) wajib diisi.' };
+  if (!titleEn || !descEn) {
+    return { error: 'Title and description are required.' };
   }
 
   const service = await prisma.serviceItem.update({
     where: { id },
     data: {
-      titleId,
+      titleId: titleEn,
       titleEn,
-      descId,
+      descId: descEn,
       descEn,
       icon: text(formData, 'icon') || existing.icon,
       iconColor: text(formData, 'iconColor') || existing.iconColor,
@@ -434,7 +422,7 @@ export async function updateService(
     userId: user.id,
     entity: 'ServiceItem',
     entityId: service.id,
-    detail: `Layanan "${service.titleId}" diperbarui`,
+    detail: `Service "${service.titleEn}" updated`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/layanan');
@@ -454,7 +442,7 @@ export async function deleteService(formData: FormData) {
     userId: user.id,
     entity: 'ServiceItem',
     entityId: id,
-    detail: `Layanan "${service.titleId}" dihapus`,
+    detail: `Service "${service.titleEn}" deleted`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/layanan');
@@ -483,11 +471,11 @@ export async function createLogo(
   if (expired) return { error: ERROR_EXPIRED };
 
   const name = text(formData, 'name');
-  if (!name) return { error: 'Nama wajib diisi.' };
+  if (!name) return { error: 'Name is required.' };
 
   const imageResult = await resolveImage(formData);
   if (imageResult.error) return { error: imageResult.error };
-  if (!imageResult.image) return { error: 'Logo wajib diisi (upload atau URL).' };
+  if (!imageResult.image) return { error: 'Logo is required (upload or URL).' };
 
   const repo = logoRepository(entity);
   const item = await (repo as typeof prisma.customerLogo).create({
@@ -503,7 +491,7 @@ export async function createLogo(
     userId: user.id,
     entity,
     entityId: item.id,
-    detail: `${entity === 'CustomerLogo' ? 'Pelanggan' : 'Mitra'} "${name}" ditambahkan`,
+    detail: `${entity === 'CustomerLogo' ? 'Customer' : 'Partner'} "${name}" added`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect(logoRedirectPath(entity));
@@ -517,7 +505,7 @@ export async function updateLogo(
   const id = text(formData, 'id');
   const repo = logoRepository(entity) as typeof prisma.customerLogo;
   const existing = await repo.findUnique({ where: { id } });
-  if (!existing) return { error: 'Data tidak ditemukan.' };
+  if (!existing) return { error: 'Record not found.' };
 
   const { user, expired } = await requireUser();
   if (!user) return { error: ERROR_NOT_AUTH };
@@ -543,7 +531,7 @@ export async function updateLogo(
     userId: user.id,
     entity,
     entityId: item.id,
-    detail: `${entity === 'CustomerLogo' ? 'Pelanggan' : 'Mitra'} "${name}" diperbarui`,
+    detail: `${entity === 'CustomerLogo' ? 'Customer' : 'Partner'} "${name}" updated`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect(logoRedirectPath(entity));
@@ -564,7 +552,7 @@ export async function deleteLogo(entity: LogoEntity, formData: FormData) {
     userId: user.id,
     entity,
     entityId: id,
-    detail: `${entity === 'CustomerLogo' ? 'Pelanggan' : 'Mitra'} "${existing.name}" dihapus`,
+    detail: `${entity === 'CustomerLogo' ? 'Customer' : 'Partner'} "${existing.name}" deleted`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect(logoRedirectPath(entity));
@@ -580,19 +568,17 @@ export async function createFaq(
   if (!user) return { error: ERROR_NOT_AUTH };
   if (expired) return { error: ERROR_EXPIRED };
 
-  const questionId = text(formData, 'questionId');
   const questionEn = text(formData, 'questionEn');
-  const answerId = text(formData, 'answerId');
   const answerEn = text(formData, 'answerEn');
-  if (!questionId || !questionEn || !answerId || !answerEn) {
-    return { error: 'Pertanyaan (ID & EN) dan jawaban (ID & EN) wajib diisi.' };
+  if (!questionEn || !answerEn) {
+    return { error: 'Question and answer are required.' };
   }
 
   const faq = await prisma.faqEntry.create({
     data: {
-      questionId,
+      questionId: questionEn,
       questionEn,
-      answerId,
+      answerId: answerEn,
       answerEn,
       order: Number(text(formData, 'order') || 0),
       active: active(formData),
@@ -603,7 +589,7 @@ export async function createFaq(
     userId: user.id,
     entity: 'FaqEntry',
     entityId: faq.id,
-    detail: `FAQ "${questionId.slice(0, 60)}" ditambahkan`,
+    detail: `FAQ "${questionEn.slice(0, 60)}" added`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/faq');
@@ -615,26 +601,24 @@ export async function updateFaq(
 ): Promise<ContentFormState> {
   const id = text(formData, 'id');
   const existing = await prisma.faqEntry.findUnique({ where: { id } });
-  if (!existing) return { error: 'FAQ tidak ditemukan.' };
+  if (!existing) return { error: 'FAQ not found.' };
 
   const { user, expired } = await requireUser();
   if (!user) return { error: ERROR_NOT_AUTH };
   if (expired) return { error: ERROR_EXPIRED };
 
-  const questionId = text(formData, 'questionId');
   const questionEn = text(formData, 'questionEn');
-  const answerId = text(formData, 'answerId');
   const answerEn = text(formData, 'answerEn');
-  if (!questionId || !questionEn || !answerId || !answerEn) {
-    return { error: 'Pertanyaan (ID & EN) dan jawaban (ID & EN) wajib diisi.' };
+  if (!questionEn || !answerEn) {
+    return { error: 'Question and answer are required.' };
   }
 
   const faq = await prisma.faqEntry.update({
     where: { id },
     data: {
-      questionId,
+      questionId: questionEn,
       questionEn,
-      answerId,
+      answerId: answerEn,
       answerEn,
       order: Number(text(formData, 'order') || 0),
       active: active(formData),
@@ -645,7 +629,7 @@ export async function updateFaq(
     userId: user.id,
     entity: 'FaqEntry',
     entityId: faq.id,
-    detail: `FAQ "${questionId.slice(0, 60)}" diperbarui`,
+    detail: `FAQ "${questionEn.slice(0, 60)}" updated`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/faq');
@@ -665,7 +649,7 @@ export async function deleteFaq(formData: FormData) {
     userId: user.id,
     entity: 'FaqEntry',
     entityId: id,
-    detail: `FAQ dihapus`,
+    detail: `FAQ deleted`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/faq');
@@ -683,13 +667,13 @@ export async function upsertContact(
 
   const email = text(formData, 'email');
   const phoneDisplay = text(formData, 'phoneDisplay');
-  if (!email || !phoneDisplay) return { error: 'Email dan telepon wajib diisi.' };
+  if (!email || !phoneDisplay) return { error: 'Email and phone number are required.' };
 
   const existingId = text(formData, 'id');
   const data = {
-    officeAddressId: text(formData, 'officeAddressId'),
+    officeAddressId: text(formData, 'officeAddressEn'),
     officeAddressEn: text(formData, 'officeAddressEn'),
-    operationalAddressId: text(formData, 'operationalAddressId'),
+    operationalAddressId: text(formData, 'operationalAddressEn'),
     operationalAddressEn: text(formData, 'operationalAddressEn'),
     phone: text(formData, 'phone') || phoneDisplay,
     phoneDisplay,
@@ -703,7 +687,7 @@ export async function upsertContact(
       userId: user.id,
       entity: 'ContactSetting',
       entityId: row.id,
-      detail: 'Kontak diperbarui',
+      detail: 'Contacts updated',
     });
   } else {
     const row = await prisma.contactSetting.create({ data: { id: 'kontak', ...data } });
@@ -711,7 +695,7 @@ export async function upsertContact(
       userId: user.id,
       entity: 'ContactSetting',
       entityId: row.id,
-      detail: 'Kontak dibuat',
+      detail: 'Contacts created',
     });
   }
 
@@ -731,7 +715,7 @@ export async function createSocial(
 
   const platform = text(formData, 'platform');
   const url = text(formData, 'url');
-  if (!platform || !url) return { error: 'Platform dan URL wajib diisi.' };
+  if (!platform || !url) return { error: 'Platform and URL are required.' };
 
   const social = await prisma.socialMediaLink.create({
     data: { platform, url, order: Number(text(formData, 'order') || 0), active: active(formData) },
@@ -741,7 +725,7 @@ export async function createSocial(
     userId: user.id,
     entity: 'SocialMediaLink',
     entityId: social.id,
-    detail: `Sosial media ${platform} ditambahkan`,
+    detail: `Social media ${platform} added`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/sosmed');
@@ -753,7 +737,7 @@ export async function updateSocial(
 ): Promise<ContentFormState> {
   const id = text(formData, 'id');
   const existing = await prisma.socialMediaLink.findUnique({ where: { id } });
-  if (!existing) return { error: 'Tautan tidak ditemukan.' };
+  if (!existing) return { error: 'Link not found.' };
 
   const { user, expired } = await requireUser();
   if (!user) return { error: ERROR_NOT_AUTH };
@@ -761,7 +745,7 @@ export async function updateSocial(
 
   const platform = text(formData, 'platform');
   const url = text(formData, 'url');
-  if (!platform || !url) return { error: 'Platform dan URL wajib diisi.' };
+  if (!platform || !url) return { error: 'Platform and URL are required.' };
 
   const social = await prisma.socialMediaLink.update({
     where: { id },
@@ -772,7 +756,7 @@ export async function updateSocial(
     userId: user.id,
     entity: 'SocialMediaLink',
     entityId: social.id,
-    detail: `Sosial media ${platform} diperbarui`,
+    detail: `Social media ${platform} updated`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/sosmed');
@@ -792,7 +776,7 @@ export async function deleteSocial(formData: FormData) {
     userId: user.id,
     entity: 'SocialMediaLink',
     entityId: id,
-    detail: `Sosial media ${existing.platform} dihapus`,
+    detail: `Social media ${existing.platform} deleted`,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/sosmed');

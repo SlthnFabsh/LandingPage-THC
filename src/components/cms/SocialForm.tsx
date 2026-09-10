@@ -28,10 +28,10 @@ export default function SocialForm({ mode, action, initial }: SocialFormProps) {
 
   return (
     <ContentForm
-      title={mode === 'create' ? 'Tambah Sosial Media' : 'Edit Sosial Media'}
-      subtitle="Tautan sosial media yang tampil di footer."
+      title={mode === 'create' ? 'Add Social Media' : 'Edit Social Media'}
+      subtitle="Social media links shown in the footer."
       error={state.error}
-      submitLabel={mode === 'create' ? 'Simpan Tautan' : 'Perbarui Tautan'}
+      submitLabel={mode === 'create' ? 'Save Link' : 'Update Link'}
       cancelHref="/cms/sosmed"
       action={formAction}
       id={initial?.id}
@@ -50,7 +50,7 @@ export default function SocialForm({ mode, action, initial }: SocialFormProps) {
       <TextInput name="url" label="URL *" defaultValue={initial?.url} required placeholder="https://instagram.com/transhybrid" />
 
       <div className="flex items-end">
-        <Checkbox name="active" label="Tampilkan" defaultChecked={initial?.active ?? true} />
+        <Checkbox name="active" label="Visible" defaultChecked={initial?.active ?? true} />
       </div>
     </ContentForm>
   );

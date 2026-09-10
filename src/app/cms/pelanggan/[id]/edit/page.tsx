@@ -13,5 +13,5 @@ export default async function PelangganEditPage({ params }: { params: Promise<{ 
   if (!logo) notFound();
 
   const action = updateLogo.bind(null, 'CustomerLogo');
-  return <LogoForm entityLabel="Pelanggan" mode="edit" action={action as never} initial={logo} />;
+  return <LogoForm entityLabel="Customer" mode="edit" action={action as never} initial={logo} />;
 }

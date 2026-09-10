@@ -20,21 +20,21 @@ export default function LogoForm({ entityLabel, mode, action, initial }: LogoFor
 
   return (
     <ContentForm
-      title={mode === 'create' ? `Tambah ${entityLabel}` : `Edit ${entityLabel}`}
-      subtitle="Logo yang tampil pada baris berjalan di halaman utama."
+      title={mode === 'create' ? `Add ${entityLabel}` : `Edit ${entityLabel}`}
+      subtitle="Logo shown in the scrolling row on the home page."
       error={state.error}
-      submitLabel={mode === 'create' ? 'Simpan' : 'Perbarui'}
-      cancelHref={entityLabel === 'Mitra' ? '/cms/mitra' : '/cms/pelanggan'}
+      submitLabel={mode === 'create' ? 'Save' : 'Update'}
+      cancelHref={entityLabel === 'Partner' ? '/cms/mitra' : '/cms/pelanggan'}
       action={formAction}
       id={initial?.id}
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <TextInput name="name" label="Nama *" defaultValue={initial?.name} required />
+        <TextInput name="name" label="Name *" defaultValue={initial?.name} required />
         <OrderInput defaultValue={initial?.order} />
       </div>
 
       <div className="flex items-end">
-        <Checkbox name="active" label="Tampilkan" defaultChecked={initial?.active ?? true} />
+        <Checkbox name="active" label="Visible" defaultChecked={initial?.active ?? true} />
       </div>
 
       <ImageInput fileName="image" urlName="imageUrl" current={initial?.image} note="Logo" />

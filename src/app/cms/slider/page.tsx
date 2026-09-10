@@ -16,13 +16,13 @@ export default async function SliderListPage() {
     <div className="space-y-6">
       <ListHeader
         title="Slider (Hero)"
-        subtitle="Slide di bagian paling atas halaman utama."
+        subtitle="Slides at the very top of the home page."
         addHref="/cms/slider/new"
-        addLabel="Tambah Slide"
+        addLabel="Add Slide"
       />
       {passwordExpired && <PasswordExpiredBanner />}
       {slides.length === 0 ? (
-        <EmptyState message="Belum ada slide. Tambahkan slide pertama Anda." />
+        <EmptyState message="No slides yet. Add your first slide." />
       ) : (
         <ListCard>
           {slides.map((slide) => (
@@ -35,16 +35,16 @@ export default async function SliderListPage() {
               />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400">Urutan {slide.order}</span>
+                  <span className="text-xs text-slate-400">Order {slide.order}</span>
                   <ActiveBadge active={slide.active} />
                 </div>
                 <Link
                   href={`/cms/slider/${slide.id}/edit`}
                   className="block truncate text-sm font-semibold text-slate-900 hover:text-brand-600"
                 >
-                  {slide.titleId}
+                  {slide.titleEn}
                 </Link>
-                <p className="truncate text-xs text-slate-500">{slide.titleEn}</p>
+                <p className="truncate text-xs text-slate-500">{slide.subtitleEn}</p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <Link
@@ -54,7 +54,7 @@ export default async function SliderListPage() {
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
-                <DeleteContentButton action={deleteHeroSlide} id={slide.id} disabled={passwordExpired} confirmText="Hapus slide ini?" />
+                <DeleteContentButton action={deleteHeroSlide} id={slide.id} disabled={passwordExpired} confirmText="Delete this slide?" />
               </div>
             </Row>
           ))}

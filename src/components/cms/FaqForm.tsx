@@ -19,22 +19,20 @@ export default function FaqForm({ mode, action, initial }: FaqFormProps) {
 
   return (
     <ContentForm
-      title={mode === 'create' ? 'Tambah FAQ' : 'Edit FAQ'}
-      subtitle="Pertanyaan dan jawaban pada section FAQ (ID & EN)."
+      title={mode === 'create' ? 'Add FAQ' : 'Edit FAQ'}
+      subtitle="Question and answer in the FAQ section."
       error={state.error}
-      submitLabel={mode === 'create' ? 'Simpan FAQ' : 'Perbarui FAQ'}
+      submitLabel={mode === 'create' ? 'Save FAQ' : 'Update FAQ'}
       cancelHref="/cms/faq"
       action={formAction}
       id={initial?.id}
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <TextInput name="questionId" label="Pertanyaan (ID) *" defaultValue={initial?.questionId} required />
-        <TextInput name="questionEn" label="Pertanyaan (EN) *" defaultValue={initial?.questionEn} required />
+        <TextInput name="questionEn" label="Question *" defaultValue={initial?.questionEn} required />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <TextArea name="answerId" label="Jawaban (ID) *" defaultValue={initial?.answerId} required rows={5} />
-        <TextArea name="answerEn" label="Jawaban (EN) *" defaultValue={initial?.answerEn} required rows={5} />
+        <TextArea name="answerEn" label="Answer *" defaultValue={initial?.answerEn} required rows={5} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

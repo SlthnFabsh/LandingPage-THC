@@ -19,8 +19,8 @@ export default function SliderForm({ mode, action, initial }: SliderFormProps) {
 
   return (
     <ContentForm
-      title={mode === 'create' ? 'Tambah Slide' : 'Edit Slide'}
-      subtitle="Slide hero di halaman utama. Judul, subjudul, tombol, dan gambar dapat disesuaikan (ID & EN)."
+      title={mode === 'create' ? 'Add Slide' : 'Edit Slide'}
+      subtitle="Hero slide on the home page. Title, subtitle, button, and image can be customized."
       error={state.error}
       submitLabel={mode === 'create' ? 'Simpan Slide' : 'Perbarui Slide'}
       cancelHref="/cms/slider"
@@ -28,18 +28,15 @@ export default function SliderForm({ mode, action, initial }: SliderFormProps) {
       id={initial?.id}
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <TextInput name="titleId" label="Judul (ID) *" defaultValue={initial?.titleId} required />
-        <TextInput name="titleEn" label="Judul (EN) *" defaultValue={initial?.titleEn} required />
+        <TextInput name="titleEn" label="Title *" defaultValue={initial?.titleEn} required />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <TextArea name="subtitleId" label="Subjudul (ID)" defaultValue={initial?.subtitleId ?? ''} rows={3} />
-        <TextArea name="subtitleEn" label="Subjudul (EN)" defaultValue={initial?.subtitleEn ?? ''} rows={3} />
+        <TextArea name="subtitleEn" label="Subtitle" defaultValue={initial?.subtitleEn ?? ''} rows={3} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <TextInput name="ctaLabelId" label="Tombol CTA (ID)" defaultValue={initial?.ctaLabelId ?? ''} />
-        <TextInput name="ctaLabelEn" label="Tombol CTA (EN)" defaultValue={initial?.ctaLabelEn ?? ''} />
+        <TextInput name="ctaLabelEn" label="CTA Button" defaultValue={initial?.ctaLabelEn ?? ''} />
       </div>
 
       <TextInput name="ctaHref" label="Tautan tombol (example: #layanan)" defaultValue={initial?.ctaHref ?? ''} placeholder="#layanan" />

@@ -32,19 +32,19 @@ export default async function EditNewsPage({
           className="mb-2 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700"
         >
           <ArrowLeft className="h-4 w-4" />
-          Kembali ke detail berita
+          Back to news details
         </Link>
-        <h1 className="text-2xl font-bold text-slate-900">Edit Berita</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Edit News</h1>
       </div>
       <NewsForm mode="edit" action={updateNews} initial={news} />
       <div className="flex items-center justify-between gap-4 rounded-2xl border border-red-100 bg-red-50/50 px-6 py-4">
         <p className="text-sm text-slate-600">
-          Hapus berita ini secara permanen. Tindakan ini tidak dapat dibatalkan.
+          Delete this news permanently. This action cannot be undone.
         </p>
         <DeleteNewsButton
           id={news.id}
           disabled={passwordExpired}
-          label="Hapus Berita"
+          label="Delete News"
           className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-40"
         />
       </div>

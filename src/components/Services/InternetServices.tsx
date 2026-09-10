@@ -16,6 +16,7 @@ const internetCards = [
     title: 'IP Transit',
     badge: 'Global & Domestic BGP',
     icon: Globe,
+    href: '/layanan/internet/ip-transit',
     description:
       'A comprehensive internet routing solution for global and domestic connectivity to reference points utilizing enterprise IP and ASN, featuring Border Gateway Protocol (BGP) technical configuration for optimal path redundancy and ultra-low latency.',
     features: ['Direct Tier-1 Upstreams', 'Full BGP Routing Table', 'Sub-millisecond Latency'],
@@ -24,6 +25,7 @@ const internetCards = [
     title: 'Dedicated Internet',
     badge: '1:1 Symmetrical Bandwidth',
     icon: Zap,
+    href: '/#faq',
     description:
       'Dedicated Internet is a premium 1:1 symmetrical IP service directly peered with THC routers under ASN 24534, provisioned across all THC International gateways for guaranteed throughput and 99.9% uptime SLA.',
     features: ['100% Dedicated (No Sharing)', '99.9% SLA Guarantee', '24/7 Proactive Monitoring'],
@@ -32,11 +34,13 @@ const internetCards = [
     title: 'THC IX',
     badge: 'Internet Exchange Peering',
     icon: Radio,
+    href: '/jaringan/global-network',
     description:
       'A high-capacity internet exchange service that optimizes domestic traffic routing, reduces upstream transit latency, and ensures resilient, high-speed direct interconnection across national peering points.',
     features: ['Direct Local Peering', 'Reduced Bandwidth Costs', 'Low Hop-Count Routing'],
   },
 ];
+
 
 export default function InternetServices() {
   return (
@@ -109,12 +113,14 @@ export default function InternetServices() {
                 {/* Footer Action */}
                 <div className="mt-6 border-t border-slate-100 pt-4">
                   <Link
-                    href="/#faq"
+                    href={card.href}
+                    prefetch={true}
                     className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600 transition-colors group-hover:text-brand-700"
                   >
                     <span>Learn More</span>
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                   </Link>
+
                 </div>
               </motion.div>
             );

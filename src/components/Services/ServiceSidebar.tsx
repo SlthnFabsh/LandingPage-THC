@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ArrowRight,
   PhoneCall,
+  Radio,
 } from 'lucide-react';
 
 interface SubServiceItem {
@@ -25,14 +26,27 @@ interface ServiceNavItem {
   href?: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
+  prefix?: string;
   subItems?: SubServiceItem[];
 }
 
 const serviceNavItems: ServiceNavItem[] = [
   {
-    href: '/layanan/internet',
     label: 'Internet Services',
     icon: Globe,
+    prefix: '/layanan/internet',
+    subItems: [
+      {
+        href: '/layanan/internet',
+        label: 'All Internet Services',
+        icon: Globe,
+      },
+      {
+        href: '/layanan/internet/ip-transit',
+        label: 'IP Transit (ASN 24534)',
+        icon: Radio,
+      },
+    ],
   },
   {
     href: '/layanan/konektivitas',
@@ -42,6 +56,7 @@ const serviceNavItems: ServiceNavItem[] = [
   {
     label: 'Solutions',
     icon: Cpu,
+    prefix: '/layanan/solusi',
     subItems: [
       {
         href: '/layanan/solusi/solusi-terkelola',
@@ -64,14 +79,22 @@ const serviceNavItems: ServiceNavItem[] = [
 
 export default function ServiceSidebar() {
   const pathname = usePathname();
-  const isSolutionsActive = pathname.startsWith('/layanan/solusi');
-  const [solutionsOpen, setSolutionsOpen] = useState(true);
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    'Internet Services': true,
+    Solutions: true,
+  });
 
   useEffect(() => {
-    if (isSolutionsActive) {
-      setSolutionsOpen(true);
-    }
-  }, [isSolutionsActive]);
+    serviceNavItems.forEach((item) => {
+      if (item.prefix && pathname.startsWith(item.prefix)) {
+        setOpenSections((prev) => ({ ...prev, [item.label]: true }));
+      }
+    });
+  }, [pathname]);
+
+  const toggleSection = (label: string) => {
+    setOpenSections((prev) => ({ ...prev, [label]: !prev[label] }));
+  };
 
   return (
     <aside className="w-full lg:w-72 xl:w-80 shrink-0">
@@ -88,16 +111,19 @@ export default function ServiceSidebar() {
           {/* Navigation Items */}
           <nav className="divide-y divide-slate-100/80 py-1" aria-label="Services sub-navigation">
             {serviceNavItems.map((item) => {
-              // Item with Sub-items (Solutions)
+              // Item with Sub-items (Accordion)
               if (item.subItems) {
                 const Icon = item.icon;
+                const isGroupActive = item.prefix ? pathname.startsWith(item.prefix) : false;
+                const isOpen = openSections[item.label] ?? true;
+
                 return (
                   <div key={item.label} className="py-1">
                     <button
                       type="button"
-                      onClick={() => setSolutionsOpen((prev) => !prev)}
+                      onClick={() => toggleSection(item.label)}
                       className={`flex w-full items-center justify-between px-5 py-3.5 text-[14px] font-medium transition-colors ${
-                        isSolutionsActive
+                        isGroupActive
                           ? 'font-semibold text-brand-600'
                           : 'text-slate-700 hover:text-brand-600'
                       }`}
@@ -105,7 +131,7 @@ export default function ServiceSidebar() {
                       <span className="flex items-center gap-3.5">
                         <span
                           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors ${
-                            isSolutionsActive
+                            isGroupActive
                               ? 'bg-brand-600 text-white shadow-glow-blue'
                               : 'bg-slate-100 text-slate-500'
                           }`}
@@ -116,13 +142,13 @@ export default function ServiceSidebar() {
                       </span>
                       <ChevronDown
                         className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${
-                          solutionsOpen ? 'rotate-180' : ''
+                          isOpen ? 'rotate-180' : ''
                         }`}
                       />
                     </button>
 
                     {/* Sub-items list */}
-                    {solutionsOpen && (
+                    {isOpen && (
                       <div className="ml-7 mr-3 my-1 space-y-1 border-l-2 border-slate-200 pl-3">
                         {item.subItems.map((sub) => {
                           const isSubActive = pathname === sub.href;

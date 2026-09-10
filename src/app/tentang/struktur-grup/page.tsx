@@ -25,8 +25,9 @@ export default async function StrukturGrupPage() {
         <AboutHero
           breadcrumb="Struktur Grup Perusahaan"
           title="Struktur Grup Perusahaan"
+          subtitle="Struktur entitas bisnis dan anak perusahaan di bawah naungan PT Trans Hybrid Communication dalam ekosistem solusi digital nasional."
         />
-        <section className="bg-slate-50/60 py-12 md:py-16">
+        <section className="bg-slate-50/60 py-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
               <AboutSidebar />

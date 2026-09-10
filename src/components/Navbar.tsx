@@ -149,6 +149,7 @@ export default function Navbar() {
                     <Link
                       key={href}
                       href={href}
+                      prefetch={true}
                       role="menuitem"
                       onClick={() => setTentangOpen(false)}
                       className="group flex items-start gap-3 rounded-xl px-4 py-3.5 transition-colors hover:bg-brand-50"
@@ -231,7 +232,7 @@ export default function Navbar() {
                 {mobileTentangOpen && (
                   <div className="mt-2 flex flex-col gap-2 border-l-2 border-brand-100 pl-4">
                     {tentangSubPages.map(({ titleKey, href }) => (
-                      <Link key={href} href={href} onClick={closeMenu} className="flex items-center justify-between py-1 text-[15px] text-slate-600 transition-colors hover:text-blue-600">
+                      <Link key={href} href={href} prefetch={true} onClick={closeMenu} className="flex items-center justify-between py-1 text-[15px] text-slate-600 transition-colors hover:text-blue-600">
                         <span>{t(titleKey)}</span>
                         <ArrowUpRight className="h-4 w-4 text-slate-400" />
                       </Link>

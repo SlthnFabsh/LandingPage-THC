@@ -531,3 +531,15 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 #lang-toggle-desktop .flag-en {
   box-shadow: 0 0 0 2px rgba(2, 86, 235, 0.15);
 }
+
+@keyframes loadingBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

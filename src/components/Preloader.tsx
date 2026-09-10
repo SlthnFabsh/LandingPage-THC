@@ -29,9 +29,9 @@ export default function Preloader() {
       return;
     }
 
-    const duration = prefs.reduced ? 200 : 1500;
+    const duration = prefs.reduced ? 100 : 400;
     const start = performance.now();
-    const steps = 24;
+    const steps = 16;
     let i = 0;
 
     // Use setInterval with coarse ticks to minimize React re-renders / main-thread load
@@ -55,7 +55,7 @@ export default function Preloader() {
       } catch {
         /* ignore */
       }
-      window.setTimeout(() => setHidden(true), prefs.reduced ? 0 : 200);
+      window.setTimeout(() => setHidden(true), prefs.reduced ? 0 : 100);
     };
 
     return () => {
@@ -69,13 +69,13 @@ export default function Preloader() {
   return (
     <div
       aria-hidden="true"
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0b132b] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        hidden ? '-translate-y-full' : 'translate-y-0'
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0b132b] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        hidden ? '-translate-y-full pointer-events-none' : 'translate-y-0'
       }`}
     >
       {/* Logo scale + fade */}
       <div
-        className={`relative transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`relative transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           hidden ? 'scale-90 opacity-0' : 'scale-100 opacity-100'
         }`}
       >

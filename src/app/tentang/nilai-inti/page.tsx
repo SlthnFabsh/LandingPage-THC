@@ -22,8 +22,12 @@ export default async function NilaiIntiPage() {
     <>
       <Navbar />
       <main>
-        <AboutHero breadcrumb="Nilai Inti" title="Nilai Inti" />
-        <section className="bg-slate-50/60 py-12 md:py-16">
+        <AboutHero
+          breadcrumb="Nilai Inti"
+          title="Nilai Inti Perusahaan"
+          subtitle="Nilai-nilai budaya T.C.A.R.E. yang memandu setiap interaksi insan Trans Hybrid Communication dalam melayani dan berinovasi."
+        />
+        <section className="bg-slate-50/60 py-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
               <AboutSidebar />

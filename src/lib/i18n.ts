@@ -9,6 +9,8 @@ export const translations = {
       jaringan: 'Jaringan',
       berita: 'Berita',
       informasi: 'Informasi Perusahaan',
+      strukturGrup: 'Struktur Grup Perusahaan',
+      nilaiInti: 'Nilai Inti',
       hubungi: 'Hubungi Kami',
       faq: 'FAQ',
       bahasa: 'Bahasa'
@@ -37,6 +39,8 @@ export const translations = {
     },
     about: {
       desc: 'Profil, lisensi, visi, misi, dan perjalanan perusahaan sejak 2006.',
+      strukturGrupDesc: 'Struktur kepemilikan grup dan anak perusahaan THC.',
+      nilaiIntiDesc: 'Nilai-nilai T.C.A.R.E. yang menjadi fondasi budaya perusahaan.',
       breadcrumbHome: 'Rumah',
       intro: 'PT Trans Hybrid Communication (THC), sebuah perusahaan penanaman modal asing (PMA), didirikan pada tahun 2006. Bisnis utamanya adalah menyediakan akses jaringan berbasis teknologi internet IP (NAP) kepada Penyedia Layanan Internet. Pada tahun 2017, THC mulai mengembangkan bisnisnya di bidang TIK menyusul tingginya kebutuhan akan internet sebagai media yang berperan penting dalam industri telekomunikasi dan bidang-bidang lainnya.',
       lisensi: 'Lisensi',
@@ -150,6 +154,8 @@ export const translations = {
       jaringan: 'Network',
       berita: 'News',
       informasi: 'Company Information',
+      strukturGrup: 'Group Structure',
+      nilaiInti: 'Core Values',
       hubungi: 'Contact Us',
       faq: 'FAQ',
       bahasa: 'Language'
@@ -178,6 +184,8 @@ export const translations = {
     },
     about: {
       desc: 'Company profile, licenses, vision, mission, and journey since 2006.',
+      strukturGrupDesc: 'Ownership structure and subsidiaries of the THC group.',
+      nilaiIntiDesc: 'T.C.A.R.E. values that form the foundation of company culture.',
       breadcrumbHome: 'Home',
       intro: 'PT Trans Hybrid Communication (THC), a foreign investment company (PMA), was established in 2006. Its core business is providing IP-based internet network access (NAP) to Internet Service Providers. In 2017, THC began expanding into the ICT sector following the growing demand for internet as a medium that plays an important role in the telecommunications industry and other fields.',
       lisensi: 'Licenses',

@@ -27,8 +27,8 @@ export default function CompanyProfile({ about }: CompanyProfileProps) {
   const lisensiTitle = lang === 'id' ? 'Lisensi' : 'Licenses';
 
   return (
-    <section className="bg-white py-16 md:py-24">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-soft">
+      <div className="px-6 py-10 sm:px-8 md:py-14">
         {/* Intro */}
         <motion.div {...reveal()} className="mx-auto max-w-3xl">
           <div className="mb-5 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-brand-600">
@@ -101,6 +101,7 @@ export default function CompanyProfile({ about }: CompanyProfileProps) {
           </motion.article>
         </div>
       </div>
-    </section>
+    </div>
+
   );
 }

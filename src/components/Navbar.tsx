@@ -1,16 +1,36 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown, ArrowUpRight, Building2 } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowUpRight, Building2, GitFork, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
+
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  Building2,
+  GitFork,
+  Sparkles,
+};
+
 
 const tentangSubPages = [
   {
     titleKey: 'nav.informasi',
     descKey: 'about.desc',
     href: '/tentang/informasi-perusahaan',
+    icon: 'Building2',
+  },
+  {
+    titleKey: 'nav.strukturGrup',
+    descKey: 'about.strukturGrupDesc',
+    href: '/tentang/struktur-grup',
+    icon: 'GitFork',
+  },
+  {
+    titleKey: 'nav.nilaiInti',
+    descKey: 'about.nilaiIntiDesc',
+    href: '/tentang/nilai-inti',
+    icon: 'Sparkles',
   },
 ];
 
@@ -121,9 +141,11 @@ export default function Navbar() {
                 <ChevronDown className={`h-4 w-4 transition-transform ${tentangOpen ? 'rotate-180' : ''}`} />
               </button>
               {tentangOpen && (
-                <div className="absolute left-0 top-full z-50 w-[340px] pt-4">
+                <div className="absolute left-0 top-full z-50 w-[360px] pt-4">
                   <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 p-2 shadow-xl shadow-slate-900/10 backdrop-blur-xl" role="menu" aria-label={`${t('nav.tentang')} menu`}>
-                  {tentangSubPages.map(({ titleKey, descKey, href }) => (
+                  {tentangSubPages.map(({ titleKey, descKey, href, icon }) => {
+                    const Icon = iconMap[icon] ?? Building2;
+                    return (
                     <Link
                       key={href}
                       href={href}
@@ -132,7 +154,7 @@ export default function Navbar() {
                       className="group flex items-start gap-3 rounded-xl px-4 py-3.5 transition-colors hover:bg-brand-50"
                     >
                       <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-600/10 text-brand-600">
-                        <Building2 className="h-[18px] w-[18px]" />
+                        <Icon className="h-[18px] w-[18px]" />
                       </span>
                       <span className="flex-1">
                         <span className="block text-[15px] font-semibold text-slate-900 transition-colors group-hover:text-brand-700">{t(titleKey)}</span>
@@ -140,7 +162,8 @@ export default function Navbar() {
                       </span>
                       <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-brand-600 opacity-0 transition-opacity group-hover:opacity-100" />
                     </Link>
-                  ))}
+                  )})}
+
                   </div>
                 </div>
               )}

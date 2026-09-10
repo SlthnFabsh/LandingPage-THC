@@ -4,19 +4,18 @@ import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
 import AboutHero from '@/components/About/AboutHero';
 import AboutSidebar from '@/components/About/AboutSidebar';
-import CompanyProfile from '@/components/About/CompanyProfile';
-import Milestones from '@/components/About/Milestones';
+import StrukturGrup from '@/components/About/StrukturGrup';
 import { getSiteContent } from '@/lib/content';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Informasi Perusahaan | Trans Hybrid Communication',
+  title: 'Struktur Grup Perusahaan | Trans Hybrid Communication',
   description:
-    'Profil PT Trans Hybrid Communication (THC): profil perusahaan, lisensi, visi, misi, dan perjalanan perusahaan sejak 2006.',
+    'Struktur kepemilikan grup PT Trans Hybrid Communication beserta anak perusahaan: Dukodu Digital Solution dan THC Digital Solution.',
 };
 
-export default async function InformasiPerusahaanPage() {
+export default async function StrukturGrupPage() {
   const content = await getSiteContent();
 
   return (
@@ -24,20 +23,19 @@ export default async function InformasiPerusahaanPage() {
       <Navbar />
       <main>
         <AboutHero
-          breadcrumb="Informasi Perusahaan"
-          title="Informasi Perusahaan"
+          breadcrumb="Struktur Grup Perusahaan"
+          title="Struktur Grup Perusahaan"
         />
         <section className="bg-slate-50/60 py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
               <AboutSidebar />
               <div className="min-w-0 flex-1">
-                <CompanyProfile about={content.about} />
+                <StrukturGrup />
               </div>
             </div>
           </div>
         </section>
-        <Milestones />
       </main>
       <Footer contact={content.contact} socials={content.socials} />
       <BackToTop />

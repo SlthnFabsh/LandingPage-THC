@@ -3,15 +3,32 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown, ArrowUpRight, Building2, GitFork, Sparkles } from 'lucide-react';
+import {
+  Menu,
+  X,
+  ChevronDown,
+  ArrowUpRight,
+  Building2,
+  GitFork,
+  Sparkles,
+  Globe,
+  Network,
+  Cpu,
+  Database,
+  ServerCog,
+} from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Building2,
   GitFork,
   Sparkles,
+  Globe,
+  Network,
+  Cpu,
+  Database,
+  ServerCog,
 };
-
 
 const tentangSubPages = [
   {
@@ -34,17 +51,54 @@ const tentangSubPages = [
   },
 ];
 
+const layananSubPages = [
+  {
+    title: 'Internet Services',
+    desc: 'Dedicated Fiber Optic, IP Transit & THC IX',
+    href: '/layanan/internet',
+    icon: 'Globe',
+  },
+  {
+    title: 'Connectivity Services',
+    desc: 'IPLC, IEPL Layer-2, Metro Ethernet & IDCB',
+    href: '/layanan/konektivitas',
+    icon: 'Network',
+  },
+  {
+    title: 'Managed Solutions',
+    desc: 'Hospitality & Education digital solutions',
+    href: '/layanan/solusi/solusi-terkelola',
+    icon: 'Building2',
+  },
+  {
+    title: 'Managed Services',
+    desc: '24/7 Managed CPE, Wi-Fi & IT NOC Monitoring',
+    href: '/layanan/solusi/layanan-terkelola',
+    icon: 'ServerCog',
+  },
+  {
+    title: 'Data Center',
+    desc: 'Tier-3 Colocation Server & THC Cloud',
+    href: '/layanan/pusat-data',
+    icon: 'Database',
+  },
+];
+
+
 export default function Navbar() {
   const { lang, t } = useLanguage();
   const pathname = usePathname();
   const isHome = pathname === '/';
   const inTentangPage = pathname.startsWith('/tentang');
+  const inLayananPage = pathname.startsWith('/layanan');
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('beranda');
   const [tentangOpen, setTentangOpen] = useState(false);
   const [mobileTentangOpen, setMobileTentangOpen] = useState(false);
+  const [layananOpen, setLayananOpen] = useState(false);
+  const [mobileLayananOpen, setMobileLayananOpen] = useState(false);
 
   useEffect(() => {
     const updateNavbar = () => {
@@ -56,17 +110,20 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (!tentangOpen) return;
+    if (!tentangOpen && !layananOpen) return;
 
     const closeOpenMenus = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const insideTentang = Boolean(target.closest('[data-tentang-dropdown]'));
+      const insideLayanan = Boolean(target.closest('[data-layanan-dropdown]'));
       if (!insideTentang) setTentangOpen(false);
+      if (!insideLayanan) setLayananOpen(false);
     };
 
     document.addEventListener('click', closeOpenMenus);
     return () => document.removeEventListener('click', closeOpenMenus);
-  }, [tentangOpen]);
+  }, [tentangOpen, layananOpen]);
+
 
   useEffect(() => {
     if (!isHome) return;
@@ -100,11 +157,13 @@ export default function Navbar() {
     window.setTimeout(() => setMenuOpen(false), 300);
   }, []);
 
+  const tentangActive = activeSection === 'tentang' || inTentangPage;
+  const layananActive = activeSection === 'layanan' || inLayananPage;
+
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/#${id}`);
 
-  const tentangActive = activeSection === 'tentang' || inTentangPage;
-
   const shadowClass = scrolled ? 'shadow-lg shadow-slate-900/10' : 'shadow-sm';
+
 
   return (
     <>
@@ -169,9 +228,47 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            <a href={sectionHref('layanan')} className={`transition-colors hover:text-blue-600 ${activeSection === 'layanan' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
-              {t('nav.layanan')}
-            </a>
+            <div className="relative" data-layanan-dropdown onMouseEnter={() => setLayananOpen(true)} onMouseLeave={() => setLayananOpen(false)}>
+              <button
+                type="button"
+                onClick={() => setLayananOpen((open) => !open)}
+                aria-expanded={layananOpen}
+                aria-haspopup="true"
+                className={`flex items-center gap-1.5 transition-colors hover:text-blue-600 ${layananActive ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}
+              >
+                <span>{t('nav.layanan')}</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${layananOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {layananOpen && (
+                <div className="absolute left-0 top-full z-50 w-[380px] pt-4">
+                  <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 p-2 shadow-xl shadow-slate-900/10 backdrop-blur-xl" role="menu" aria-label="Services menu">
+                    {layananSubPages.map(({ title, desc, href, icon }) => {
+                      const Icon = iconMap[icon] ?? Globe;
+                      return (
+                        <Link
+                          key={href}
+                          href={href}
+                          prefetch={true}
+                          role="menuitem"
+                          onClick={() => setLayananOpen(false)}
+                          className="group flex items-start gap-3 rounded-xl px-4 py-3 transition-colors hover:bg-brand-50"
+                        >
+                          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-600/10 text-brand-600">
+                            <Icon className="h-[18px] w-[18px]" />
+                          </span>
+                          <span className="flex-1">
+                            <span className="block text-[14px] font-semibold text-slate-900 transition-colors group-hover:text-brand-700">{title}</span>
+                            <span className="mt-0.5 block text-[12px] leading-snug text-slate-500">{desc}</span>
+                          </span>
+                          <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-brand-600 opacity-0 transition-opacity group-hover:opacity-100" />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <a href={sectionHref('jaringan')} className={`transition-colors hover:text-blue-600 ${activeSection === 'jaringan' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
               {t('nav.jaringan')}
             </a>
@@ -240,9 +337,28 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
-              <a href={sectionHref('layanan')} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'layanan' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
-                {t('nav.layanan')}
-              </a>
+              <div className="border-b border-slate-100 py-2">
+                <button
+                  type="button"
+                  onClick={() => setMobileLayananOpen((open) => !open)}
+                  aria-expanded={mobileLayananOpen}
+                  className={`flex w-full items-center justify-between py-1 text-left transition-colors hover:text-blue-600 ${layananActive ? 'text-blue-600' : ''}`}
+                >
+                  <span>{t('nav.layanan')}</span>
+                  <ChevronDown className={`h-4 w-4 transition-transform ${mobileLayananOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileLayananOpen && (
+                  <div className="mt-2 flex flex-col gap-2 border-l-2 border-brand-100 pl-4">
+                    {layananSubPages.map(({ title, href }) => (
+                      <Link key={href} href={href} prefetch={true} onClick={closeMenu} className="flex items-center justify-between py-1 text-[14px] text-slate-600 transition-colors hover:text-blue-600">
+                        <span>{title}</span>
+                        <ArrowUpRight className="h-4 w-4 text-slate-400" />
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <a href={sectionHref('jaringan')} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'jaringan' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.jaringan')}
               </a>

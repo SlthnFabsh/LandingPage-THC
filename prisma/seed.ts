@@ -1,10 +1,13 @@
 import 'dotenv/config';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '../src/generated/prisma/client';
+import { mariadbPoolConfigFromUrl } from '../src/lib/mariadb-conn';
 import { hash } from '@node-rs/argon2';
 import { translations, translate } from '../src/lib/i18n';
 
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL as string);
+const connectionString = process.env.DATABASE_URL as string;
+const config = mariadbPoolConfigFromUrl(connectionString);
+const adapter = config ? new PrismaMariaDb(config) : new PrismaMariaDb(connectionString);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {

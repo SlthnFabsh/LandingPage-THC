@@ -16,6 +16,9 @@ import {
   Cpu,
   Database,
   ServerCog,
+  MapPin,
+  Server,
+  Share2,
 } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 
@@ -28,7 +31,11 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Cpu,
   Database,
   ServerCog,
+  MapPin,
+  Server,
+  Share2,
 };
+
 
 const tentangSubPages = [
   {
@@ -84,6 +91,27 @@ const layananSubPages = [
   },
 ];
 
+const jaringanSubPages = [
+  {
+    title: 'Network Coverage',
+    desc: 'Submarine & inland fiber optic routes',
+    href: '/jaringan/coverage',
+    icon: 'MapPin',
+  },
+  {
+    title: 'Hub & Point of Presence (PoP)',
+    desc: 'Domestic & cross-border backbone rings',
+    href: '/jaringan/hub-pop',
+    icon: 'Server',
+  },
+  {
+    title: 'Global Network & Peering',
+    desc: 'AS numbers, Tier-1 upstreams & IXPs',
+    href: '/jaringan/global-network',
+    icon: 'Share2',
+  },
+];
+
 
 export default function Navbar() {
   const { lang, t } = useLanguage();
@@ -91,6 +119,7 @@ export default function Navbar() {
   const isHome = pathname === '/';
   const inTentangPage = pathname.startsWith('/tentang');
   const inLayananPage = pathname.startsWith('/layanan');
+  const inJaringanPage = pathname.startsWith('/jaringan');
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -99,6 +128,9 @@ export default function Navbar() {
   const [mobileTentangOpen, setMobileTentangOpen] = useState(false);
   const [layananOpen, setLayananOpen] = useState(false);
   const [mobileLayananOpen, setMobileLayananOpen] = useState(false);
+  const [jaringanOpen, setJaringanOpen] = useState(false);
+  const [mobileJaringanOpen, setMobileJaringanOpen] = useState(false);
+
 
   useEffect(() => {
     const updateNavbar = () => {
@@ -110,19 +142,22 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (!tentangOpen && !layananOpen) return;
+    if (!tentangOpen && !layananOpen && !jaringanOpen) return;
 
     const closeOpenMenus = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const insideTentang = Boolean(target.closest('[data-tentang-dropdown]'));
       const insideLayanan = Boolean(target.closest('[data-layanan-dropdown]'));
+      const insideJaringan = Boolean(target.closest('[data-jaringan-dropdown]'));
       if (!insideTentang) setTentangOpen(false);
       if (!insideLayanan) setLayananOpen(false);
+      if (!insideJaringan) setJaringanOpen(false);
     };
 
     document.addEventListener('click', closeOpenMenus);
     return () => document.removeEventListener('click', closeOpenMenus);
-  }, [tentangOpen, layananOpen]);
+  }, [tentangOpen, layananOpen, jaringanOpen]);
+
 
 
   useEffect(() => {
@@ -159,6 +194,8 @@ export default function Navbar() {
 
   const tentangActive = activeSection === 'tentang' || inTentangPage;
   const layananActive = activeSection === 'layanan' || inLayananPage;
+  const jaringanActive = activeSection === 'jaringan' || inJaringanPage;
+
 
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/#${id}`);
 
@@ -269,9 +306,47 @@ export default function Navbar() {
               )}
             </div>
 
-            <a href={sectionHref('jaringan')} className={`transition-colors hover:text-blue-600 ${activeSection === 'jaringan' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
-              {t('nav.jaringan')}
-            </a>
+            <div className="relative" data-jaringan-dropdown onMouseEnter={() => setJaringanOpen(true)} onMouseLeave={() => setJaringanOpen(false)}>
+              <button
+                type="button"
+                onClick={() => setJaringanOpen((open) => !open)}
+                aria-expanded={jaringanOpen}
+                aria-haspopup="true"
+                className={`flex items-center gap-1.5 transition-colors hover:text-blue-600 ${jaringanActive ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}
+              >
+                <span>{t('nav.jaringan')}</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${jaringanOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {jaringanOpen && (
+                <div className="absolute left-0 top-full z-50 w-[360px] pt-4">
+                  <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 p-2 shadow-xl shadow-slate-900/10 backdrop-blur-xl" role="menu" aria-label="Network menu">
+                    {jaringanSubPages.map(({ title, desc, href, icon }) => {
+                      const Icon = iconMap[icon] ?? MapPin;
+                      return (
+                        <Link
+                          key={href}
+                          href={href}
+                          prefetch={true}
+                          role="menuitem"
+                          onClick={() => setJaringanOpen(false)}
+                          className="group flex items-start gap-3 rounded-xl px-4 py-3 transition-colors hover:bg-brand-50"
+                        >
+                          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-600/10 text-brand-600">
+                            <Icon className="h-[18px] w-[18px]" />
+                          </span>
+                          <span className="flex-1">
+                            <span className="block text-[14px] font-semibold text-slate-900 transition-colors group-hover:text-brand-700">{title}</span>
+                            <span className="mt-0.5 block text-[12px] leading-snug text-slate-500">{desc}</span>
+                          </span>
+                          <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-brand-600 opacity-0 transition-opacity group-hover:opacity-100" />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <a href={sectionHref('berita')} className={`transition-colors hover:text-blue-600 ${activeSection === 'berita' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
               {t('nav.berita')}
             </a>
@@ -359,9 +434,28 @@ export default function Navbar() {
                 )}
               </div>
 
-              <a href={sectionHref('jaringan')} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'jaringan' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
-                {t('nav.jaringan')}
-              </a>
+              <div className="border-b border-slate-100 py-2">
+                <button
+                  type="button"
+                  onClick={() => setMobileJaringanOpen((open) => !open)}
+                  aria-expanded={mobileJaringanOpen}
+                  className={`flex w-full items-center justify-between py-1 text-left transition-colors hover:text-blue-600 ${jaringanActive ? 'text-blue-600' : ''}`}
+                >
+                  <span>{t('nav.jaringan')}</span>
+                  <ChevronDown className={`h-4 w-4 transition-transform ${mobileJaringanOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileJaringanOpen && (
+                  <div className="mt-2 flex flex-col gap-2 border-l-2 border-brand-100 pl-4">
+                    {jaringanSubPages.map(({ title, href }) => (
+                      <Link key={href} href={href} prefetch={true} onClick={closeMenu} className="flex items-center justify-between py-1 text-[14px] text-slate-600 transition-colors hover:text-blue-600">
+                        <span>{title}</span>
+                        <ArrowUpRight className="h-4 w-4 text-slate-400" />
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <a href={sectionHref('berita')} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'berita' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.berita')}
               </a>

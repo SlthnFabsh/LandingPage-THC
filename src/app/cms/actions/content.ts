@@ -15,7 +15,12 @@ export interface ContentFormState {
   error?: string;
 }
 
-const PUBLIC_PATHS = ['/', '/tentang/informasi-perusahaan'];
+const PUBLIC_PATHS = [
+  '/',
+  '/tentang/informasi-perusahaan',
+  '/tentang/struktur-grup',
+  '/tentang/nilai-inti',
+];
 
 async function requireUser() {
   const user = await getCurrentUser();

@@ -6,9 +6,9 @@ import AboutHero from '@/components/About/AboutHero';
 import AboutSidebar from '@/components/About/AboutSidebar';
 import CompanyProfile from '@/components/About/CompanyProfile';
 import Milestones from '@/components/About/Milestones';
-import { getSiteContent } from '@/lib/content';
+import { getAboutContent } from '@/lib/content';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: 'Informasi Perusahaan | Trans Hybrid Communication',
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function InformasiPerusahaanPage() {
-  const content = await getSiteContent();
+  const { about, contact, socials } = await getAboutContent();
 
   return (
     <>
@@ -32,14 +32,14 @@ export default async function InformasiPerusahaanPage() {
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
               <AboutSidebar />
               <div className="min-w-0 flex-1">
-                <CompanyProfile about={content.about} />
+                <CompanyProfile about={about} />
               </div>
             </div>
           </div>
         </section>
         <Milestones />
       </main>
-      <Footer contact={content.contact} socials={content.socials} />
+      <Footer contact={contact} socials={socials} />
       <BackToTop />
     </>
   );

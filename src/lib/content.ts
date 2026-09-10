@@ -208,6 +208,56 @@ function splitLines(value: string): string[] {
     .filter(Boolean);
 }
 
+export interface AboutSiteContent {
+  about: AboutContentData;
+  contact: ContactData;
+  socials: SocialLinkData[];
+}
+
+export async function getAboutContent(): Promise<AboutSiteContent> {
+  const [companyRow, contactRow, socials] = await Promise.all([
+    prisma.companyContent.findFirst().catch(() => null),
+    prisma.contactSetting.findFirst().catch(() => null),
+    prisma.socialMediaLink
+      .findMany({ where: { active: true }, orderBy: [{ order: 'asc' }, { createdAt: 'asc' }] })
+      .catch(() => [] as never[]),
+  ]);
+
+  const about: AboutContentData = companyRow
+    ? {
+        introId: companyRow.introId,
+        introEn: companyRow.introEn,
+        visiId: companyRow.visiId,
+        visiEn: companyRow.visiEn,
+        misiId: splitLines(companyRow.misiId),
+        misiEn: splitLines(companyRow.misiEn),
+        licensesId: (companyRow.licensesId as string[]) || [],
+        licensesEn: (companyRow.licensesEn as string[]) || [],
+      }
+    : fallbackAbout();
+
+  const contact: ContactData = contactRow
+    ? {
+        officeAddressId: contactRow.officeAddressId,
+        officeAddressEn: contactRow.officeAddressEn,
+        operationalAddressId: contactRow.operationalAddressId,
+        operationalAddressEn: contactRow.operationalAddressEn,
+        phone: contactRow.phone,
+        phoneDisplay: contactRow.phoneDisplay,
+        email: contactRow.email,
+        whatsapp: contactRow.whatsapp,
+      }
+    : fallbackContact();
+
+  return {
+    about,
+    contact,
+    socials: (socials as unknown as SocialLinkData[] | null)?.length
+      ? (socials as unknown as SocialLinkData[])
+      : fallbackSocials(),
+  };
+}
+
 export async function getSiteContent(): Promise<SiteContent> {
   const [heroSlides, companyRow, stats, services, customers, partners, faqs, contactRow, socials] =
     await Promise.all([

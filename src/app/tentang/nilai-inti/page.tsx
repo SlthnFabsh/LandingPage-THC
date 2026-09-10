@@ -5,9 +5,9 @@ import BackToTop from '@/components/BackToTop';
 import AboutHero from '@/components/About/AboutHero';
 import AboutSidebar from '@/components/About/AboutSidebar';
 import NilaiInti from '@/components/About/NilaiInti';
-import { getSiteContent } from '@/lib/content';
+import { getAboutContent } from '@/lib/content';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: 'Nilai Inti | Trans Hybrid Communication',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function NilaiIntiPage() {
-  const content = await getSiteContent();
+  const { contact, socials } = await getAboutContent();
 
   return (
     <>
@@ -34,7 +34,7 @@ export default async function NilaiIntiPage() {
           </div>
         </section>
       </main>
-      <Footer contact={content.contact} socials={content.socials} />
+      <Footer contact={contact} socials={socials} />
       <BackToTop />
     </>
   );

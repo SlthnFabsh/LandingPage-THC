@@ -11,11 +11,21 @@ const reveal = (delay = 0): MotionProps => ({
   transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay },
 });
 
-const solutionCards = [
+interface SolutionCard {
+  title: string;
+  badge: string;
+  icon: React.ComponentType<{ className?: string }>;
+  href?: string;
+  description: string;
+  features: string[];
+}
+
+const solutionCards: SolutionCard[] = [
   {
     title: 'Hospitality Solutions',
     badge: 'Hotels, Resorts & Tourism',
     icon: Hotel,
+    href: '/layanan/solusi/solusi-terkelola/hospitality-solutions',
     description:
       'Comprehensive digital infrastructure tailored for the modern hospitality sector, powering automated room reservation systems, guest big-data analytics, and intelligent smart-room IoT controls that allow hotel guests to manage room lighting, temperature, and entertainment effortlessly via touch devices.',
     features: [
@@ -28,6 +38,7 @@ const solutionCards = [
     title: 'Education Solutions',
     badge: 'Universities & K-12 Schools',
     icon: GraduationCap,
+    href: '/layanan/solusi/solusi-terkelola/education-solutions',
     description:
       'Empowering educational institutions with high-speed dedicated internet and campus-wide managed Wi-Fi, seamlessly integrating learning management systems (LMS) and school administration platforms with student smart devices for an interactive, modern digital campus.',
     features: [
@@ -108,7 +119,7 @@ export default function ManagedSolutions() {
                 {/* Footer Action */}
                 <div className="mt-8 border-t border-slate-100 pt-4">
                   <Link
-                    href="/#faq"
+                    href={card.href ?? '/#faq'}
                     className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600 transition-colors group-hover:text-brand-700"
                   >
                     <span>Request Custom Proposal</span>

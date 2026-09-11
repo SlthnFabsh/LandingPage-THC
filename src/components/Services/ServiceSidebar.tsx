@@ -19,12 +19,15 @@ import {
   ArrowLeftRight,
   GitBranch,
   Share2,
+  Hotel,
+  GraduationCap,
 } from 'lucide-react';
 
 interface SubServiceItem {
   href: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
+  children?: SubServiceItem[];
 }
 
 interface ServiceNavItem {
@@ -104,6 +107,18 @@ const serviceNavItems: ServiceNavItem[] = [
         href: '/layanan/solusi/solusi-terkelola',
         label: 'Managed Solutions',
         icon: Building2,
+        children: [
+          {
+            href: '/layanan/solusi/solusi-terkelola/hospitality-solutions',
+            label: 'Hospitality Solutions',
+            icon: Hotel,
+          },
+          {
+            href: '/layanan/solusi/solusi-terkelola/education-solutions',
+            label: 'Education Solutions',
+            icon: GraduationCap,
+          },
+        ],
       },
       {
         href: '/layanan/solusi/layanan-terkelola',
@@ -197,32 +212,71 @@ export default function ServiceSidebar() {
                           const isSubActive = pathname === sub.href;
                           const SubIcon = sub.icon;
                           return (
-                            <Link
-                              key={sub.href}
-                              href={sub.href}
-                              prefetch={true}
-                              className={`group flex items-center justify-between rounded-xl px-3 py-2.5 text-[13px] font-medium transition-all ${
-                                isSubActive
-                                  ? 'bg-brand-50 text-brand-600 font-semibold shadow-xs'
-                                  : 'text-slate-600 hover:bg-slate-50 hover:text-brand-600'
-                              }`}
-                            >
-                              <span className="flex items-center gap-2.5">
-                                <SubIcon
-                                  className={`h-3.5 w-3.5 ${
-                                    isSubActive ? 'text-brand-600' : 'text-slate-400'
+                            <div key={sub.href}>
+                              <Link
+                                href={sub.href}
+                                prefetch={true}
+                                className={`group flex items-center justify-between rounded-xl px-3 py-2.5 text-[13px] font-medium transition-all ${
+                                  isSubActive
+                                    ? 'bg-brand-50 text-brand-600 font-semibold shadow-xs'
+                                    : 'text-slate-600 hover:bg-slate-50 hover:text-brand-600'
+                                }`}
+                              >
+                                <span className="flex items-center gap-2.5">
+                                  <SubIcon
+                                    className={`h-3.5 w-3.5 ${
+                                      isSubActive ? 'text-brand-600' : 'text-slate-400'
+                                    }`}
+                                  />
+                                  <span>{sub.label}</span>
+                                </span>
+                                <ArrowRight
+                                  className={`h-3.5 w-3.5 transition-transform ${
+                                    isSubActive
+                                      ? 'text-brand-600 translate-x-0 opacity-100'
+                                      : 'text-slate-300 -translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
                                   }`}
                                 />
-                                <span>{sub.label}</span>
-                              </span>
-                              <ArrowRight
-                                className={`h-3.5 w-3.5 transition-transform ${
-                                  isSubActive
-                                    ? 'text-brand-600 translate-x-0 opacity-100'
-                                    : 'text-slate-300 -translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
-                                }`}
-                              />
-                            </Link>
+                              </Link>
+
+                              {/* Nested sub-items */}
+                              {sub.children && (
+                                <div className="my-1 ml-4 space-y-1 border-l-2 border-slate-200 pl-3">
+                                  {sub.children.map((child) => {
+                                    const isChildActive = pathname === child.href;
+                                    const ChildIcon = child.icon;
+                                    return (
+                                      <Link
+                                        key={child.href}
+                                        href={child.href}
+                                        prefetch={true}
+                                        className={`group flex items-center justify-between rounded-lg px-3 py-2 text-[12.5px] font-medium transition-all ${
+                                          isChildActive
+                                            ? 'bg-brand-50 text-brand-600 font-semibold shadow-xs'
+                                            : 'text-slate-500 hover:bg-slate-50 hover:text-brand-600'
+                                        }`}
+                                      >
+                                        <span className="flex items-center gap-2">
+                                          <ChildIcon
+                                            className={`h-3 w-3 ${
+                                              isChildActive ? 'text-brand-600' : 'text-slate-400'
+                                            }`}
+                                          />
+                                          <span className="leading-snug">{child.label}</span>
+                                        </span>
+                                        <ArrowRight
+                                          className={`h-3 w-3 transition-transform ${
+                                            isChildActive
+                                              ? 'text-brand-600 translate-x-0 opacity-100'
+                                              : 'text-slate-300 -translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
+                                          }`}
+                                        />
+                                      </Link>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
                           );
                         })}
                       </div>

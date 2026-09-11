@@ -14,6 +14,13 @@ const iconMap: Record<string, typeof Wifi> = {
   database: Database,
 };
 
+const hrefMap: Record<string, string> = {
+  wifi: '/layanan/internet',
+  network: '/layanan/konektivitas',
+  cpu: '/layanan/solusi/solusi-terkelola',
+  database: '/layanan/pusat-data',
+};
+
 interface ServicesProps {
   services: ServiceItemData[];
 }
@@ -45,6 +52,7 @@ export default function Services({ services }: ServicesProps) {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
           {services.map((service, i) => {
             const Icon = iconMap[service.icon] || Layers;
+            const href = hrefMap[service.icon] || '#faq';
             return (
               <TiltCard
                 key={service.id}
@@ -72,7 +80,7 @@ export default function Services({ services }: ServicesProps) {
                   </div>
 
                   <a
-                    href="#faq"
+                    href={href}
                     className="mt-8 inline-flex w-fit items-center gap-2 text-xs font-semibold tracking-[0.08em] text-[#073b91] uppercase transition-colors group-hover:text-white"
                   >
                     <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0256eb] text-white transition-colors group-hover:bg-[#0256eb] group-hover:text-white">

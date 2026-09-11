@@ -21,6 +21,8 @@ import {
   Share2,
   Hotel,
   GraduationCap,
+  Router as RouterIcon,
+  Wifi,
 } from 'lucide-react';
 
 interface SubServiceItem {
@@ -124,6 +126,18 @@ const serviceNavItems: ServiceNavItem[] = [
         href: '/layanan/solusi/layanan-terkelola',
         label: 'Managed Services',
         icon: ServerCog,
+        children: [
+          {
+            href: '/layanan/solusi/layanan-terkelola/managed-cpe',
+            label: 'Managed CPE',
+            icon: RouterIcon,
+          },
+          {
+            href: '/layanan/solusi/layanan-terkelola/managed-wifi',
+            label: 'Managed Wi-Fi & IT',
+            icon: Wifi,
+          },
+        ],
       },
     ],
   },

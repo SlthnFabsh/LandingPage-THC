@@ -18,11 +18,21 @@ const reveal = (delay = 0): MotionProps => ({
   transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay },
 });
 
-const serviceCards = [
+interface ServiceCard {
+  title: string;
+  badge: string;
+  icon: React.ComponentType<{ className?: string }>;
+  href?: string;
+  description: string;
+  features: string[];
+}
+
+const serviceCards: ServiceCard[] = [
   {
     title: 'Managed CPE (Customer Premises Equipment)',
     badge: 'Hardware & Lifecycle Management',
     icon: RouterIcon,
+    href: '/layanan/solusi/layanan-terkelola/managed-cpe',
     description:
       "End-to-end network hardware lifecycle management, provisioning enterprise-grade CPE routers, firewalls, and access points tailored specifically to your organization's architectural and bandwidth requirements.",
     features: [
@@ -35,6 +45,7 @@ const serviceCards = [
     title: 'Managed Wi-Fi & IT Operations',
     badge: '24/7 Wireless & Infrastructure NOC',
     icon: Wifi,
+    href: '/layanan/solusi/layanan-terkelola/managed-wifi',
     description:
       'Comprehensive cloud-managed enterprise Wi-Fi and proactive IT support, optimizing wireless density, security policies, and continuous network troubleshooting to maintain peak corporate productivity.',
     features: [
@@ -115,7 +126,7 @@ export default function ManagedServices() {
                 {/* Footer Action */}
                 <div className="mt-8 border-t border-slate-100 pt-4">
                   <Link
-                    href="/#faq"
+                    href={card.href ?? '/#faq'}
                     className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600 transition-colors group-hover:text-brand-700"
                   >
                     <span>Consult with NOC Engineer</span>

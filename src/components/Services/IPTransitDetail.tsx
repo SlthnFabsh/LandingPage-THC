@@ -275,33 +275,129 @@ export default function IPTransitDetail() {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-8 space-y-6">
-              <p className="text-[15px] leading-relaxed text-slate-600">
-                THC International IP Transit delivers carrier-grade global connectivity through diverse, low-latency
-                submarine cable pathways including Jakabare, INDIGO, SEAX, Matrix, and B3JS. Our routing is engineered
-                to ensure packets take the shortest possible AS path to global destinations.
-              </p>
+            {/* International IP Transit Tier Comparison Table */}
+            <div className="overflow-x-auto rounded-2xl border border-slate-200/80 shadow-sm">
+              <table className="w-full min-w-[720px] border-collapse text-sm">
+                <thead>
+                  <tr className="bg-slate-50">
+                    <th className="border-b border-slate-200 px-5 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-slate-500">
+                      Features
+                    </th>
+                    {[
+                      { name: 'Premium Protected', highlight: true },
+                      { name: 'Premium Non Protected', highlight: false },
+                      { name: 'Standard', highlight: false },
+                      { name: 'Lite', highlight: false },
+                    ].map((tier) => (
+                      <th
+                        key={tier.name}
+                        className={`border-b border-slate-200 px-5 py-3.5 text-center text-xs font-bold uppercase tracking-wider ${
+                          tier.highlight
+                            ? 'bg-brand-600 text-white'
+                            : 'text-slate-700'
+                        }`}
+                      >
+                        {tier.name}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Content / Connection */}
+                  <tr className="border-b border-slate-100">
+                    <td className="px-5 py-4 font-semibold text-slate-700 align-top">Content / Connection</td>
+                    <td className="px-5 py-4 text-left text-slate-600 text-xs leading-relaxed">
+                      <ol className="list-decimal list-inside space-y-0.5">
+                        <li>Equinix-IX</li>
+                        <li>ISPL</li>
+                        <li>Cogent</li>
+                        <li>Singtel</li>
+                        <li>Domestik THC-IX</li>
+                      </ol>
+                      <p className="mt-2 text-[11px] text-slate-500">Internet Exchange: IIX, Oixp, JKT-IX</p>
+                      <p className="text-[11px] text-slate-500">Public Peering: FB, Akamai, Zenlayar, PHC, Cloud Flare</p>
+                    </td>
+                    <td className="px-5 py-4 text-left text-slate-600 text-xs leading-relaxed">
+                      <ol className="list-decimal list-inside space-y-0.5">
+                        <li>Equinix-IX</li>
+                        <li>ISPL</li>
+                        <li>Cogent</li>
+                        <li>Singtel</li>
+                        <li>Domestik THC-IX</li>
+                      </ol>
+                      <p className="mt-2 text-[11px] text-slate-500">Internet Exchange: IIX, Oixp, JKT-IX</p>
+                      <p className="text-[11px] text-slate-500">Public Peering: FB, Akamai, Zenlayar, PHC, Cloud Flare</p>
+                    </td>
+                    <td className="px-5 py-4 text-left text-slate-600 text-xs leading-relaxed">
+                      <ol className="list-decimal list-inside space-y-0.5">
+                        <li>SG-IX</li>
+                        <li>Cogent</li>
+                        <li>Domestik THC-IX</li>
+                      </ol>
+                      <p className="mt-2 text-[11px] text-slate-500">Internet Exchange: IIX, Oixp, JKT-IX</p>
+                      <p className="text-[11px] text-slate-500">Public Peering: FB, Akamai, Zenlayar, PHC, Cloud Flare</p>
+                    </td>
+                    <td className="px-5 py-4 text-left text-slate-600 text-xs leading-relaxed">
+                      <ol className="list-decimal list-inside space-y-0.5">
+                        <li>SG-IX</li>
+                        <li>Cogent</li>
+                        <li>Domestik THC-IX</li>
+                      </ol>
+                      <p className="mt-2 text-[11px] text-slate-500">Internet Exchange: IIX, Oixp, JKT-IX</p>
+                      <p className="text-[11px] text-slate-500">Public Peering: FB, Akamai, Zenlayar, PHC, Cloud Flare</p>
+                    </td>
+                  </tr>
 
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-                  <h5 className="font-bold text-sm text-slate-900">Global Upstream Tier-1</h5>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Direct multi-homing with Cogent, Tata Communications, Telekom Malaysia, and China Mobile.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-                  <h5 className="font-bold text-sm text-slate-900">International IX Peering</h5>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Direct member at Equinix-IX (Singapore), SG-IX, and DE-CIX with multi-Gigabit peering capacity.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-                  <h5 className="font-bold text-sm text-slate-900">Content Acceleration</h5>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Sub-15ms round-trip latency to Singapore cloud regions and international SaaS providers.
-                  </p>
-                </div>
-              </div>
+                  {/* International Cable */}
+                  <tr className="border-b border-slate-100 bg-slate-50/50">
+                    <td className="px-5 py-4 font-semibold text-slate-700">International Cable</td>
+                    <td className="px-5 py-4 text-center text-slate-600">
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-full px-2.5 py-1">
+                        Redundant Cable DWDM
+                      </span>
+                      <p className="mt-1 text-[11px] text-slate-500">(Jakabare Main & Indigo Backup)</p>
+                    </td>
+                    <td className="px-5 py-4 text-center text-slate-600 text-xs">Single Cable DWDM</td>
+                    <td className="px-5 py-4 text-center text-slate-600 text-xs">Single Cable DWDM</td>
+                    <td className="px-5 py-4 text-center text-slate-600 text-xs">Single Cable DWDM</td>
+                  </tr>
+
+                  {/* Sharing Ratio */}
+                  <tr className="border-b border-slate-100">
+                    <td className="px-5 py-4 font-semibold text-slate-700">Sharing Ratio</td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-slate-900">1:1</span></td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-slate-900">1:1</span></td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-slate-900">1:1</span></td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-slate-900">70:30</span></td>
+                  </tr>
+
+                  {/* International Capacity */}
+                  <tr className="border-b border-slate-100 bg-slate-50/50">
+                    <td className="px-5 py-4 font-semibold text-slate-700">International Capacity</td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-brand-600">100 Gbps</span></td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-brand-600">100 Gbps</span></td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-brand-600">100 Gbps</span></td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-brand-600">100 Gbps</span></td>
+                  </tr>
+
+                  {/* SLA */}
+                  <tr>
+                    <td className="px-5 py-4 font-semibold text-slate-700">SLA</td>
+                    <td className="px-5 py-4 text-center">
+                      <span className="inline-block rounded-full bg-brand-100 text-brand-700 px-3 py-1 text-xs font-bold">99.8%</span>
+                    </td>
+                    <td className="px-5 py-4 text-center">
+                      <span className="inline-block rounded-full bg-slate-100 text-slate-700 px-3 py-1 text-xs font-bold">99.5%</span>
+                    </td>
+                    <td className="px-5 py-4 text-center">
+                      <span className="inline-block rounded-full bg-slate-100 text-slate-700 px-3 py-1 text-xs font-bold">99.5%</span>
+                    </td>
+                    <td className="px-5 py-4 text-center">
+                      <span className="inline-block rounded-full bg-slate-100 text-slate-700 px-3 py-1 text-xs font-bold">99.5%</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </motion.div>
         )}
@@ -323,33 +419,68 @@ export default function IPTransitDetail() {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-8 space-y-6">
-              <p className="text-[15px] leading-relaxed text-slate-600">
-                Our Domestic IP Transit service ensures your users experience sub-millisecond local latency. By
-                maintaining active multi-Gigabit peering with Indonesia Internet Exchange (IIX), OpenIXP, and
-                commercial exchange points, domestic traffic remains within the country without international trombone routing.
-              </p>
+            {/* Domestic IP Transit Tier Comparison Table */}
+            <div className="overflow-x-auto rounded-2xl border border-slate-200/80 shadow-sm">
+              <table className="w-full min-w-[640px] border-collapse text-sm">
+                <thead>
+                  <tr className="bg-slate-50">
+                    <th className="border-b border-slate-200 px-5 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-slate-500">
+                      Features
+                    </th>
+                    <th className="border-b border-slate-200 px-5 py-3.5 text-center text-xs font-bold uppercase tracking-wider bg-brand-600 text-white">
+                      Premium Domestic IP Transit
+                    </th>
+                    <th className="border-b border-slate-200 px-5 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-slate-700">
+                      Standard Domestic IP Transit
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Content / Connection */}
+                  <tr className="border-b border-slate-100">
+                    <td className="px-5 py-4 font-semibold text-slate-700 align-top">Content / Connection</td>
+                    <td className="px-5 py-4 text-left text-slate-600 text-xs leading-relaxed">
+                      <ol className="list-decimal list-inside space-y-0.5">
+                        <li>Domestik THC-IX</li>
+                      </ol>
+                      <p className="mt-1.5 text-[11px] text-slate-500">Internet Exchange: IIX, Oixp, JKT-IX</p>
+                      <p className="text-[11px] text-slate-500">Public Peering: FB, Akamai, Zenlayar, PHC, Cloud Flare</p>
+                      <ol className="list-decimal list-inside mt-2 space-y-0.5">
+                        <li>Telkom NeuCen-IX</li>
+                      </ol>
+                      <p className="mt-1.5 text-[11px] font-semibold text-emerald-600">Bonus International SG-IX (Sharing)</p>
+                    </td>
+                    <td className="px-5 py-4 text-left text-slate-600 text-xs leading-relaxed">
+                      <ol className="list-decimal list-inside space-y-0.5">
+                        <li>Domestik THC-IX</li>
+                      </ol>
+                      <p className="mt-1.5 text-[11px] text-slate-500">Internet Exchange: IIX, Oixp, JKT-IX</p>
+                      <p className="text-[11px] text-slate-500">Public Peering: FB, Akamai, Zenlayar, PHC, Cloud Flare</p>
+                      <ol className="list-decimal list-inside mt-2 space-y-0.5">
+                        <li>Telkom NeuCen-IX</li>
+                      </ol>
+                    </td>
+                  </tr>
 
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-                  <h5 className="font-bold text-sm text-slate-900">National Exchange Points</h5>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Direct interconnects at IIX, OpenIXP, neuCentrIX, JKT-IX, and CDIX.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-                  <h5 className="font-bold text-sm text-slate-900">Local Loop Density</h5>
-                  <p className="text-xs text-slate-500 mt-1">
-                    High-speed fiber connectivity spanning Java, Sumatera, Borneo, and Sulawesi domestic backbones.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-                  <h5 className="font-bold text-sm text-slate-900">Sub-5ms Domestic Latency</h5>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Lightning-fast communication between enterprise headquarters, branches, and national data centers.
-                  </p>
-                </div>
-              </div>
+                  {/* Capacity */}
+                  <tr className="border-b border-slate-100 bg-slate-50/50">
+                    <td className="px-5 py-4 font-semibold text-slate-700">Capacity</td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-brand-600">100 Gbps</span></td>
+                    <td className="px-5 py-4 text-center"><span className="font-bold text-brand-600">100 Gbps</span></td>
+                  </tr>
+
+                  {/* SLA */}
+                  <tr>
+                    <td className="px-5 py-4 font-semibold text-slate-700">SLA</td>
+                    <td className="px-5 py-4 text-center">
+                      <span className="inline-block rounded-full bg-brand-100 text-brand-700 px-3 py-1 text-xs font-bold">99.5%</span>
+                    </td>
+                    <td className="px-5 py-4 text-center">
+                      <span className="inline-block rounded-full bg-slate-100 text-slate-700 px-3 py-1 text-xs font-bold">99.5%</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </motion.div>
         )}
@@ -371,60 +502,12 @@ export default function IPTransitDetail() {
               </p>
             </div>
 
-            {/* Visual Topology Diagram */}
-            <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-slate-900 p-6 text-white sm:p-8">
-              <div className="min-w-[680px] flex flex-col gap-8">
-                <div className="flex items-center justify-between">
-                  {/* Customer Edge */}
-                  <div className="flex flex-col items-center">
-                    <div className="flex h-20 w-32 flex-col items-center justify-center rounded-2xl border border-slate-700 bg-slate-800 p-2 text-center shadow-sm">
-                      <Server className="h-6 w-6 text-emerald-400" />
-                      <span className="text-xs font-bold text-white mt-1">Customer Edge (CE)</span>
-                      <span className="text-[10px] text-slate-400">Customer ASN</span>
-                    </div>
-                  </div>
-
-                  {/* Redundant Connection */}
-                  <div className="flex flex-col items-center text-sky-400">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                      BGP Peering Session
-                    </span>
-                    <div className="h-0.5 w-24 bg-gradient-to-r from-emerald-400 via-sky-400 to-brand-500" />
-                    <span className="text-[9px] text-slate-400 mt-0.5">Dual Leased Line</span>
-                  </div>
-
-                  {/* THC Core Router */}
-                  <div className="flex flex-col items-center">
-                    <div className="flex h-24 w-40 flex-col items-center justify-center rounded-2xl border-2 border-brand-500 bg-[#12285e] p-2 text-center shadow-glow-blue">
-                      <Network className="h-7 w-7 text-sky-400" />
-                      <span className="text-xs font-black text-white mt-1">THC Provider Edge</span>
-                      <span className="text-[11px] font-bold text-amber-300">ASN 24534</span>
-                    </div>
-                  </div>
-
-                  {/* Forwarding Lines */}
-                  <div className="flex flex-col items-center text-sky-400">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                      Full BGP Tables
-                    </span>
-                    <div className="h-0.5 w-24 bg-gradient-to-r from-brand-500 via-purple-400 to-rose-400" />
-                    <span className="text-[9px] text-slate-400 mt-0.5">10G - 100G Upstream</span>
-                  </div>
-
-                  {/* Upstream & IXP Cloud */}
-                  <div className="flex flex-col gap-2">
-                    <div className="rounded-xl border border-purple-500/40 bg-purple-950/50 px-4 py-2 text-center">
-                      <span className="block text-xs font-bold text-purple-200">Global Tier-1 Upstreams</span>
-                      <span className="text-[10px] text-purple-300">Cogent • Tata • TM • China Mobile</span>
-                    </div>
-                    <div className="rounded-xl border border-sky-500/40 bg-sky-950/50 px-4 py-2 text-center">
-                      <span className="block text-xs font-bold text-sky-200">International & Domestic IXPs</span>
-                      <span className="text-[10px] text-sky-300">Equinix-IX • SG-IX • IIX • OpenIXP</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/images/iptransit.webp"
+              alt="IP Transit Architecture & Peering Topology"
+              className="w-full rounded-2xl border border-slate-200/80 object-contain shadow-sm"
+            />
           </motion.div>
         )}
 

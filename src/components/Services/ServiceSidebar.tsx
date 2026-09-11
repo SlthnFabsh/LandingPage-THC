@@ -14,6 +14,7 @@ import {
   ArrowRight,
   PhoneCall,
   Radio,
+  Zap,
 } from 'lucide-react';
 
 interface SubServiceItem {
@@ -44,6 +45,16 @@ const serviceNavItems: ServiceNavItem[] = [
       {
         href: '/layanan/internet/ip-transit',
         label: 'IP Transit (ASN 24534)',
+        icon: Radio,
+      },
+      {
+        href: '/layanan/internet/dedicated-internet',
+        label: 'Dedicated Internet',
+        icon: Zap,
+      },
+      {
+        href: '/layanan/internet/thc-ix',
+        label: 'THC IX',
         icon: Radio,
       },
     ],

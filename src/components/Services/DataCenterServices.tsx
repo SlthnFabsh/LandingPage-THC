@@ -11,11 +11,21 @@ const reveal = (delay = 0): MotionProps => ({
   transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay },
 });
 
-const dataCenterCards = [
+interface DataCenterCard {
+  title: string;
+  badge: string;
+  icon: React.ComponentType<{ className?: string }>;
+  href?: string;
+  description: string;
+  features: string[];
+}
+
+const dataCenterCards: DataCenterCard[] = [
   {
     title: 'Colocation Server',
     badge: 'Tier-3 Data Center Space',
     icon: Server,
+    href: '/layanan/pusat-data/colocation',
     description:
       'Secure colocation server rack space within international-standard Tier-3 facilities, delivering cost efficiency, 24/7 biometric physical security, N+1 precision power and cooling, redundant carrier links, and flexible storage scaling to protect your enterprise mission-critical servers.',
     features: [
@@ -28,6 +38,7 @@ const dataCenterCards = [
     title: 'THC Cloud',
     badge: 'Private & Enterprise Hybrid Cloud',
     icon: Cloud,
+    href: '/layanan/pusat-data/thc-cloud',
     description:
       'Enterprise hybrid and private cloud infrastructure offering the elasticity and agility of public cloud paired with the dedicated security, sovereign data compliance, and exclusive bare-metal performance of a private corporate infrastructure.',
     features: [
@@ -108,7 +119,7 @@ export default function DataCenterServices() {
                 {/* Footer Action */}
                 <div className="mt-8 border-t border-slate-100 pt-4">
                   <Link
-                    href="/#faq"
+                    href={card.href ?? '/#faq'}
                     className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600 transition-colors group-hover:text-brand-700"
                   >
                     <span>Reserve Rack Space / Cloud</span>

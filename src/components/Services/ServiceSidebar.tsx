@@ -23,6 +23,8 @@ import {
   GraduationCap,
   Router as RouterIcon,
   Wifi,
+  Server,
+  Cloud,
 } from 'lucide-react';
 
 interface SubServiceItem {
@@ -142,9 +144,26 @@ const serviceNavItems: ServiceNavItem[] = [
     ],
   },
   {
-    href: '/layanan/pusat-data',
     label: 'Data Center',
     icon: Database,
+    prefix: '/layanan/pusat-data',
+    subItems: [
+      {
+        href: '/layanan/pusat-data',
+        label: 'All Data Center Services',
+        icon: Database,
+      },
+      {
+        href: '/layanan/pusat-data/colocation',
+        label: 'Colocation Server',
+        icon: Server,
+      },
+      {
+        href: '/layanan/pusat-data/thc-cloud',
+        label: 'THC Cloud',
+        icon: Cloud,
+      },
+    ],
   },
 ];
 
@@ -154,6 +173,7 @@ export default function ServiceSidebar() {
     'Internet Services': true,
     'Connectivity Services': true,
     Solutions: true,
+    'Data Center': true,
   });
 
   useEffect(() => {

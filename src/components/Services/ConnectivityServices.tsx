@@ -18,6 +18,7 @@ const connectivityCards = [
     shortTitle: 'IPLC',
     badge: 'Point-to-Point DWDM',
     icon: Cable,
+    href: '/layanan/konektivitas/iplc',
     description:
       'THC IPLC is a dedicated point-to-point private data transmission service utilizing DWDM technology, backed by submarine cable backbone redundancy across the Jakabare Fiber Optic Network and Indigo Cable System to securely interconnect geographically dispersed global enterprises.',
     features: ['Jakabare & Indigo Cable System', 'Dedicated Point-to-Point Bandwidth', 'Submarine Cable Redundancy'],
@@ -27,6 +28,7 @@ const connectivityCards = [
     shortTitle: 'IEPL',
     badge: 'Layer-2 Carrier Ethernet',
     icon: Network,
+    href: '/layanan/konektivitas/iepl',
     description:
       'THC IEPL provides private, high-bandwidth point-to-point data communication powered by carrier-grade Layer 2 Ethernet technology (Metro Ethernet, MPLS), offering flexible scalability with transparent network management.',
     features: ['Layer-2 Protocol Transparency', 'MPLS & Metro Ethernet Backed', 'Seamless LAN Extension'],
@@ -36,18 +38,20 @@ const connectivityCards = [
     shortTitle: 'Metro Ethernet',
     badge: 'Inner & Inter City Loop',
     icon: GitBranch,
+    href: '/layanan/konektivitas/metro-ethernet',
     description:
       'High-performance fiber optic network interconnecting major metropolitan areas across Indonesia, engineered to seamlessly link corporate headquarters with branch offices and data centers through high-speed, low-jitter local loop connections.',
     features: ['Cross-City Fiber Grid', 'Sub-millisecond Local Latency', 'Multi-Branch Aggregation'],
   },
-  {
+{
     title: 'Inter Data Center Backbone (IDCB)',
     shortTitle: 'IDCB',
     badge: 'Data Center Interconnect',
     icon: Share2,
+    href: '/layanan/konektivitas/idcb',
     description:
       'A mission-critical, ultra-high-speed backbone interconnecting primary data centers for real-time resource sharing, geo-redundant data replication, and dynamic load balancing. Powered by DWDM technology, IDCB delivers secure, scalable, and ultra-low latency inter-site connectivity.',
-    features: ['Ultra-Low Latency DCI', 'High-Density DWDM Waves', 'Active-Active Replication Ready'],
+    features: ['Real-time Data Replication', 'Geo-Redundant Protection', 'Dynamic Load Balancing'],
   },
 ];
 
@@ -162,7 +166,8 @@ export default function ConnectivityServices() {
 
                         <div className="mt-4 border-t border-slate-100 pt-4">
                           <Link
-                            href="/#faq"
+                            href={card.href}
+                            prefetch={true}
                             className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600 transition-colors hover:text-brand-700"
                           >
                             <span>Inquire Solution</span>

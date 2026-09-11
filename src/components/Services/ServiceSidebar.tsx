@@ -15,6 +15,10 @@ import {
   PhoneCall,
   Radio,
   Zap,
+  Cable,
+  ArrowLeftRight,
+  GitBranch,
+  Share2,
 } from 'lucide-react';
 
 interface SubServiceItem {
@@ -60,9 +64,36 @@ const serviceNavItems: ServiceNavItem[] = [
     ],
   },
   {
-    href: '/layanan/konektivitas',
     label: 'Connectivity Services',
     icon: Network,
+    prefix: '/layanan/konektivitas',
+    subItems: [
+      {
+        href: '/layanan/konektivitas',
+        label: 'All Connectivity Services',
+        icon: Network,
+      },
+      {
+        href: '/layanan/konektivitas/iplc',
+        label: 'IPLC (International Private Leased Circuit)',
+        icon: Cable,
+      },
+      {
+        href: '/layanan/konektivitas/iepl',
+        label: 'IEPL (International Ethernet Private Line)',
+        icon: ArrowLeftRight,
+      },
+      {
+        href: '/layanan/konektivitas/metro-ethernet',
+        label: 'Local-Loop Metro Ethernet',
+        icon: GitBranch,
+      },
+      {
+        href: '/layanan/konektivitas/idcb',
+        label: 'Inter Data Center Backbone (IDCB)',
+        icon: Share2,
+      },
+    ],
   },
   {
     label: 'Solutions',
@@ -92,6 +123,7 @@ export default function ServiceSidebar() {
   const pathname = usePathname();
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     'Internet Services': true,
+    'Connectivity Services': true,
     Solutions: true,
   });
 

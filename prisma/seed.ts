@@ -107,6 +107,94 @@ async function main() {
     }
   }
 
+  // Timeline / Milestones perusahaan (idempotent: per-tahun, tambah re-run tidak menggandakan)
+  const milestoneData = [
+    {
+      order: 1,
+      year: '2006',
+      titleId: 'Didirikan sebagai NAP',
+      titleEn: 'Founded as a NAP',
+      pointsId: ['Trans Hybrid Communication didirikan sebagai Network Access Provider (NAP).'],
+      pointsEn: ['Trans Hybrid Communication founded as a Network Access Provider (NAP).'],
+    },
+    {
+      order: 2,
+      year: '2017',
+      titleId: 'Awal Perjalanan Informasi',
+      titleEn: 'Start of the Information Journey',
+      pointsId: ['Lisensi baru: Fixed Closed Network (Jartatup).'],
+      pointsEn: ['New license: Fixed Closed Network (Jartatup).'],
+    },
+    {
+      order: 3,
+      year: '2018',
+      titleId: 'Lisensi Internasional Baru',
+      titleEn: 'New International License',
+      pointsId: ['Lisensi jaringan internasional baru (Jartatup International).'],
+      pointsEn: ['New international network license (Jartatup International).'],
+    },
+    {
+      order: 4,
+      year: '2019',
+      titleId: 'Ekspansi & Lisensi Baru',
+      titleEn: 'Expansion & New Licenses',
+      pointsId: [
+        'Lisensi baru: Internet Service Provider (ISP).',
+        'Penyelesaian Kalbar Backbone.',
+        'Proyek ekspansi baru: Cyber 1-IDC Fiber Backhaul.',
+      ],
+      pointsEn: [
+        'New license: Internet Service Provider (ISP).',
+        'Completion of the Kalbar Backbone.',
+        'New expansion project: Cyber 1-IDC Fiber Backhaul.',
+      ],
+    },
+    {
+      order: 5,
+      year: '2020',
+      titleId: 'Lisensi Cakupan Baru',
+      titleEn: 'New Coverage Licenses',
+      pointsId: ['Lisensi baru: FTTH (Jartaplok).', 'Proyek ekspansi baru: Rural Penetration Using Wireless.'],
+      pointsEn: ['New license: FTTH (Jartaplok).', 'New expansion project: Rural Penetration Using Wireless.'],
+    },
+    {
+      order: 6,
+      year: '2021',
+      titleId: 'Rollout Fiber Kota',
+      titleEn: 'City Fiber Rollout',
+      pointsId: [
+        'Rollout FTTH di 2 kota.',
+        'Koneksi baru Singapura–Jakarta.',
+        'Jalur diversitas baru Jakarta–Singapura.',
+        'Proyek ekspansi baru: 50 menara.',
+      ],
+      pointsEn: [
+        'FTTH rollout in 2 cities.',
+        'New connection to Singapore–Jakarta.',
+        'New diversity link Jakarta–Singapore.',
+        'New expansion project: 50 towers.',
+      ],
+    },
+    {
+      order: 7,
+      year: '2022',
+      titleId: 'Ekspansi Backbone',
+      titleEn: 'Backbone Expansion',
+      pointsId: ['Proyek TBK023.', 'Rollout FTTH Depok–Bogor.', 'Mempawah–Sintang Backbone.'],
+      pointsEn: ['Project TBK023.', 'FTTH rollout Depok–Bogor.', 'Mempawah–Sintang Backbone.'],
+    },
+  ] as const;
+
+  for (const m of milestoneData) {
+    const existing = await prisma.milestone.findFirst({ where: { year: m.year } });
+    if (!existing) {
+      await prisma.milestone.create({ data: { ...m, active: true } });
+      console.log(`✓ Milestone ${m.year}: ${m.titleEn}`);
+    } else {
+      console.log(`✓ Milestone ${m.year} sudah ada`);
+    }
+  }
+
   console.log('\n--- Seeding konten situs ---');
 
   // 3. Profil perusahaan (single row)

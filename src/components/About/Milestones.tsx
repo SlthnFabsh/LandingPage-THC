@@ -65,9 +65,16 @@ const defaultMilestones: Milestone[] = [
   },
 ];
 
+function mergeMilestones(seed: Milestone[], extra?: Milestone[]): Milestone[] {
+  const byYear = new Map<string, Milestone>();
+  for (const m of seed) byYear.set(m.year, m);
+  if (extra) for (const m of extra) if (m.year) byYear.set(m.year, m);
+  return [...byYear.values()].sort((a, b) => Number(a.year) - Number(b.year));
+}
+
 export default function Milestones({ milestones }: { milestones?: Milestone[] }) {
   const { t } = useLanguage();
-  const data = milestones && milestones.length ? milestones : defaultMilestones;
+  const data = mergeMilestones(defaultMilestones, milestones);
 
   return (
     <section className="relative overflow-hidden bg-brand-950 py-20 text-white md:py-28">

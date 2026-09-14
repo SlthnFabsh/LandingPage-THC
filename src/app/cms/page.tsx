@@ -12,6 +12,10 @@ import {
   HelpCircle,
   PhoneCall,
   Share2,
+  Milestone,
+  Gem,
+  Network,
+  FileText,
 } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
@@ -56,6 +60,10 @@ export default async function CmsDashboardPage() {
   const quickSections = [
     { href: '/cms/slider', label: 'Slider', count: totalSlides, icon: Images },
     { href: '/cms/profil', label: 'Profile', icon: Building2 },
+    { href: '/cms/timeline', label: 'Timeline', icon: Milestone },
+    { href: '/cms/nilai-inti', label: 'Nilai Inti', icon: Gem },
+    { href: '/cms/struktur-grup', label: 'Struktur Grup', icon: Network },
+    { href: '/cms/about-hero', label: 'About Hero', icon: FileText },
     { href: '/cms/layanan', label: 'Services', count: totalServices, icon: Layers },
     { href: '/cms/pelanggan', label: 'Customers', count: totalProducts, icon: Users },
     { href: '/cms/mitra', label: 'Partners', count: totalPartners, icon: Handshake },

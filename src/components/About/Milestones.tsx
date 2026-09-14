@@ -5,13 +5,13 @@ import { Check } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 import NoiseOverlay from '@/components/NoiseOverlay';
 
-interface Milestone {
+export interface Milestone {
   year: string;
   title: string;
   points: string[];
 }
 
-const milestones: Milestone[] = [
+const defaultMilestones: Milestone[] = [
   {
     year: '2006',
     title: 'Founded as a NAP',
@@ -65,8 +65,9 @@ const milestones: Milestone[] = [
   },
 ];
 
-export default function Milestones() {
+export default function Milestones({ milestones }: { milestones?: Milestone[] }) {
   const { t } = useLanguage();
+  const data = milestones && milestones.length ? milestones : defaultMilestones;
 
   return (
     <section className="relative overflow-hidden bg-brand-950 py-20 text-white md:py-28">
@@ -109,7 +110,7 @@ export default function Milestones() {
           />
 
           <ol>
-            {milestones.map((milestone, index) => {
+            {data.map((milestone, index) => {
               const onLeft = index % 2 === 0;
               return (
                 <li key={milestone.year} className="relative md:grid md:grid-cols-2 md:gap-x-28">

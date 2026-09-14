@@ -227,3 +227,70 @@ model SocialMediaLink {
 
   @@index([active])
 }
+
+model Milestone {
+  id        String   @id @default(cuid())
+  order     Int      @default(0)
+  year      String   @db.VarChar(20)
+  titleId   String   @db.VarChar(255)
+  titleEn   String   @db.VarChar(255)
+  pointsId  Json     @db.Json
+  pointsEn  Json     @db.Json
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+}
+
+model CoreValueSetting {
+  id        String   @id @default(cuid())
+  introId   String   @db.LongText
+  introEn   String   @db.LongText
+  updatedAt DateTime @updatedAt
+}
+
+model CoreValue {
+  id            String   @id @default(cuid())
+  order         Int      @default(0)
+  letter        String   @db.VarChar(10)
+  titleId       String   @db.VarChar(255)
+  titleEn       String   @db.VarChar(255)
+  descriptionId String   @db.LongText
+  descriptionEn String   @db.LongText
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([active])
+}
+
+model GroupStructure {
+  id          String   @id @default(cuid())
+  parentBadge String   @db.VarChar(100)
+  parentName  String   @db.VarChar(255)
+  parentTag   String   @db.VarChar(255)
+  child1Name  String   @db.VarChar(255)
+  child1Tag   String   @db.VarChar(255)
+  child2Name  String   @db.VarChar(255)
+  child2Tag   String   @db.VarChar(255)
+  card1Label  String   @db.VarChar(255)
+  card1Desc   String   @db.LongText
+  card2Label  String   @db.VarChar(255)
+  card2Desc   String   @db.LongText
+  card3Label  String   @db.VarChar(255)
+  card3Desc   String   @db.LongText
+  updatedAt   DateTime @updatedAt
+}
+
+model AboutPage {
+  id         String   @id @default(cuid())
+  key        String   @unique @db.VarChar(50)
+  titleId    String   @db.VarChar(255)
+  titleEn    String   @db.VarChar(255)
+  subtitleId String   @db.LongText
+  subtitleEn String   @db.LongText
+  updatedAt  DateTime @updatedAt
+
+  @@index([key])
+}

@@ -4,6 +4,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
+  Milestone,
+  Gem,
+  Network,
+  FileText,
   Newspaper,
   ScrollText,
   ShieldCheck,
@@ -33,6 +37,10 @@ const navItems = [
   { href: '/cms', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/cms/slider', label: 'Slider', icon: Images },
   { href: '/cms/profil', label: 'Profil Perusahaan', icon: Building2 },
+  { href: '/cms/timeline', label: 'Timeline', icon: Milestone },
+  { href: '/cms/nilai-inti', label: 'Nilai Inti', icon: Gem },
+  { href: '/cms/struktur-grup', label: 'Struktur Grup', icon: Network },
+  { href: '/cms/about-hero', label: 'About Hero', icon: FileText },
   { href: '/cms/profil/statistik', label: 'Statistik', icon: LayoutDashboard },
   { href: '/cms/layanan', label: 'Layanan', icon: Layers },
   { href: '/cms/pelanggan', label: 'Pelanggan', icon: Users },

@@ -7,6 +7,7 @@ import AboutSidebar from '@/components/About/AboutSidebar';
 import CompanyProfile from '@/components/About/CompanyProfile';
 import Milestones from '@/components/About/Milestones';
 import { getAboutContent } from '@/lib/content';
+import { getMilestones } from '@/lib/about-content';
 
 export const revalidate = 60;
 
@@ -18,6 +19,11 @@ export const metadata: Metadata = {
 
 export default async function InformasiPerusahaanPage() {
   const { about, contact, socials } = await getAboutContent();
+  const milestones = (await getMilestones()).map((m) => ({
+    year: m.year,
+    title: m.titleEn,
+    points: m.pointsEn,
+  }));
 
   return (
     <>
@@ -38,7 +44,7 @@ export default async function InformasiPerusahaanPage() {
             </div>
           </div>
         </section>
-        <Milestones />
+                <Milestones milestones={milestones} />
       </main>
       <Footer contact={contact} socials={socials} />
       <BackToTop />

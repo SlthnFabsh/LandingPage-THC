@@ -1,10 +1,14 @@
 import type { Metadata, Viewport } from 'next';
 
-export const siteUrl = (
+const rawSiteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
   process.env.NEXT_PUBLIC_VERCEL_URL ??
-  'https://landingpage-thc.vercel.app'
-).replace(/\/+$/, '');
+  'https://landingpage-thc.vercel.app';
+export const siteUrl = (() => {
+  const trimmed = rawSiteUrl.trim().replace(/\/+$/, '');
+  if (!trimmed) return 'https://landingpage-thc.vercel.app';
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+})();
 
 export const siteName = 'Trans Hybrid Communication';
 export const siteNameShort = 'THC';

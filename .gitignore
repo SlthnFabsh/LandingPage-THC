@@ -17,3 +17,7 @@ yarn-debug.log*
 # env
 .env*
 /src/generated/prisma
+
+# next / ts incremental build cache
+*.tsbuildinfo
+

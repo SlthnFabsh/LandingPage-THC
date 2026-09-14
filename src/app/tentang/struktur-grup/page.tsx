@@ -6,6 +6,7 @@ import AboutHero from '@/components/About/AboutHero';
 import AboutSidebar from '@/components/About/AboutSidebar';
 import StrukturGrup from '@/components/About/StrukturGrup';
 import { getAboutContent } from '@/lib/content';
+import { getGroupStructure, getAboutPage } from '@/lib/about-content';
 
 export const revalidate = 60;
 
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 
 export default async function StrukturGrupPage() {
   const { contact, socials } = await getAboutContent();
+  const structure = await getGroupStructure();
 
   return (
     <>
@@ -32,7 +34,7 @@ export default async function StrukturGrupPage() {
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
               <AboutSidebar />
               <div className="min-w-0 flex-1">
-                <StrukturGrup />
+                <StrukturGrup structure={structure} />
               </div>
             </div>
           </div>

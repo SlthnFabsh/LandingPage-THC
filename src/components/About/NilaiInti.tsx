@@ -10,7 +10,18 @@ const reveal = (delay = 0): MotionProps => ({
   transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay },
 });
 
-const coreValues = [
+export interface NilaiIntiValue {
+  num: number;
+  letter: string;
+  title: string;
+  description: string;
+}
+
+export interface NilaiIntiSetting {
+  introEn: string;
+}
+
+const coreValues: NilaiIntiValue[] = [
   {
     num: 1,
     letter: 'T',
@@ -48,7 +59,18 @@ const coreValues = [
   },
 ];
 
-export default function NilaiInti() {
+export default function NilaiInti({
+  values,
+  intro,
+  defaultIntro = 'Ini adalah nilai-nilai inti yang memandu interaksi dan personel transhybrid langsung',
+}: {
+  values?: NilaiIntiValue[];
+  intro?: string;
+  defaultIntro?: string;
+}) {
+  const data = values && values.length ? values : coreValues;
+  const introText = (intro && intro.trim()) || defaultIntro;
+  const refExcerpt = introText.trimEnd();
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-soft">
       <div className="p-6 sm:p-8 lg:p-12">

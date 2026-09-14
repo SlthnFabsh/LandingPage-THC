@@ -6,6 +6,7 @@ import AboutHero from '@/components/About/AboutHero';
 import AboutSidebar from '@/components/About/AboutSidebar';
 import NilaiInti from '@/components/About/NilaiInti';
 import { getAboutContent } from '@/lib/content';
+import { getCoreValues, getCoreValueSetting } from '@/lib/about-content';
 
 export const revalidate = 60;
 
@@ -17,6 +18,15 @@ export const metadata: Metadata = {
 
 export default async function NilaiIntiPage() {
   const { contact, socials } = await getAboutContent();
+  const [coreValues, setting] = await Promise.all([getCoreValues(), getCoreValueSetting()]);
+
+  const values = coreValues.map((cv) => ({
+    num: cv.order,
+    letter: cv.letter,
+    title: cv.titleEn,
+    description: cv.descriptionEn,
+  }));
+  const intro = setting?.introEn?.trim();
 
   return (
     <>
@@ -32,7 +42,7 @@ export default async function NilaiIntiPage() {
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
               <AboutSidebar />
               <div className="min-w-0 flex-1">
-                <NilaiInti />
+                <NilaiInti values={values} intro={intro} />
               </div>
             </div>
           </div>

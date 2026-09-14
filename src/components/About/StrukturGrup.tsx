@@ -2,6 +2,26 @@
 
 import { motion, type MotionProps } from 'framer-motion';
 import { GitFork, Network, Building2, CheckCircle2 } from 'lucide-react';
+import type { GroupStructureData } from '@/lib/about-content';
+
+const fallbackStructure: GroupStructureData = {
+  parentBadge: 'Holding / Induk Perusahaan',
+  parentName: 'PT TRANS HYBRID COMMUNICATION',
+  parentTag: 'Network Access Provider & Telecommunications',
+  child1Name: 'DUKODU',
+  child1Tag: 'DIGITAL SOLUTION',
+  child2Name: 'TRANS HYBRID COMMUNICATION',
+  child2Tag: 'DIGITAL SOLUTION',
+  card1Label: 'THC Parent',
+  card1Desc:
+    'Penyedia infrastruktur jaringan internet, serat optik, NAP, dan ISP skala korporasi & BUMN.',
+  card2Label: 'Dukodu',
+  card2Desc:
+    'Unit transformasi digital & pengembangan solusi software kustom untuk kebutuhan bisnis modern.',
+  card3Label: 'THC Digital',
+  card3Desc:
+    'Layanan integrasi komunikasi terpadu, managed ICT services, dan connectivity digital suite.',
+};
 
 const reveal = (delay = 0): MotionProps => ({
   initial: { opacity: 0, y: 24 },
@@ -10,7 +30,12 @@ const reveal = (delay = 0): MotionProps => ({
   transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay },
 });
 
-export default function StrukturGrup() {
+export default function StrukturGrup({
+  structure,
+}: {
+  structure?: GroupStructureData;
+}) {
+  const data = structure ?? fallbackStructure;
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-soft">
       <div className="p-6 sm:p-8 lg:p-12">
@@ -43,12 +68,12 @@ export default function StrukturGrup() {
                 <span className="absolute -top-3 rounded-full bg-brand-500 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm">
                   Holding / Induk Perusahaan
                 </span>
-                <span className="text-[15px] font-black uppercase tracking-wider">
-                  PT TRANS HYBRID COMMUNICATION
-                </span>
-                <span className="mt-1 text-[11px] font-medium text-blue-200">
-                  Network Access Provider & Telecommunications
-                </span>
+                    <span className="text-[15px] font-black uppercase tracking-wider">
+                      {data.parentName}
+                    </span>
+                    <span className="mt-1 text-[11px] font-medium text-blue-200">
+                      {data.parentTag}
+                    </span>
               </div>
             </motion.div>
 
@@ -75,10 +100,10 @@ export default function StrukturGrup() {
                 >
                   <div className="relative flex min-h-[82px] w-[210px] sm:w-[230px] flex-col items-center justify-center rounded-2xl border-2 border-blue-600 bg-[#1d68b8] px-4 py-4 text-center text-white shadow-[0_8px_20px_rgba(29,104,184,0.3)] transition-transform duration-300 group-hover:scale-105">
                     <span className="text-[14px] font-black uppercase tracking-wider">
-                      DUKODU
+                      {data.child1Name}
                     </span>
                     <span className="text-[12px] font-bold uppercase tracking-wide text-sky-200">
-                      DIGITAL SOLUTION
+                      {data.child1Tag}
                     </span>
                   </div>
                 </motion.div>
@@ -90,10 +115,10 @@ export default function StrukturGrup() {
                 >
                   <div className="relative flex min-h-[82px] w-[210px] sm:w-[230px] flex-col items-center justify-center rounded-2xl border-2 border-sky-400 bg-[#009fe3] px-4 py-4 text-center text-white shadow-[0_8px_20px_rgba(0,159,227,0.3)] transition-transform duration-300 group-hover:scale-105">
                     <span className="text-[13px] font-black uppercase tracking-wider leading-tight">
-                      TRANS HYBRID COMMUNICATION
+                      {data.child2Name}
                     </span>
                     <span className="mt-0.5 text-[12px] font-bold uppercase tracking-wide text-blue-950">
-                      DIGITAL SOLUTION
+                      {data.child2Tag}
                     </span>
                   </div>
                 </motion.div>
@@ -112,30 +137,30 @@ export default function StrukturGrup() {
             <div className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-4">
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-[#1f3882]" />
-                <span className="text-xs font-bold text-slate-800">THC Parent</span>
+                <span className="text-xs font-bold text-slate-800">{data.card1Label}</span>
               </div>
               <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                Penyedia infrastruktur jaringan internet, serat optik, NAP, dan ISP skala korporasi & BUMN.
+                {data.card1Desc}
               </p>
             </div>
 
             <div className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-4">
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-[#1d68b8]" />
-                <span className="text-xs font-bold text-slate-800">Dukodu</span>
+                <span className="text-xs font-bold text-slate-800">{data.card2Label}</span>
               </div>
               <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                Unit transformasi digital & pengembangan solusi software kustom untuk kebutuhan bisnis modern.
+                {data.card2Desc}
               </p>
             </div>
 
             <div className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-4">
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-[#009fe3]" />
-                <span className="text-xs font-bold text-slate-800">THC Digital</span>
+                <span className="text-xs font-bold text-slate-800">{data.card3Label}</span>
               </div>
               <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                Layanan integrasi komunikasi terpadu, managed ICT services, dan connectivity digital suite.
+                {data.card3Desc}
               </p>
             </div>
           </div>

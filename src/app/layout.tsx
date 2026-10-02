@@ -112,8 +112,6 @@ export const viewport: Viewport = {
   colorScheme: 'light dark',
 };
 
-export { tagline, siteNameShort };
-
 const organizationJson = {
   '@context': 'https://schema.org',
   '@type': 'Organization',

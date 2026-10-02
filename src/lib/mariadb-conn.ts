@@ -17,8 +17,20 @@ export function mariadbPoolConfigFromUrl(connectionString: string): MariaDbAdapt
       ssl: { rejectUnauthorized: false },
       allowPublicKeyRetrieval: true,
       connectTimeout: 10000,
+      // Batas default mariadb adalah 10 koneksi per pool. Di Vercel setiap
+      // instance serverless membuat pool sendiri, sehingga jumlah koneksi bisa
+      // cepat melebihi batas database. Batas ini bisa diatur lewat
+      // DATABASE_POOL_LIMIT bila paket database mengizinkan lebih banyak
+      // koneksi.
+      connectionLimit: poolLimit(),
+      idleTimeout: 10000,
     } satisfies PoolConfig;
   } catch {
     return null;
   }
+}
+
+function poolLimit(): number {
+  const raw = Number(process.env.DATABASE_POOL_LIMIT);
+  return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : 5;
 }

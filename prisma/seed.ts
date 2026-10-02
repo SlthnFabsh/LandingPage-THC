@@ -4,6 +4,7 @@ import { PrismaClient } from '../src/generated/prisma/client';
 import { mariadbPoolConfigFromUrl } from '../src/lib/mariadb-conn';
 import { hash } from '@node-rs/argon2';
 import { translations, translate } from '../src/lib/i18n';
+import { seedServiceContent } from './seed-service';
 
 const connectionString = process.env.DATABASE_URL as string;
 const config = mariadbPoolConfigFromUrl(connectionString);
@@ -373,6 +374,11 @@ async function main() {
       console.log(`✓ Sosial media "${social.platform}"`);
     }
   }
+
+  // 10. Konten halaman /layanan (menu, hero, blok)
+  await seedServiceContent(prisma, {
+    reset: process.argv.includes('--reset-service'),
+  });
 
   console.log('\nSeeding selesai!');
 }

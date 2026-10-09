@@ -1,13 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import { Fragment } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
-  Milestone,
-  Gem,
-  Network,
-  FileText,
   FileStack,
   Newspaper,
   ScrollText,
@@ -38,11 +35,7 @@ interface ShellUser {
 const navItems = [
   { href: '/cms', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/cms/slider', label: 'Slider', icon: Images },
-  { href: '/cms/profil', label: 'Profil Perusahaan', icon: Building2 },
-  { href: '/cms/timeline', label: 'Timeline', icon: Milestone },
-  { href: '/cms/nilai-inti', label: 'Nilai Inti', icon: Gem },
-  { href: '/cms/struktur-grup', label: 'Struktur Grup', icon: Network },
-  { href: '/cms/about-hero', label: 'About Hero', icon: FileText },
+  { href: '/cms/profil', label: 'Tentang', icon: Building2 },
   { href: '/cms/layanan', label: 'Kartu Homepage', icon: Layers },
   { href: '/cms/layanan-halaman', label: 'Halaman /layanan', icon: FileStack },
   { href: '/cms/jaringan', label: 'Halaman /jaringan', icon: FileStack },
@@ -63,7 +56,13 @@ const navChildren: Record<string, { href: string; label: string }[]> = {
     { href: '/cms/layanan-halaman/menu', label: 'Struktur Menu' },
   ],
   '/cms/jaringan': [{ href: '/cms/jaringan/menu', label: 'Struktur Menu' }],
-  '/cms/profil': [{ href: '/cms/profil/statistik', label: 'Statistik' }],
+  '/cms/profil': [
+    { href: '/cms/timeline', label: 'Timeline' },
+    { href: '/cms/nilai-inti', label: 'Nilai Inti' },
+    { href: '/cms/struktur-grup', label: 'Struktur Grup' },
+    { href: '/cms/about-hero', label: 'About Hero' },
+    { href: '/cms/profil/statistik', label: 'Statistik' },
+  ],
 };
 
 export default function CmsShell({
@@ -110,7 +109,8 @@ export default function CmsShell({
               const active =
                 item.href === '/cms'
                   ? pathname === '/cms'
-                  : pathname.startsWith(item.href);
+                  : pathname.startsWith(item.href) ||
+                    children.some((child) => pathname.startsWith(child.href));
               return (
                 <div key={item.href}>
                   <Link
@@ -182,20 +182,34 @@ export default function CmsShell({
           </div>
           <div className="mb-4 flex gap-2 overflow-x-auto pb-1 lg:hidden">
             {navItems.map((item) => {
+              const children = navChildren[item.href] ?? [];
               const active =
                 item.href === '/cms'
                   ? pathname === '/cms'
-                  : pathname.startsWith(item.href);
+                  : pathname.startsWith(item.href) ||
+                    children.some((child) => pathname.startsWith(child.href));
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-semibold ${
-                    active ? 'bg-brand-600 text-white' : 'bg-white text-slate-600'
-                  }`}
-                >
-                  {item.label}
-                </Link>
+                <Fragment key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={`whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-semibold ${
+                      active ? 'bg-brand-600 text-white' : 'bg-white text-slate-600'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                  {children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className={`whitespace-nowrap rounded-full border border-slate-200 bg-white px-4 py-1.5 text-xs font-semibold ${
+                        pathname === child.href ? 'text-brand-700 ring-1 ring-brand-400' : 'text-slate-500'
+                      }`}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </Fragment>
               );
             })}
           </div>

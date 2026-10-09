@@ -10,7 +10,7 @@ interface ContentFormProps {
   error?: string;
   submitLabel: string;
   pendingLabel?: string;
-  cancelHref: string;
+  cancelHref?: string;
   action: (payload: FormData) => void;
   id?: string;
   children: ReactNode;
@@ -47,9 +47,11 @@ export default function ContentForm({
           pendingLabel={pendingLabel ?? 'Menyimpan...'}
           className="rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
         />
-        <a href={cancelHref} className="rounded-lg px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100">
-          Batal
-        </a>
+        {cancelHref && (
+          <a href={cancelHref} className="rounded-lg px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100">
+            Batal
+          </a>
+        )}
       </div>
     </form>
   );

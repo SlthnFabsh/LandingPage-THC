@@ -3,14 +3,18 @@ import { Pencil } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { requireCms } from '@/lib/cms-auth';
 import DeleteContentButton from '@/components/cms/DeleteContentButton';
-import { deleteFaq } from '@/app/cms/actions/content';
+import MediaForm from '@/components/cms/MediaForm';
+import { deleteFaq, upsertFaqMedia } from '@/app/cms/actions/content';
 import { ListHeader, ListCard, Row, EmptyState, ActiveBadge, PasswordExpiredBanner } from '@/components/cms/ListShell';
 
 export const dynamic = 'force-dynamic';
 
 export default async function FaqListPage() {
   const { passwordExpired } = await requireCms();
-  const faqs = await prisma.faqEntry.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'asc' }] });
+  const [faqs, media] = await Promise.all([
+    prisma.faqEntry.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'asc' }] }),
+    prisma.homeMedia.findFirst(),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -21,6 +25,7 @@ export default async function FaqListPage() {
         addLabel="Add FAQ"
       />
       {passwordExpired && <PasswordExpiredBanner />}
+      <MediaForm variant="faq" action={upsertFaqMedia as never} initial={media} />
       {faqs.length === 0 ? (
         <EmptyState message="No FAQs yet. Add your first question." />
       ) : (

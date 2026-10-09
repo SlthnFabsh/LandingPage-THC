@@ -807,16 +807,28 @@ export async function deleteSocial(formData: FormData) {
 
 /* ------------------------- Media Halaman (FAQ & CTA) ------------------------- */
 
-const HOME_MEDIA_FIELDS = [
+type HomeMediaFieldKey = 'faqThumb1' | 'faqThumb2' | 'ctaBackground' | 'ctaLogo';
+
+interface HomeMediaField {
+  base: string;
+  key: HomeMediaFieldKey;
+}
+
+const FAQ_MEDIA_FIELDS: HomeMediaField[] = [
   { base: 'faqThumb1', key: 'faqThumb1' },
   { base: 'faqThumb2', key: 'faqThumb2' },
+];
+
+const CTA_MEDIA_FIELDS: HomeMediaField[] = [
   { base: 'ctaBackground', key: 'ctaBackground' },
   { base: 'ctaLogo', key: 'ctaLogo' },
-] as const;
+];
 
-export async function upsertHomeMedia(
-  prevState: ContentFormState,
-  formData: FormData
+async function saveHomeMedia(
+  formData: FormData,
+  fields: HomeMediaField[],
+  detail: string,
+  redirectTo: string
 ): Promise<ContentFormState> {
   const { user, expired } = await requireUser();
   if (!user) return { error: ERROR_NOT_AUTH };
@@ -825,7 +837,7 @@ export async function upsertHomeMedia(
   const existing = await prisma.homeMedia.findFirst();
   const data: Record<string, string> = {};
 
-  for (const field of HOME_MEDIA_FIELDS) {
+  for (const field of fields) {
     const current = existing ? existing[field.key] : undefined;
     const resolved = await resolveNamedImage(formData, current, field.base);
     if (resolved.error) return { error: resolved.error };
@@ -842,8 +854,22 @@ export async function upsertHomeMedia(
     userId: user.id,
     entity: 'HomeMedia',
     entityId: existing?.id ?? 'home-media',
-    detail: 'Homepage media (FAQ & CTA images) saved',
+    detail,
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
-  redirect('/cms/media');
+  redirect(redirectTo);
+}
+
+export async function upsertFaqMedia(
+  _prevState: ContentFormState,
+  formData: FormData
+): Promise<ContentFormState> {
+  return saveHomeMedia(formData, FAQ_MEDIA_FIELDS, 'FAQ section images saved', '/cms/faq');
+}
+
+export async function upsertCtaMedia(
+  _prevState: ContentFormState,
+  formData: FormData
+): Promise<ContentFormState> {
+  return saveHomeMedia(formData, CTA_MEDIA_FIELDS, 'CTA section images saved', '/cms/kontak');
 }

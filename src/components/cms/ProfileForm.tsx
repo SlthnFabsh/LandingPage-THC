@@ -50,7 +50,7 @@ export default function ProfileForm({ action, initial }: ProfileFormProps) {
         <p className="mb-4 text-xs text-slate-500">Intro, licenses, vision, and mission.</p>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <TextArea name="introEn" label="Intro" defaultValue={initial?.introEn ?? ''} rows={4} />
+          <TextArea name="introEn" label="About Us (Intro)" defaultValue={initial?.introEn ?? ''} rows={4} />
         </div>
 
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -60,15 +60,15 @@ export default function ProfileForm({ action, initial }: ProfileFormProps) {
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">Mission</label>
-            <p className="mb-2 text-xs text-slate-400">One mission point per line.</p>
+            <p className="mb-2 text-xs text-slate-400">One mission point per line (5 bullet points on the web).</p>
             <textarea name="misiEn" defaultValue={initial?.misiEn ?? ''} rows={6} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20" />
           </div>
         </div>
 
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Licenses</label>
-            <p className="mb-2 text-xs text-slate-400">One license per line.</p>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Official Licenses & Legality</label>
+            <p className="mb-2 text-xs text-slate-400">One license per line (5 licenses on the web).</p>
             <textarea name="licensesEn" defaultValue={joinLines(initial?.licensesEn)} rows={6} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20" />
           </div>
         </div>

@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/lib/service-icons';
 import { cellToLines } from '@/lib/service-blocks';
 import BlockShell from './BlockShell';
+import ZoomableImage from './ZoomableImage';
 import type {
   BadgesData,
   CtaData,
@@ -159,6 +160,17 @@ export function ProcessBlock({ data }: { data: ProcessData }) {
 
 export function ImageBlock({ data }: { data: ImageData }) {
   if (!data.src) return null;
+
+  if (data.zoomable) {
+    return (
+      <figure className="rounded-2xl border border-slate-200/80 bg-white shadow-soft">
+        <ZoomableImage src={data.src} alt={data.alt} />
+        {data.caption && (
+          <figcaption className="px-4 py-3 text-center text-[12px] text-slate-500">{data.caption}</figcaption>
+        )}
+      </figure>
+    );
+  }
 
   return (
     <figure className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-soft sm:p-6">

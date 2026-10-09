@@ -23,6 +23,7 @@ import {
 import { useLanguage } from '@/components/LanguageProvider';
 import { getServiceIcon } from '@/lib/service-icons';
 import type { ServiceNavbarItem } from '@/lib/service-content';
+import type { NetworkNavbarItem } from '@/lib/network-content';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Building2,
@@ -62,30 +63,18 @@ const tentangSubPages = [
 
 const layananSubPagesFallback: ServiceNavbarItem[] = [];
 
-const jaringanSubPages = [
-  {
-    title: 'Network Coverage',
-    desc: 'Submarine & inland fiber optic routes',
-    href: '/jaringan/coverage',
-    icon: 'MapPin',
-  },
-  {
-    title: 'Hub & Point of Presence (PoP)',
-    desc: 'Domestic & cross-border backbone rings',
-    href: '/jaringan/hub-pop',
-    icon: 'Server',
-  },
-  {
-    title: 'Global Network & Peering',
-    desc: 'AS numbers, Tier-1 upstreams & IXPs',
-    href: '/jaringan/global-network',
-    icon: 'Share2',
-  },
-];
+const jaringanSubPagesFallback: NetworkNavbarItem[] = [];
 
 
-export default function Navbar({ layananItems }: { layananItems?: ServiceNavbarItem[] }) {
+export default function Navbar({
+  layananItems,
+  jaringanItems,
+}: {
+  layananItems?: ServiceNavbarItem[];
+  jaringanItems?: NetworkNavbarItem[];
+}) {
   const layananSubPages = layananItems && layananItems.length > 0 ? layananItems : layananSubPagesFallback;
+  const jaringanSubPages = jaringanItems && jaringanItems.length > 0 ? jaringanItems : jaringanSubPagesFallback;
   const { lang, t } = useLanguage();
   const pathname = usePathname();
   const isHome = pathname === '/';
@@ -293,7 +282,7 @@ export default function Navbar({ layananItems }: { layananItems?: ServiceNavbarI
                 <div className="absolute left-0 top-full z-50 w-[360px] pt-4">
                   <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 p-2 shadow-xl shadow-slate-900/10 backdrop-blur-xl" role="menu" aria-label="Network menu">
                     {jaringanSubPages.map(({ title, desc, href, icon }) => {
-                      const Icon = iconMap[icon] ?? MapPin;
+                      const Icon = getServiceIcon(icon);
                       return (
                         <Link
                           key={href}

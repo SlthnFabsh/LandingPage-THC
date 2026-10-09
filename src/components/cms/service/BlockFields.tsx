@@ -7,6 +7,9 @@ import { serviceIconNames } from '@/lib/service-icons';
 import { BLOCK_LABELS, BLOCK_TYPES, type BlockData, type BlockType } from '@/lib/service-blocks';
 import { fieldName } from '@/lib/service-form';
 import ImagePathField from '@/components/cms/service/ImagePathField';
+import type { UploadState } from '@/app/cms/actions/service';
+
+type UploadAction = (state: UploadState, formData: FormData) => Promise<UploadState>;
 
 /**
  * Editor blok konten.
@@ -293,6 +296,7 @@ const IMAGE_SPEC: FieldSpec[] = [
   { key: 'src', label: 'Path / URL gambar', placeholder: '/assets/images/topologi.webp' },
   { key: 'alt', label: 'Alt gambar' },
   { key: 'caption', label: 'Keterangan gambar' },
+  { key: 'zoomable', label: 'Dapat diperbesar (klik untuk zoom)', type: 'checkbox' },
 ];
 
 const CTA_SPEC: FieldSpec[] = [
@@ -307,11 +311,13 @@ export default function BlockFields({
   data,
   namePrefix,
   nested = false,
+  uploadAction,
 }: {
   type: BlockType;
   data: BlockData;
   namePrefix: string;
   nested?: boolean;
+  uploadAction?: UploadAction;
 }) {
   const value = (data ?? {}) as unknown as Record<string, unknown>;
   const text = (key: string) => (typeof value[key] === 'string' ? (value[key] as string) : '');
@@ -327,6 +333,7 @@ export default function BlockFields({
             name={fieldName(namePrefix, 'image')}
             label="Gambar (opsional)"
             defaultValue={text('image')}
+            uploadAction={uploadAction}
           />
         </div>
       );
@@ -464,6 +471,7 @@ export default function BlockFields({
             name={fieldName(namePrefix, 'src')}
             label="Gambar"
             defaultValue={text('src')}
+            uploadAction={uploadAction}
           />
         </div>
       );

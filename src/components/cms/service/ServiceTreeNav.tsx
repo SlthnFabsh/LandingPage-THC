@@ -26,11 +26,15 @@ export default function ServiceTreeNav({
   orphans,
   deleteAction,
   disabled,
+  cmsBase = '/cms/layanan-halaman',
+  publicBase = '/layanan',
 }: {
   roots: ServiceTreeNode[];
   orphans: ServiceTreePageRow[];
   deleteAction: DeleteAction;
   disabled?: boolean;
+  cmsBase?: string;
+  publicBase?: string;
 }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
@@ -47,11 +51,11 @@ export default function ServiceTreeNav({
   }, [roots]);
 
   const currentSlug = useMemo(() => {
-    if (!pathname?.startsWith('/cms/layanan-halaman/')) return null;
-    const rest = pathname.slice('/cms/layanan-halaman/'.length);
+    if (!pathname?.startsWith(`${cmsBase}/`)) return null;
+    const rest = pathname.slice(`${cmsBase}/`.length);
     if (!rest || rest.startsWith('new') || rest.startsWith('menu')) return null;
     return rest;
-  }, [pathname]);
+  }, [pathname, cmsBase]);
 
   const collapseAll = (value: boolean) =>
     setCollapsed(Object.fromEntries(slugs.map((slug) => [slug, value])));
@@ -117,7 +121,7 @@ export default function ServiceTreeNav({
             </div>
 
             <p className="mt-0.5 font-mono text-xs text-slate-400">
-              /layanan/{node.slug}
+              {publicBase}/{node.slug}
               {node.updatedLabel ? ` · diubah ${node.updatedLabel}` : ''}
             </p>
 
@@ -143,7 +147,7 @@ export default function ServiceTreeNav({
 
           <div className="flex shrink-0 items-center gap-2">
             <Link
-              href={`/cms/layanan-halaman/new?parent=${encodeURIComponent(node.slug)}`}
+              href={`${cmsBase}/new?parent=${encodeURIComponent(node.slug)}`}
               title="Tambah halaman anak di sini"
               className={ICON_BTN}
             >
@@ -153,7 +157,7 @@ export default function ServiceTreeNav({
             {node.hasPage ? (
               <>
                 <a
-                  href={`/layanan/${node.slug}`}
+                  href={`${publicBase}/${node.slug}`}
                   target="_blank"
                   rel="noreferrer"
                   title="Lihat di website"
@@ -162,7 +166,7 @@ export default function ServiceTreeNav({
                   <ExternalLink className="h-4 w-4" />
                 </a>
                 <Link
-                  href={`/cms/layanan-halaman/${node.slug}`}
+                  href={`${cmsBase}/${node.slug}`}
                   title="Edit halaman"
                   className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-slate-100 px-3 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-200"
                 >
@@ -173,12 +177,12 @@ export default function ServiceTreeNav({
                   action={deleteAction}
                   id={node.pageId ?? node.id}
                   disabled={disabled}
-                  confirmText={`Hapus halaman "/layanan/${node.slug}" beserta seluruh bloknya?`}
+                  confirmText={`Hapus halaman "${publicBase}/${node.slug}" beserta seluruh bloknya?`}
                 />
               </>
             ) : (
               <Link
-                href={`/cms/layanan-halaman/new?parent=${encodeURIComponent(node.slug)}`}
+                href={`${cmsBase}/new?parent=${encodeURIComponent(node.slug)}`}
                 className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-brand-600 px-3 text-xs font-semibold text-white transition-colors hover:bg-brand-700"
               >
                 <Pencil className="h-3.5 w-3.5" />
@@ -237,10 +241,10 @@ export default function ServiceTreeNav({
             {orphans.map((orphan) => (
               <li key={orphan.slug} className="flex flex-wrap items-center gap-2 text-sm">
                 <Link
-                  href={`/cms/layanan-halaman/${orphan.slug}`}
+                  href={`${cmsBase}/${orphan.slug}`}
                   className="font-mono text-xs font-semibold text-brand-700 underline-offset-2 hover:underline"
                 >
-                  /layanan/{orphan.slug}
+                  {publicBase}/{orphan.slug}
                 </Link>
                 <span className="text-xs text-slate-500">{orphan.heroTitle}</span>
               </li>

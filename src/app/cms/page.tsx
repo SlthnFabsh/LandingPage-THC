@@ -16,6 +16,7 @@ import {
   Gem,
   Network,
   FileText,
+  FileStack,
 } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
@@ -33,6 +34,7 @@ export default async function CmsDashboardPage() {
     totalAudit,
     totalSlides,
     totalServices,
+    totalNetworkPages,
     totalProducts,
     totalPartners,
     totalFaqs,
@@ -44,6 +46,7 @@ export default async function CmsDashboardPage() {
     prisma.auditLog.count(),
     prisma.heroSlide.count(),
     prisma.serviceItem.count(),
+    prisma.networkPage.count(),
     prisma.customerLogo.count(),
     prisma.partnerLogo.count(),
     prisma.faqEntry.count(),
@@ -65,6 +68,8 @@ export default async function CmsDashboardPage() {
     { href: '/cms/struktur-grup', label: 'Struktur Grup', icon: Network },
     { href: '/cms/about-hero', label: 'About Hero', icon: FileText },
     { href: '/cms/layanan', label: 'Services', count: totalServices, icon: Layers },
+    { href: '/cms/layanan-halaman', label: 'Pages /layanan', icon: FileStack },
+    { href: '/cms/jaringan', label: 'Pages /jaringan', count: totalNetworkPages, icon: FileStack },
     { href: '/cms/pelanggan', label: 'Customers', count: totalProducts, icon: Users },
     { href: '/cms/mitra', label: 'Partners', count: totalPartners, icon: Handshake },
     { href: '/cms/faq', label: 'FAQ', count: totalFaqs, icon: HelpCircle },

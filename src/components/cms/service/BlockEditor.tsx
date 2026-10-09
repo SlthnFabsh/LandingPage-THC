@@ -5,10 +5,11 @@ import { ArrowUp, ArrowDown, Trash2 } from 'lucide-react';
 import BlockFields from '@/components/cms/service/BlockFields';
 import SubmitButton from '@/components/cms/SubmitButton';
 import { BLOCK_LABELS, type BlockData, type BlockType } from '@/lib/service-blocks';
-import type { ServiceFormState } from '@/app/cms/actions/service';
+import type { ServiceFormState, UploadState } from '@/app/cms/actions/service';
 
 type SaveAction = (state: ServiceFormState, formData: FormData) => Promise<ServiceFormState>;
 type SimpleAction = (formData: FormData) => Promise<void> | void;
+type UploadAction = (state: UploadState, formData: FormData) => Promise<UploadState>;
 
 export interface BlockSection {
   id: string;
@@ -26,6 +27,7 @@ export default function BlockEditor({
   saveAction,
   deleteAction,
   moveAction,
+  uploadAction,
   disabled,
 }: {
   section: BlockSection;
@@ -34,6 +36,7 @@ export default function BlockEditor({
   saveAction: SaveAction;
   deleteAction: SimpleAction;
   moveAction: SimpleAction;
+  uploadAction?: UploadAction;
   disabled: boolean;
 }) {
   const [state, formAction] = useActionState(saveAction, {} as ServiceFormState);
@@ -95,7 +98,12 @@ export default function BlockEditor({
         <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{state.error}</div>
       )}
 
-      <BlockFields type={section.type} data={section.data} namePrefix="data" />
+      <BlockFields
+        type={section.type}
+        data={section.data}
+        namePrefix="data"
+        uploadAction={uploadAction}
+      />
 
       <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-700">
         <input

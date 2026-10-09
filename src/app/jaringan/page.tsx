@@ -1,5 +1,9 @@
 import { redirect } from 'next/navigation';
+import { getFirstNetworkHref } from '@/lib/network-content';
 
-export default function JaringanIndexPage() {
-  redirect('/jaringan/coverage');
+export const revalidate = 60;
+
+/** /jaringan selalu mengarah ke halaman jaringan pertama yang aktif di CMS. */
+export default async function JaringanIndexPage() {
+  redirect(await getFirstNetworkHref());
 }

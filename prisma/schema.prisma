@@ -374,3 +374,65 @@ model ServiceSection {
 
   @@index([pageId, order])
 }
+
+/// Pohon menu untuk dropdown Navbar dan sidebar /jaringan.
+/// Grup (isGroup = true) tidak pernah memiliki halaman NetworkPage.
+model NetworkMenuItem {
+  id            String             @id @default(cuid())
+  parentId      String?
+  parent        NetworkMenuItem?   @relation("NetworkMenuTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children      NetworkMenuItem[]  @relation("NetworkMenuTree")
+  slug          String             @unique @db.VarChar(255)
+  titleId       String             @db.VarChar(255)
+  titleEn       String             @db.VarChar(255)
+  descId        String?            @db.VarChar(255)
+  descEn        String?            @db.VarChar(255)
+  icon          String             @default("Layers") @db.VarChar(50)
+  isGroup       Boolean            @default(false)
+  showInNavbar  Boolean            @default(true)
+  showInSidebar Boolean            @default(true)
+  order         Int                @default(0)
+  active        Boolean            @default(true)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  @@index([parentId, order])
+  @@index([active])
+}
+
+/// Konten satu halaman /jaringan/<slug>. Baris dibuat otomatis oleh seed
+/// untuk setiap menu item non-group, dan dapat disunting penuh lewat CMS.
+model NetworkPage {
+  id              String          @id @default(cuid())
+  slug            String          @unique @db.VarChar(255)
+  layout          ServiceLayout   @default(DETAIL)
+  heroCategory    String?         @db.VarChar(255)
+  heroBreadcrumb  String          @db.VarChar(255)
+  heroTitle       String          @db.VarChar(255)
+  heroSubtitle    String?         @db.LongText
+  heroShowSidebar Boolean         @default(true)
+  metaTitle       String?         @db.VarChar(255)
+  metaDescription String?         @db.LongText
+  order           Int             @default(0)
+  active          Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  sections        NetworkSection[]
+
+  @@index([active])
+}
+
+/// Satu blok konten pada halaman /jaringan. Urutan ditentukan kolom order.
+model NetworkSection {
+  id        String            @id @default(cuid())
+  pageId    String
+  page      NetworkPage       @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type      ServiceBlockType
+  order     Int               @default(0)
+  data      Json
+  active    Boolean           @default(true)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([pageId, order])
+}

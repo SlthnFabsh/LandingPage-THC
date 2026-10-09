@@ -45,6 +45,7 @@ const navItems = [
   { href: '/cms/about-hero', label: 'About Hero', icon: FileText },
   { href: '/cms/layanan', label: 'Kartu Homepage', icon: Layers },
   { href: '/cms/layanan-halaman', label: 'Halaman /layanan', icon: FileStack },
+  { href: '/cms/jaringan', label: 'Halaman /jaringan', icon: FileStack },
   { href: '/cms/pelanggan', label: 'Pelanggan', icon: Users },
   { href: '/cms/mitra', label: 'Mitra', icon: Handshake },
   { href: '/cms/faq', label: 'FAQ', icon: HelpCircle },
@@ -61,6 +62,7 @@ const navChildren: Record<string, { href: string; label: string }[]> = {
   '/cms/layanan-halaman': [
     { href: '/cms/layanan-halaman/menu', label: 'Struktur Menu' },
   ],
+  '/cms/jaringan': [{ href: '/cms/jaringan/menu', label: 'Struktur Menu' }],
   '/cms/profil': [{ href: '/cms/profil/statistik', label: 'Statistik' }],
 };
 

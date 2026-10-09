@@ -116,6 +116,8 @@ export interface ImageData {
   src: string;
   alt: string;
   caption?: string;
+  /** Bisa diperbesar dengan tombol zoom (dipakai peta/skema jaringan). */
+  zoomable?: boolean;
 }
 
 export interface CtaData {
@@ -322,6 +324,7 @@ export function normalizeBlock(value: unknown): ServiceBlock | null {
           src: str(data.src),
           alt: str(data.alt),
           caption: str(data.caption) || undefined,
+          zoomable: data.zoomable === true,
         },
       };
 

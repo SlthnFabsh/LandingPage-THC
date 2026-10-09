@@ -5,6 +5,7 @@ import { mariadbPoolConfigFromUrl } from '../src/lib/mariadb-conn';
 import { hash } from '@node-rs/argon2';
 import { translations, translate } from '../src/lib/i18n';
 import { seedServiceContent } from './seed-service';
+import { seedNetworkContent } from './seed-network';
 
 const connectionString = process.env.DATABASE_URL as string;
 const config = mariadbPoolConfigFromUrl(connectionString);
@@ -378,6 +379,11 @@ async function main() {
   // 10. Konten halaman /layanan (menu, hero, blok)
   await seedServiceContent(prisma, {
     reset: process.argv.includes('--reset-service'),
+  });
+
+  // 11. Konten halaman /jaringan (menu, hero, blok)
+  await seedNetworkContent(prisma, {
+    reset: process.argv.includes('--reset-network'),
   });
 
   console.log('\nSeeding selesai!');

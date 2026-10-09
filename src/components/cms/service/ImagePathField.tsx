@@ -3,7 +3,9 @@
 import { useRef, useState, useTransition } from 'react';
 import { Upload, Loader2 } from 'lucide-react';
 import { inputCls } from '@/components/cms/ui';
-import { uploadServiceImage } from '@/app/cms/actions/service';
+import { uploadServiceImage, type UploadState } from '@/app/cms/actions/service';
+
+type UploadAction = (state: UploadState, formData: FormData) => Promise<UploadState>;
 
 /**
  * Kolom path gambar + tombol unggah.
@@ -18,11 +20,13 @@ export default function ImagePathField({
   label,
   defaultValue,
   disabled,
+  uploadAction = uploadServiceImage,
 }: {
   name: string;
   label: string;
   defaultValue?: string;
   disabled?: boolean;
+  uploadAction?: UploadAction;
 }) {
   const [value, setValue] = useState(defaultValue ?? '');
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +41,7 @@ export default function ImagePathField({
     body.append('file', file);
 
     startTransition(async () => {
-      const result = await uploadServiceImage({}, body);
+      const result = await uploadAction({}, body);
       if (result.error) {
         setError(result.error);
         return;

@@ -1,89 +1,126 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MapPin, Server, Share2, ArrowRight, ShieldAlert, PhoneCall } from 'lucide-react';
+import { ArrowRight, ChevronDown, PhoneCall } from 'lucide-react';
+import { getServiceIcon } from '@/lib/service-icons';
+import type { NetworkMenuNode } from '@/lib/network-content';
 
-const networkNavItems = [
-  {
-    href: '/jaringan/coverage',
-    label: 'Network Coverage',
-    description: 'Submarine & inland cable routes',
-    icon: MapPin,
-  },
-  {
-    href: '/jaringan/hub-pop',
-    label: 'Hub & Point of Presence (PoP)',
-    description: 'Domestic & cross-border backbones',
-    icon: Server,
-  },
-  {
-    href: '/jaringan/global-network',
-    label: 'Global Network & Peering',
-    description: 'AS Numbers, IXPs & Tier-1 upstreams',
-    icon: Share2,
-  },
-];
+/**
+ * Sidebar /jaringan. Struktur menu datang dari CMS lewat prop `items`
+ * (diambil dari tabel NetworkMenuItem pada server).
+ */
 
-export default function NetworkSidebar() {
+export default function NetworkSidebar({ items }: { items: NetworkMenuNode[] }) {
   const pathname = usePathname();
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+
+  const isBranchActive = (node: NetworkMenuNode): boolean => {
+    if (node.href && pathname.startsWith(node.href)) return true;
+    return node.children.some(isBranchActive);
+  };
+
+  useEffect(() => {
+    setOpenSections((prev) => {
+      const next = { ...prev };
+      items.forEach((node) => {
+        if (isBranchActive(node)) next[node.id] = true;
+      });
+      return next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, items]);
+
+  const toggleSection = (id: string) => {
+    setOpenSections((prev) => ({ ...prev, [id]: !(prev[id] ?? true) }));
+  };
 
   return (
-    <aside className="w-full lg:w-72 xl:w-80 shrink-0">
+    <aside className="w-full shrink-0 lg:w-72 xl:w-80">
       <div className="sticky top-28 space-y-5">
-        {/* Main Navigation Card */}
         <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-soft">
-          {/* Header */}
           <div className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
             <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
               NETWORK INFRASTRUCTURE
             </span>
           </div>
 
-          {/* Nav Items */}
           <nav className="divide-y divide-slate-100/80 py-1" aria-label="Network sub-navigation">
-            {networkNavItems.map(({ href, label, description, icon: Icon }) => {
-              const isActive = pathname === href;
+            {items.map((node) => {
+              const Icon = getServiceIcon(node.icon);
+              const hasChildren = node.children.length > 0;
+              const active = isBranchActive(node);
+              const isOpen = openSections[node.id] ?? true;
+
               return (
-                <Link
-                  key={href}
-                  href={href}
-                  prefetch={true}
-                  className={`group flex items-start gap-3.5 px-5 py-4 text-[14px] font-medium transition-all duration-200 ${
-                    isActive
-                      ? 'border-l-4 border-brand-600 bg-brand-50/70 font-semibold text-brand-600 shadow-sm'
-                      : 'border-l-4 border-transparent text-slate-600 hover:border-slate-300 hover:bg-slate-50/80 hover:text-brand-600'
-                  }`}
-                >
-                  <span
-                    className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors ${
-                      isActive
-                        ? 'bg-brand-600 text-white shadow-glow-blue'
-                        : 'bg-slate-100 text-slate-500 group-hover:bg-brand-50 group-hover:text-brand-600'
-                    }`}
-                  >
-                    <Icon className="h-4 w-4" />
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <span className="block leading-snug">{label}</span>
-                    <span className="mt-0.5 block text-[12px] font-normal text-slate-400">
-                      {description}
-                    </span>
+                <div key={node.id} className="py-1">
+                  <div className="flex items-center">
+                    {node.href ? (
+                      <Link
+                        href={node.href}
+                        className={`flex min-w-0 flex-1 items-center gap-3.5 py-3.5 pl-5 pr-2 text-[14px] font-medium transition-colors ${
+                          active ? 'font-semibold text-brand-600' : 'text-slate-700 hover:text-brand-600'
+                        }`}
+                      >
+                        <span
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                            active
+                              ? 'bg-brand-600 text-white shadow-glow-blue'
+                              : 'bg-slate-100 text-slate-500'
+                          }`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="leading-snug">{node.title}</span>
+                      </Link>
+                    ) : (
+                      <span
+                        className={`flex min-w-0 flex-1 items-center gap-3.5 py-3.5 pl-5 pr-2 text-[14px] font-medium ${
+                          active ? 'font-semibold text-brand-600' : 'text-slate-700'
+                        }`}
+                      >
+                        <span
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                            active ? 'bg-brand-600 text-white shadow-glow-blue' : 'bg-slate-100 text-slate-500'
+                          }`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="leading-snug">{node.title}</span>
+                      </span>
+                    )}
+
+                    {hasChildren && (
+                      <button
+                        type="button"
+                        onClick={() => toggleSection(node.id)}
+                        aria-expanded={isOpen}
+                        aria-label={`${isOpen ? 'Tutup' : 'Buka'} ${node.title}`}
+                        className="mr-4 shrink-0 rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-brand-600"
+                      >
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform duration-200 ${
+                            isOpen ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+                    )}
                   </div>
-                  <ArrowRight
-                    className={`mt-1 h-4 w-4 shrink-0 transition-transform ${
-                      isActive
-                        ? 'text-brand-600 translate-x-0 opacity-100'
-                        : 'text-slate-300 -translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
-                    }`}
-                  />
-                </Link>
+
+                  {hasChildren && isOpen && (
+                    <div className="ml-7 mr-3 my-1 space-y-1 border-l-2 border-slate-200 pl-3">
+                      {node.children.map((child) => (
+                        <SubNavLink key={child.id} node={child} pathname={pathname} />
+                      ))}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </nav>
         </div>
 
-        {/* 24/7 NOC Support Card */}
         <div className="overflow-hidden rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50/80 via-white to-blue-50/50 p-5 shadow-soft">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white shadow-glow-blue">
@@ -106,5 +143,77 @@ export default function NetworkSidebar() {
         </div>
       </div>
     </aside>
+  );
+}
+
+function SubNavLink({ node, pathname }: { node: NetworkMenuNode; pathname: string }) {
+  const [open, setOpen] = useState(true);
+  const Icon = getServiceIcon(node.icon);
+  const hasChildren = node.children.length > 0;
+
+  if (!node.href && !hasChildren) return null;
+
+  return (
+    <div>
+      {node.href && (
+        <Link
+          href={node.href}
+          className={`group flex items-center justify-between rounded-xl px-3 py-2.5 text-[13px] font-medium transition-all ${
+            pathname === node.href
+              ? 'bg-brand-50 font-semibold text-brand-600 shadow-xs'
+              : 'text-slate-600 hover:bg-slate-50 hover:text-brand-600'
+          }`}
+        >
+          <span className="flex min-w-0 items-center gap-2.5">
+            <Icon
+              className={`h-3.5 w-3.5 shrink-0 ${
+                pathname === node.href ? 'text-brand-600' : 'text-slate-400'
+              }`}
+            />
+            <span className="leading-snug">{node.title}</span>
+          </span>
+          <ArrowRight
+            className={`h-3.5 w-3.5 shrink-0 transition-transform ${
+              pathname === node.href
+                ? 'translate-x-0 text-brand-600 opacity-100'
+                : '-translate-x-1 text-slate-300 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
+            }`}
+          />
+        </Link>
+      )}
+
+      {hasChildren && (
+        <>
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-all ${
+              node.href ? '' : 'text-slate-600 hover:bg-slate-50 hover:text-brand-600'
+            }`}
+          >
+            {!node.href && (
+              <>
+                <Icon className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                <span className="flex-1 text-left leading-snug">{node.title}</span>
+              </>
+            )}
+            <ChevronDown
+              className={`h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform ${
+                open ? 'rotate-180' : ''
+              } ${node.href ? 'ml-auto' : ''}`}
+            />
+          </button>
+
+          {open && (
+            <div className="my-1 ml-4 space-y-1 border-l-2 border-slate-200 pl-3">
+              {node.children.map((child) => (
+                <SubNavLink key={child.id} node={child} pathname={pathname} />
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
   );
 }

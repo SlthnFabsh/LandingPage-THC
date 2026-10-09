@@ -11,6 +11,7 @@
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "npx tsx prisma/seed.ts",
+    "db:seed-about": "npx tsx prisma/seed-about.ts",
     "verify:service": "npx tsx prisma/verify-service-blocks.ts",
     "verify:network": "npx tsx prisma/verify-network-blocks.ts",
     "verify:media": "npx tsx prisma/verify-media.ts",

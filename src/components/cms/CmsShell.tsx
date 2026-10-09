@@ -23,6 +23,7 @@ import {
   HelpCircle,
   PhoneCall,
   Share2,
+  ChevronRight,
 } from 'lucide-react';
 import { logoutAction } from '@/app/cms/actions/auth';
 import SubmitButton from '@/components/cms/SubmitButton';
@@ -42,9 +43,8 @@ const navItems = [
   { href: '/cms/nilai-inti', label: 'Nilai Inti', icon: Gem },
   { href: '/cms/struktur-grup', label: 'Struktur Grup', icon: Network },
   { href: '/cms/about-hero', label: 'About Hero', icon: FileText },
-  { href: '/cms/profil/statistik', label: 'Statistik', icon: LayoutDashboard },
-  { href: '/cms/layanan', label: 'Kartu Layanan', icon: Layers },
-  { href: '/cms/layanan-halaman', label: 'Halaman Layanan', icon: FileStack },
+  { href: '/cms/layanan', label: 'Kartu Homepage', icon: Layers },
+  { href: '/cms/layanan-halaman', label: 'Halaman /layanan', icon: FileStack },
   { href: '/cms/pelanggan', label: 'Pelanggan', icon: Users },
   { href: '/cms/mitra', label: 'Mitra', icon: Handshake },
   { href: '/cms/faq', label: 'FAQ', icon: HelpCircle },
@@ -55,6 +55,14 @@ const navItems = [
   { href: '/cms/2fa/setup', label: 'Keamanan 2FA', icon: ShieldCheck },
   { href: '/cms/password', label: 'Ganti Kata Sandi', icon: KeyRound },
 ];
+
+/** Menu turunan yang ditampilkan sebagai anak di sidebar dan chip mobile. */
+const navChildren: Record<string, { href: string; label: string }[]> = {
+  '/cms/layanan-halaman': [
+    { href: '/cms/layanan-halaman/menu', label: 'Struktur Menu' },
+  ],
+  '/cms/profil': [{ href: '/cms/profil/statistik', label: 'Statistik' }],
+};
 
 export default function CmsShell({
   user,
@@ -96,23 +104,39 @@ export default function CmsShell({
             </div>
             {navItems.map((item) => {
               const Icon = item.icon;
+              const children = navChildren[item.href] ?? [];
               const active =
                 item.href === '/cms'
                   ? pathname === '/cms'
                   : pathname.startsWith(item.href);
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
-                    active
-                      ? 'bg-brand-600 text-white'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  {item.label}
-                </Link>
+                <div key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+                      active
+                        ? 'bg-brand-600 text-white'
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {item.label}
+                  </Link>
+                  {children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className={`ml-6 flex items-center gap-2 rounded-lg py-1.5 pl-3 pr-3 text-xs font-medium transition-colors ${
+                        pathname === child.href
+                          ? 'bg-brand-50 text-brand-800'
+                          : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                      }`}
+                    >
+                      <ChevronRight className="h-3 w-3" />
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
               );
             })}
             <div className="mt-2 border-t border-slate-100 pt-2">

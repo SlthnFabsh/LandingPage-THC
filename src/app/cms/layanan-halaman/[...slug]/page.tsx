@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { requireCms } from '@/lib/cms-auth';
 import { normalizeBlocks, BLOCK_LABELS, BLOCK_TYPES, type BlockType } from '@/lib/service-blocks';
 import { isBlockTypeValue } from '@/lib/service-form';
+import { buildServiceTree, findServicePath } from '@/lib/service-cms-tree';
 import { serviceHref } from '@/lib/service-content';
 import ServicePageForm from '@/components/cms/service/ServicePageForm';
 import BlockEditor from '@/components/cms/service/BlockEditor';
@@ -49,10 +50,61 @@ export default async function ServicePageEditPage({
     select: { slug: true, titleEn: true },
   });
 
+  const menuRows = await prisma.serviceMenuItem.findMany({
+    orderBy: [{ order: 'asc' }, { createdAt: 'asc' }],
+  });
+  const { roots } = buildServiceTree(
+    menuRows.map((row) => ({
+      id: row.id,
+      parentId: row.parentId,
+      slug: row.slug,
+      titleEn: row.titleEn,
+      isGroup: row.isGroup,
+      showInNavbar: row.showInNavbar,
+      showInSidebar: row.showInSidebar,
+      order: row.order,
+      active: row.active,
+    })),
+    []
+  );
+  const trail = findServicePath(roots, path);
+
   const newType = tambah && isBlockTypeValue(tambah) ? (tambah as BlockType) : null;
 
   return (
     <div className="space-y-6">
+      <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 text-sm">
+        <Link
+          href="/cms/layanan-halaman"
+          className="font-semibold text-brand-700 hover:underline"
+        >
+          Layanan
+        </Link>
+        {trail.map((node, index) => {
+          const isLast = index === trail.length - 1;
+          return (
+            <span key={node.id} className="flex items-center gap-1.5">
+              <span className="text-slate-300">/</span>
+              {isLast || !node.hasPage ? (
+                <span
+                  className={isLast ? 'font-semibold text-slate-900' : 'text-slate-400'}
+                  title={node.hasPage ? undefined : 'Group tanpa halaman'}
+                >
+                  {node.title}
+                </span>
+              ) : (
+                <Link
+                  href={`/cms/layanan-halaman/${node.slug}`}
+                  className="text-slate-500 hover:text-brand-700 hover:underline"
+                >
+                  {node.title}
+                </Link>
+              )}
+            </span>
+          );
+        })}
+      </nav>
+
       <div className="flex flex-wrap items-center gap-3">
         <Link
           href="/cms/layanan-halaman"

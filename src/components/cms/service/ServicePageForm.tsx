@@ -28,11 +28,15 @@ export default function ServicePageForm({
   action,
   initial,
   menuOptions,
+  defaultParentSlug,
+  parentHint,
 }: {
   mode: 'create' | 'edit';
   action: Action;
   initial?: ServicePageInitial | null;
   menuOptions: { slug: string; title: string }[];
+  defaultParentSlug?: string;
+  parentHint?: string;
 }) {
   const [state, formAction] = useActionState(action, {} as ServiceFormState);
 
@@ -120,10 +124,13 @@ export default function ServicePageForm({
 
       {mode === 'create' && (
         <div className="space-y-4 rounded-xl border border-brand-200 bg-brand-50/40 p-4">
+          {parentHint && (
+            <p className="rounded-lg bg-white/70 px-3 py-2 text-xs text-slate-600">{parentHint}</p>
+          )}
           <Checkbox name="addToMenu" label="Tambahkan juga ke menu Navigasi" defaultChecked />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Jadikan anak menu">
-              <select name="parentSlug" defaultValue="" className={inputCls}>
+              <select name="parentSlug" defaultValue={defaultParentSlug ?? ''} className={inputCls}>
                 <option value="">Menu utama (tanpa induk)</option>
                 {menuOptions.map((option) => (
                   <option key={option.slug} value={option.slug}>

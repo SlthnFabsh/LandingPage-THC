@@ -239,6 +239,23 @@ export async function deleteServicePage(formData: FormData) {
     detail: `Service page "${page.slug}" deleted`,
   });
 
+  // Item menu dengan slug yang sama ikut dibuang supaya navbar tidak menaut ke
+  // halaman yang sudah hilang. Kalau item itu masih punya anak, ia dipertahankan
+  // sebagai group; pohon CMS akan menandai "Belum ada halaman".
+  const menu = await prisma.serviceMenuItem.findUnique({ where: { slug: page.slug } });
+  if (menu) {
+    const childCount = await prisma.serviceMenuItem.count({ where: { parentId: menu.id } });
+    if (childCount === 0) {
+      await prisma.serviceMenuItem.delete({ where: { id: menu.id } });
+      await writeAudit('CONTENT_DELETED', {
+        userId: user.id,
+        entity: 'ServiceMenuItem',
+        entityId: menu.id,
+        detail: `Service menu item "${menu.slug}" removed together with its page`,
+      });
+    }
+  }
+
   revalidateService(page.slug);
   redirect(CMS_MENU);
 }

@@ -7,7 +7,7 @@ import AboutSidebar from '@/components/About/AboutSidebar';
 import CompanyProfile from '@/components/About/CompanyProfile';
 import Milestones from '@/components/About/Milestones';
 import { getAboutContent } from '@/lib/content';
-import { getMilestones } from '@/lib/about-content';
+import { getMilestones, getAboutPage } from '@/lib/about-content';
 
 export const revalidate = 60;
 
@@ -19,10 +19,13 @@ export const metadata: Metadata = {
 
 export default async function InformasiPerusahaanPage() {
   const { about, contact, socials } = await getAboutContent();
-  const milestones = (await getMilestones()).map((m) => ({
+  const [page, rawMilestones] = await Promise.all([getAboutPage('informasi'), getMilestones()]);
+  const milestones = rawMilestones.map((m) => ({
     year: m.year,
-    title: m.titleEn,
-    points: m.pointsEn,
+    titleId: m.titleId,
+    titleEn: m.titleEn,
+    pointsId: m.pointsId,
+    pointsEn: m.pointsEn,
   }));
 
   return (
@@ -30,9 +33,9 @@ export default async function InformasiPerusahaanPage() {
       <Navbar />
       <main>
         <AboutHero
-          breadcrumb="Informasi Perusahaan"
-          title="Informasi Perusahaan"
-          subtitle="Profil resmi, lisensi telekomunikasi, visi misi, dan komitmen PT Trans Hybrid Communication dalam menyediakan solusi konektivitas terdepan."
+          breadcrumb={{ id: page.titleId, en: page.titleEn }}
+          title={{ id: page.titleId, en: page.titleEn }}
+          subtitle={{ id: page.subtitleId, en: page.subtitleEn }}
         />
         <section className="bg-slate-50/60 py-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

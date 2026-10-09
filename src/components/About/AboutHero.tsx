@@ -6,11 +6,18 @@ import Link from 'next/link';
 import NoiseOverlay from '@/components/NoiseOverlay';
 import { useLanguage } from '@/components/LanguageProvider';
 
+export type AboutHeroText = string | { id: string; en: string };
+
 interface AboutHeroProps {
-  breadcrumb: string;
-  title: string;
-  subtitle?: string;
+  breadcrumb: AboutHeroText;
+  title: AboutHeroText;
+  subtitle?: AboutHeroText;
   category?: string;
+}
+
+function resolveText(value: AboutHeroText | undefined, lang: 'id' | 'en'): string | undefined {
+  if (!value) return undefined;
+  return typeof value === 'string' ? value : lang === 'id' ? value.id : value.en;
 }
 
 export default function AboutHero({
@@ -19,7 +26,10 @@ export default function AboutHero({
   subtitle,
   category,
 }: AboutHeroProps) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const crumb = resolveText(breadcrumb, lang) ?? '';
+  const heading = resolveText(title, lang) ?? '';
+  const sub = resolveText(subtitle, lang);
 
   return (
     <section className="relative overflow-hidden rounded-b-[24px] border-b border-blue-900/40 bg-[#070c1e] sm:rounded-b-[32px] lg:rounded-b-[40px]">
@@ -100,7 +110,7 @@ export default function AboutHero({
               <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
               <span className="text-slate-300">{category || t('nav.tentang')}</span>
               <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
-              <span className="font-semibold text-sky-400">{breadcrumb}</span>
+              <span className="font-semibold text-sky-400">{crumb}</span>
             </motion.nav>
 
             {/* Page Title */}
@@ -110,7 +120,7 @@ export default function AboutHero({
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-3xl font-extrabold tracking-[-0.02em] text-white sm:text-4xl lg:text-[44px] lg:leading-[1.15]"
             >
-              {title}
+              {heading}
             </motion.h1>
 
             {/* Accent Line (THC Signature Color Pill) */}
@@ -123,14 +133,14 @@ export default function AboutHero({
             />
 
             {/* Subtitle Description */}
-            {subtitle && (
+            {sub && (
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-4 max-w-2xl text-[14px] leading-relaxed text-slate-300 sm:text-[15px]"
               >
-                {subtitle}
+                {sub}
               </motion.p>
             )}
           </div>

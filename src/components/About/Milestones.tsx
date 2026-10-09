@@ -7,30 +7,44 @@ import NoiseOverlay from '@/components/NoiseOverlay';
 
 export interface Milestone {
   year: string;
-  title: string;
-  points: string[];
+  titleId: string;
+  titleEn: string;
+  pointsId: string[];
+  pointsEn: string[];
 }
 
 const defaultMilestones: Milestone[] = [
   {
     year: '2006',
-    title: 'Founded as a NAP',
-    points: ['Trans Hybrid Communication founded as a Network Access Provider (NAP).'],
+    titleId: 'Didirikan sebagai NAP',
+    titleEn: 'Founded as a NAP',
+    pointsId: ['Trans Hybrid Communication didirikan sebagai Network Access Provider (NAP).'],
+    pointsEn: ['Trans Hybrid Communication founded as a Network Access Provider (NAP).'],
   },
   {
     year: '2017',
-    title: 'Start of the Information Journey',
-    points: ['New license: Fixed Closed Network (Jartatup).'],
+    titleId: 'Awal Perjalanan Informasi',
+    titleEn: 'Start of the Information Journey',
+    pointsId: ['Lisensi baru: Fixed Closed Network (Jartatup).'],
+    pointsEn: ['New license: Fixed Closed Network (Jartatup).'],
   },
   {
     year: '2018',
-    title: 'New International License',
-    points: ['New international network license (Jartatup International).'],
+    titleId: 'Lisensi Internasional Baru',
+    titleEn: 'New International License',
+    pointsId: ['Lisensi jaringan internasional baru (Jartatup International).'],
+    pointsEn: ['New international network license (Jartatup International).'],
   },
   {
     year: '2019',
-    title: 'Expansion & New Licenses',
-    points: [
+    titleId: 'Ekspansi & Lisensi Baru',
+    titleEn: 'Expansion & New Licenses',
+    pointsId: [
+      'Lisensi baru: Internet Service Provider (ISP).',
+      'Penyelesaian Kalbar Backbone.',
+      'Proyek ekspansi baru: Cyber 1-IDC Fiber Backhaul.',
+    ],
+    pointsEn: [
       'New license: Internet Service Provider (ISP).',
       'Completion of the Kalbar Backbone.',
       'New expansion project: Cyber 1-IDC Fiber Backhaul.',
@@ -38,16 +52,28 @@ const defaultMilestones: Milestone[] = [
   },
   {
     year: '2020',
-    title: 'New Coverage Licenses',
-    points: [
+    titleId: 'Lisensi Cakupan Baru',
+    titleEn: 'New Coverage Licenses',
+    pointsId: [
+      'Lisensi baru: FTTH (Jartaplok).',
+      'Proyek ekspansi baru: Rural Penetration Using Wireless.',
+    ],
+    pointsEn: [
       'New license: FTTH (Jartaplok).',
       'New expansion project: Rural Penetration Using Wireless.',
     ],
   },
   {
     year: '2021',
-    title: 'City Fiber Rollout',
-    points: [
+    titleId: 'Rollout Fiber Kota',
+    titleEn: 'City Fiber Rollout',
+    pointsId: [
+      'Rollout FTTH di 2 kota.',
+      'Koneksi baru Singapura–Jakarta.',
+      'Jalur diversitas baru Jakarta–Singapura.',
+      'Proyek ekspansi baru: 50 menara.',
+    ],
+    pointsEn: [
       'FTTH rollout in 2 cities.',
       'New connection to Singapore–Jakarta.',
       'New diversity link Jakarta–Singapore.',
@@ -56,8 +82,14 @@ const defaultMilestones: Milestone[] = [
   },
   {
     year: '2022',
-    title: 'Backbone Expansion',
-    points: [
+    titleId: 'Ekspansi Backbone',
+    titleEn: 'Backbone Expansion',
+    pointsId: [
+      'Proyek TBK023.',
+      'Rollout FTTH Depok–Bogor.',
+      'Mempawah–Sintang Backbone.',
+    ],
+    pointsEn: [
       'Project TBK023.',
       'FTTH rollout Depok–Bogor.',
       'Mempawah–Sintang Backbone.',
@@ -73,7 +105,7 @@ function mergeMilestones(seed: Milestone[], extra?: Milestone[]): Milestone[] {
 }
 
 export default function Milestones({ milestones }: { milestones?: Milestone[] }) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const data = mergeMilestones(defaultMilestones, milestones);
 
   return (
@@ -119,6 +151,8 @@ export default function Milestones({ milestones }: { milestones?: Milestone[] })
           <ol>
             {data.map((milestone, index) => {
               const onLeft = index % 2 === 0;
+              const title = lang === 'id' ? milestone.titleId : milestone.titleEn;
+              const points = lang === 'id' ? milestone.pointsId : milestone.pointsEn;
               return (
                 <li key={milestone.year} className="relative md:grid md:grid-cols-2 md:gap-x-28">
                   {/* Node */}
@@ -144,10 +178,10 @@ export default function Milestones({ milestones }: { milestones?: Milestone[] })
                         <span className="h-px flex-1 bg-gradient-to-r from-[#63a9ff]/50 to-transparent" aria-hidden="true" />
                       </div>
                       <h3 className="mt-4 text-lg font-semibold leading-snug text-white sm:text-xl">
-                        {milestone.title}
+                        {title}
                       </h3>
                       <ul className="mt-3 space-y-2">
-                        {milestone.points.map((point) => (
+                        {points.map((point) => (
                           <li key={point} className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-400">
                             <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[#63a9ff]" aria-hidden="true" />
                             <span>{point}</span>

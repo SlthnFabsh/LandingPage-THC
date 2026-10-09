@@ -66,7 +66,7 @@ export default function StrukturGrup({
             >
               <div className="relative flex min-h-[84px] w-[300px] flex-col items-center justify-center rounded-2xl border-2 border-brand-800 bg-[#1f3882] px-6 py-4 text-center text-white shadow-[0_10px_25px_rgba(31,56,130,0.35)] transition-transform duration-300 group-hover:scale-105">
                 <span className="absolute -top-3 rounded-full bg-brand-500 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm">
-                  Holding / Induk Perusahaan
+                  {data.parentBadge}
                 </span>
                     <span className="text-[15px] font-black uppercase tracking-wider">
                       {data.parentName}

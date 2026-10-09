@@ -18,16 +18,16 @@ export const metadata: Metadata = {
 
 export default async function StrukturGrupPage() {
   const { contact, socials } = await getAboutContent();
-  const structure = await getGroupStructure();
+  const [page, structure] = await Promise.all([getAboutPage('struktur'), getGroupStructure()]);
 
   return (
     <>
       <Navbar />
       <main>
         <AboutHero
-          breadcrumb="Struktur Grup Perusahaan"
-          title="Struktur Grup Perusahaan"
-          subtitle="Struktur entitas bisnis dan anak perusahaan di bawah naungan PT Trans Hybrid Communication dalam ekosistem solusi digital nasional."
+          breadcrumb={{ id: page.titleId, en: page.titleEn }}
+          title={{ id: page.titleId, en: page.titleEn }}
+          subtitle={{ id: page.subtitleId, en: page.subtitleEn }}
         />
         <section className="bg-slate-50/60 py-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

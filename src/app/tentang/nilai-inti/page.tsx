@@ -6,7 +6,7 @@ import AboutHero from '@/components/About/AboutHero';
 import AboutSidebar from '@/components/About/AboutSidebar';
 import NilaiInti from '@/components/About/NilaiInti';
 import { getAboutContent } from '@/lib/content';
-import { getCoreValues, getCoreValueSetting } from '@/lib/about-content';
+import { getAboutPage, getCoreValues, getCoreValueSetting } from '@/lib/about-content';
 
 export const revalidate = 60;
 
@@ -18,31 +18,40 @@ export const metadata: Metadata = {
 
 export default async function NilaiIntiPage() {
   const { contact, socials } = await getAboutContent();
-  const [coreValues, setting] = await Promise.all([getCoreValues(), getCoreValueSetting()]);
+  const [page, coreValues, setting] = await Promise.all([
+    getAboutPage('nilai'),
+    getCoreValues(),
+    getCoreValueSetting(),
+  ]);
 
   const values = coreValues.map((cv) => ({
     num: cv.order,
     letter: cv.letter,
-    title: cv.titleEn,
-    description: cv.descriptionEn,
+    titleId: cv.titleId,
+    titleEn: cv.titleEn,
+    descriptionId: cv.descriptionId,
+    descriptionEn: cv.descriptionEn,
   }));
-  const intro = setting?.introEn?.trim();
 
   return (
     <>
       <Navbar />
       <main>
         <AboutHero
-          breadcrumb="Nilai Inti"
-          title="Nilai Inti Perusahaan"
-          subtitle="Nilai-nilai budaya T.C.A.R.E. yang memandu setiap interaksi insan Trans Hybrid Communication dalam melayani dan berinovasi."
+          breadcrumb={{ id: page.titleId, en: page.titleEn }}
+          title={{ id: page.titleId, en: page.titleEn }}
+          subtitle={{ id: page.subtitleId, en: page.subtitleEn }}
         />
         <section className="bg-slate-50/60 py-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
               <AboutSidebar />
               <div className="min-w-0 flex-1">
-                <NilaiInti values={values} intro={intro} />
+                <NilaiInti
+                  values={values}
+                  introId={setting.introId}
+                  introEn={setting.introEn}
+                />
               </div>
             </div>
           </div>

@@ -4,7 +4,15 @@ import { useState } from 'react';
 import { Plus, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
 import { inputCls } from '@/components/cms/ui';
 import { serviceIconNames } from '@/lib/service-icons';
-import { BLOCK_LABELS, BLOCK_TYPES, type BlockData, type BlockType } from '@/lib/service-blocks';
+import {
+  BLOCK_LABELS,
+  BLOCK_TYPES,
+  cellToLines,
+  type BlockData,
+  type BlockType,
+  type TableColumn,
+  type TableRow,
+} from '@/lib/service-blocks';
 import { fieldName } from '@/lib/service-form';
 import ImagePathField from '@/components/cms/service/ImagePathField';
 import type { UploadState } from '@/app/cms/actions/service';
@@ -176,6 +184,118 @@ function RepeatField({
   );
 }
 
+/**
+ * Editor daftar baris tabel. Setiap sel (per kolom) diedit sebagai daftar
+ * bernomor (1, 2, 3, dst) — bukan satu textarea yang mencampur semua kolom.
+ */
+function TableRowsField({
+  name,
+  columns,
+  rows,
+  addLabel,
+  emptyLabel,
+}: {
+  name: string;
+  columns: { key: string; label: string }[];
+  rows: { key?: string; label?: string; cells?: string[]; footnotes?: string[] }[];
+  addLabel: string;
+  emptyLabel: string;
+}) {
+  const blank = (): { key: string; label: string; cells: string[]; footnotes: string } => ({
+    key: '',
+    label: '',
+    cells: columns.map(() => ''),
+    footnotes: '',
+  });
+
+  const normalize = (value: unknown): { key: string; label: string; cells: string[]; footnotes: string } => {
+    const record = (value ?? {}) as Record<string, unknown>;
+    return {
+      key: typeof record.key === 'string' ? record.key : '',
+      label: typeof record.label === 'string' ? record.label : '',
+      cells: Array.isArray(record.cells)
+        ? (record.cells as unknown[]).map((cell) => (typeof cell === 'string' ? cell : ''))
+        : columns.map(() => ''),
+      footnotes: Array.isArray(record.footnotes)
+        ? (record.footnotes as unknown[]).map((item) => String(item ?? '')).join('\n')
+        : typeof record.footnotes === 'string'
+          ? (record.footnotes as string)
+          : '',
+    };
+  };
+
+  const initial = rows.length > 0 ? rows.map(normalize) : [blank()];
+  const [items, setItems] = useState<{ uid: number; values: ReturnType<typeof normalize> }[]>(() =>
+    initial.map((values, index) => ({ uid: index, values }))
+  );
+
+  const update = (uid: number, patch: Partial<ReturnType<typeof normalize>>) => {
+    setItems((current) =>
+      current.map((entry) => (entry.uid === uid ? { uid, values: { ...entry.values, ...patch } } : entry))
+    );
+  };
+
+  return (
+    <div className="space-y-3">
+      {items.map((item, index) => (
+        <div key={item.uid} className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              Baris {index + 1}
+            </span>
+            <button
+              type="button"
+              onClick={() => setItems(items.filter((entry) => entry.uid !== item.uid))}
+              className="rounded-lg border border-slate-200 p-1.5 text-red-600 hover:bg-red-50"
+              title="Hapus baris"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <Field spec={{ key: 'key', label: 'Kunci baris' }} name={fieldName(name, index, 'key')} value={item.values.key} />
+            <Field spec={{ key: 'label', label: 'Label baris' }} name={fieldName(name, index, 'label')} value={item.values.label} />
+          </div>
+
+          <div className="mt-3 grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {columns.map((column, columnIndex) => (
+              <NumberedListField
+                key={column.key}
+                name={fieldName(name, index, 'cells', columnIndex)}
+                label={column.label || `Kolom ${columnIndex + 1}`}
+                value={item.values.cells[columnIndex] ?? ''}
+                addLabel="Tambah butir"
+              />
+            ))}
+          </div>
+
+          <div className="mt-3">
+            <Field
+              spec={{ key: 'footnotes', label: 'Catatan baris (satu per baris)', type: 'textarea', rows: 2 }}
+              name={fieldName(name, index, 'footnotes')}
+              value={item.values.footnotes}
+            />
+          </div>
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={() => setItems([...items, { uid: Date.now() + Math.random(), values: blank() }])}
+        className="inline-flex items-center gap-2 rounded-lg border border-dashed border-brand-300 px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-50"
+      >
+        <Plus className="h-4 w-4" />
+        {addLabel}
+      </button>
+
+      {items.length === 1 && rows.length === 0 && (
+        <p className="text-xs text-slate-400">{emptyLabel}</p>
+      )}
+    </div>
+  );
+}
+
 /** Baris plain (tipe data) dipakai RepeatField di atas. */
 function toRows(value: unknown, keys: string[], listKeys: string[] = []): Row[] {
   if (!Array.isArray(value)) return [];
@@ -204,7 +324,7 @@ function listToText(value: unknown): string {
 }
 
 /**
- * Daftar teks pendek (lencana, poin kartu, sel tabel, catatan).
+ * Daftar teks pendek (lencana, poin kartu, catatan).
  * Satu butir per baris supaya mudah dibaca dan tidak perlu tombol tambah/hapus.
  */
 function StringListField({
@@ -230,6 +350,80 @@ function StringListField({
         className={inputCls}
       />
       {hint && <p className="mt-1 text-xs text-slate-400">{hint}</p>}
+    </div>
+  );
+}
+
+/**
+ * Editor satu sel tabel sebagai daftar bernomor (1, 2, 3, dst).
+ * Tiap butir punya input sendiri dan bisa ditambah/dihapus. Nilai
+ * digabung dengan baris baru lalu dikirim lewat satu field tersembunyi,
+ * sehingga format penyimpanan (teks multi-baris per sel) tetap sama.
+ */
+function NumberedListField({
+  name,
+  label,
+  value,
+  addLabel = 'Tambah butir',
+  hint,
+}: {
+  name: string;
+  label: string;
+  value: string;
+  addLabel?: string;
+  hint?: string;
+}) {
+  const initial = cellToLines(value);
+  const [items, setItems] = useState<string[]>(() => (initial.length > 0 ? initial : ['']));
+
+  const remove = (index: number) => {
+    setItems((current) => {
+      const next = current.filter((_, idx) => idx !== index);
+      return next.length === 0 ? [''] : next;
+    });
+  };
+
+  return (
+    <div>
+      <label className="mb-1 block text-sm font-medium text-slate-700">{label}</label>
+      <div className="space-y-2">
+        {items.map((item, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <span className="w-6 shrink-0 text-center text-xs font-bold text-slate-400">
+              {index + 1}
+            </span>
+            <input
+              type="text"
+              value={item}
+              onChange={(e) =>
+                setItems((current) => current.map((val, idx) => (idx === index ? e.target.value : val)))
+              }
+              className={inputCls}
+              placeholder={index === items.length - 1 ? 'Ketik isi butir…' : undefined}
+            />
+            <button
+              type="button"
+              onClick={() => remove(index)}
+              className="shrink-0 rounded-lg border border-slate-200 p-1.5 text-red-600 hover:bg-red-50"
+              title="Hapus butir"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="mt-2 flex items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={() => setItems((current) => [...current, ''])}
+          className="inline-flex items-center gap-1 rounded-lg border border-dashed border-brand-300 px-2.5 py-1.5 text-xs font-semibold text-brand-700 hover:bg-brand-50"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          {addLabel}
+        </button>
+        {hint && <p className="text-xs text-slate-400">{hint}</p>}
+      </div>
+      <input type="hidden" name={name} value={items.join('\n')} />
     </div>
   );
 }
@@ -271,20 +465,12 @@ const CARDS_SPEC: FieldSpec[] = [
 /** Key yang isinya daftar teks (bukan objek) dan harus ditulis per baris. */
 const LIST_KEYS: Record<string, string[]> = {
   cards: ['features'],
-  rows: ['cells', 'footnotes'],
 };
 
 const COLUMNS_SPEC: FieldSpec[] = [
   { key: 'key', label: 'Kunci kolom', hint: 'Dipakai sebagai identitas, mis. premium' },
   { key: 'label', label: 'Judul kolom' },
   { key: 'highlight', label: 'Sorotan (mis. kolom utama)', type: 'checkbox' },
-];
-
-const ROWS_SPEC: FieldSpec[] = [
-  { key: 'key', label: 'Kunci baris' },
-  { key: 'label', label: 'Label baris' },
-  { key: 'cells', label: 'Isi sel (satu butir per baris)', type: 'textarea', rows: 5 },
-  { key: 'footnotes', label: 'Catatan baris (satu per baris)', type: 'textarea', rows: 2 },
 ];
 
 const PROCESS_SPEC: FieldSpec[] = [
@@ -428,10 +614,10 @@ export default function BlockFields({
           </div>
           <div>
             <h4 className="mb-2 text-sm font-bold text-slate-800">Baris</h4>
-            <RepeatField
+            <TableRowsField
               name={fieldName(namePrefix, 'rows')}
-              specs={ROWS_SPEC}
-              rows={toRows(value.rows, ['key', 'label', 'cells', 'footnotes'], LIST_KEYS.rows)}
+              columns={Array.isArray(value.columns) ? value.columns.map((item) => ({ key: String((item as Record<string, unknown>).key ?? ''), label: String((item as Record<string, unknown>).label ?? '') })) : []}
+              rows={Array.isArray(value.rows) ? (value.rows as { key?: string; label?: string; cells?: string[]; footnotes?: string[] }[]) : []}
               addLabel="Tambah baris"
               emptyLabel="Belum ada baris."
             />

@@ -486,7 +486,8 @@ export async function createMenuItem(
   });
 
   revalidateService(isGroup ? null : slug);
-  redirect(`${CMS_MENU}/menu`);
+  revalidatePath(`${CMS_MENU}/menu`);
+  return {};
 }
 
 export async function updateMenuItem(
@@ -566,7 +567,8 @@ export async function updateMenuItem(
   });
 
   revalidateService(isGroup ? null : slug, existing.slug);
-  redirect(`${CMS_MENU}/menu`);
+  revalidatePath(`${CMS_MENU}/menu`);
+  return {};
 }
 
 export async function deleteMenuItem(formData: FormData) {
@@ -591,7 +593,7 @@ export async function deleteMenuItem(formData: FormData) {
   });
 
   revalidateService();
-  redirect(`${CMS_MENU}/menu`);
+  revalidatePath(`${CMS_MENU}/menu`);
 }
 
 export async function moveMenuItem(formData: FormData) {
@@ -619,15 +621,19 @@ export async function moveMenuItem(formData: FormData) {
   const target = index + direction;
   if (index < 0 || target < 0 || target >= siblings.length) return;
 
-  const current = siblings[index];
-  const neighbour = siblings[target];
-  const currentOrder = current.order;
-  current.order = neighbour.order;
-  neighbour.order = currentOrder;
+  const reordered = [...siblings];
+  const [moved] = reordered.splice(index, 1);
+  reordered.splice(target, 0, moved);
 
-  await prisma.serviceMenuItem.update({ where: { id: current.id }, data: { order: current.order } });
-  await prisma.serviceMenuItem.update({ where: { id: neighbour.id }, data: { order: neighbour.order } });
+  await Promise.all(
+    reordered.map((row, position) =>
+      prisma.serviceMenuItem.update({
+        where: { id: row.id },
+        data: { order: position + 1 },
+      })
+    )
+  );
 
   revalidateService();
-  redirect(`${CMS_MENU}/menu`);
+  revalidatePath(`${CMS_MENU}/menu`);
 }

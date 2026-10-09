@@ -481,7 +481,8 @@ export async function createNetworkMenuItem(
   });
 
   revalidateNetwork(isGroup ? null : slug);
-  redirect(`${CMS_MENU}/menu`);
+  revalidatePath(`${CMS_MENU}/menu`);
+  return {};
 }
 
 export async function updateNetworkMenuItem(
@@ -561,7 +562,8 @@ export async function updateNetworkMenuItem(
   });
 
   revalidateNetwork(isGroup ? null : slug, existing.slug);
-  redirect(`${CMS_MENU}/menu`);
+  revalidatePath(`${CMS_MENU}/menu`);
+  return {};
 }
 
 export async function deleteNetworkMenuItem(formData: FormData) {
@@ -586,7 +588,7 @@ export async function deleteNetworkMenuItem(formData: FormData) {
   });
 
   revalidateNetwork();
-  redirect(`${CMS_MENU}/menu`);
+  revalidatePath(`${CMS_MENU}/menu`);
 }
 
 export async function moveNetworkMenuItem(formData: FormData) {
@@ -614,15 +616,19 @@ export async function moveNetworkMenuItem(formData: FormData) {
   const target = index + direction;
   if (index < 0 || target < 0 || target >= siblings.length) return;
 
-  const current = siblings[index];
-  const neighbour = siblings[target];
-  const currentOrder = current.order;
-  current.order = neighbour.order;
-  neighbour.order = currentOrder;
+  const reordered = [...siblings];
+  const [moved] = reordered.splice(index, 1);
+  reordered.splice(target, 0, moved);
 
-  await prisma.networkMenuItem.update({ where: { id: current.id }, data: { order: current.order } });
-  await prisma.networkMenuItem.update({ where: { id: neighbour.id }, data: { order: neighbour.order } });
+  await Promise.all(
+    reordered.map((row, position) =>
+      prisma.networkMenuItem.update({
+        where: { id: row.id },
+        data: { order: position + 1 },
+      })
+    )
+  );
 
   revalidateNetwork();
-  redirect(`${CMS_MENU}/menu`);
+  revalidatePath(`${CMS_MENU}/menu`);
 }

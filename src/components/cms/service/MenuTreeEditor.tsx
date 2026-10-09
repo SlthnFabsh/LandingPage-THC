@@ -1,8 +1,10 @@
 'use client';
 
 import { useActionState, useState } from 'react';
-import { ChevronDown, ChevronRight, Plus, Trash2, ArrowUp, ArrowDown, Save } from 'lucide-react';
+import { ChevronDown, ChevronRight, Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { inputCls } from '@/components/cms/ui';
+import LoadingOverlay from '@/components/cms/LoadingOverlay';
+import SubmitButton from '@/components/cms/SubmitButton';
 import { serviceIconNames } from '@/lib/service-icons';
 import type { ServiceFormState } from '@/app/cms/actions/service';
 
@@ -71,6 +73,8 @@ function MenuItemForm({
   actions,
   disabled,
   collapsed,
+  isFirst,
+  isLast,
   onToggle,
   children,
 }: {
@@ -80,6 +84,8 @@ function MenuItemForm({
   actions: MenuActions;
   disabled: boolean;
   collapsed: boolean;
+  isFirst: boolean;
+  isLast: boolean;
   onToggle: () => void;
   children: React.ReactNode;
 }) {
@@ -112,6 +118,7 @@ function MenuItemForm({
         </div>
 
         <form action={formAction} className="space-y-3 p-4">
+          <LoadingOverlay />
           <input type="hidden" name="id" value={item.id} />
 
           {state?.error && (
@@ -163,19 +170,17 @@ function MenuItemForm({
           </div>
 
           <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
-            <button
-              type="submit"
+            <SubmitButton
+              label="Simpan"
+              pendingLabel="Menyimpan..."
               disabled={disabled}
               className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
-            >
-              <Save className="h-4 w-4" />
-              Simpan
-            </button>
+            />
             <button
               formAction={actions.move}
               name="direction"
               value="up"
-              disabled={disabled}
+              disabled={disabled || isFirst}
               className="rounded-lg border border-slate-200 p-2 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
               title="Naikkan urutan"
             >
@@ -185,7 +190,7 @@ function MenuItemForm({
               formAction={actions.move}
               name="direction"
               value="down"
-              disabled={disabled}
+              disabled={disabled || isLast}
               className="rounded-lg border border-slate-200 p-2 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
               title="Turunkan urutan"
             >
@@ -236,7 +241,7 @@ export default function MenuTreeEditor({
       (option) => option.slug !== excludeSlug && !option.slug.startsWith(`${excludeSlug}/`)
     );
 
-  const renderItem = (item: MenuItemView, depth: number) => (
+  const renderItem = (item: MenuItemView, depth: number, index: number, total: number) => (
     <div key={item.id} className={depth > 0 ? 'ml-4 mt-3' : ''}>
       <MenuItemForm
         item={item}
@@ -245,16 +250,20 @@ export default function MenuTreeEditor({
         actions={actions}
         disabled={disabled}
         collapsed={collapsed[item.id] === true}
+        isFirst={index === 0}
+        isLast={index === total - 1}
         onToggle={() => setCollapsed({ ...collapsed, [item.id]: collapsed[item.id] !== true })}
       >
-        {item.children.map((child) => renderItem(child, depth + 1))}
+        {item.children.map((child, childIndex) =>
+          renderItem(child, depth + 1, childIndex, item.children.length)
+        )}
       </MenuItemForm>
     </div>
   );
 
   return (
     <div className="space-y-4">
-      {tree.map((item) => renderItem(item, 0))}
+      {tree.map((item, index) => renderItem(item, 0, index, tree.length))}
 
       <details className="rounded-2xl border border-dashed border-brand-300 bg-brand-50/40 p-4">
         <summary className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-brand-700">
@@ -266,6 +275,7 @@ export default function MenuTreeEditor({
           action={createFormAction}
           className="mt-4 space-y-3"
         >
+          <LoadingOverlay />
           <p className="text-sm font-semibold text-slate-800">Item Menu Baru</p>
           {createState?.error && (
             <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{createState.error}</div>
@@ -315,8 +325,9 @@ export default function MenuTreeEditor({
           <button
             type="submit"
             disabled={disabled}
-            className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
           >
+            <Plus className="h-4 w-4" />
             Simpan Item Menu
           </button>
         </form>

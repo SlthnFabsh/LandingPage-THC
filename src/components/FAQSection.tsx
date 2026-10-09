@@ -9,6 +9,8 @@ import type { FaqEntryData } from '@/lib/content';
 interface FAQSectionProps {
   faqs: FaqEntryData[];
   contactEmail?: string;
+  thumb1?: string;
+  thumb2?: string;
 }
 
 const anims = ['fade-left delay-100', 'fade-right delay-200', 'fade-left delay-300', 'fade-right delay-100', 'fade-left delay-200', 'fade-right delay-300'];
@@ -28,7 +30,12 @@ function renderAnswer(text: string, email?: string) {
   );
 }
 
-export default function FAQSection({ faqs, contactEmail = 'info@transhybrid.net.id' }: FAQSectionProps) {
+export default function FAQSection({
+  faqs,
+  contactEmail = 'info@transhybrid.net.id',
+  thumb1 = '/assets/images/news-1.webp',
+  thumb2 = '/assets/images/borneo.webp',
+}: FAQSectionProps) {
   const { lang } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -53,11 +60,11 @@ export default function FAQSection({ faqs, contactEmail = 'info@transhybrid.net.
           <div className="mb-7 flex items-end gap-3">
             <div className="h-20 w-24 overflow-hidden rounded-xl bg-slate-200 shadow-sm sm:h-24 sm:w-28">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/news-1.webp" alt="Infrastruktur Trans Hybrid" className="h-full w-full object-cover" />
+              <img src={thumb1} alt="Infrastruktur Trans Hybrid" className="h-full w-full object-cover" />
             </div>
             <div className="mb-[-12px] h-20 w-24 overflow-hidden rounded-xl bg-slate-200 shadow-sm sm:h-24 sm:w-28">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/borneo.webp" alt="Jaringan Trans Hybrid" className="h-full w-full object-cover" />
+              <img src={thumb2} alt="Jaringan Trans Hybrid" className="h-full w-full object-cover" />
             </div>
           </div>
           <h2 className="max-w-md text-[clamp(1.75rem,3vw,2.45rem)] font-bold leading-[1.15] tracking-[-0.02em] text-blue-900">

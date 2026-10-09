@@ -436,3 +436,14 @@ model NetworkSection {
 
   @@index([pageId, order])
 }
+
+/// Gambar statis di halaman depan (FAQ & CTA) agar tidak hardcode.
+/// Satu baris dengan id tetap "home-media", diisi lewat /cms/media.
+model HomeMedia {
+  id            String   @id @default(cuid())
+  faqThumb1     String?  @db.LongText
+  faqThumb2     String?  @db.LongText
+  ctaBackground String?  @db.LongText
+  ctaLogo       String?  @db.LongText
+  updatedAt     DateTime @updatedAt
+}

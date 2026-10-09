@@ -1036,19 +1036,3 @@ export const servicePagesSeed: ServicePageSeed[] = [
     ],
   },
 ];
-
-/** Hero untuk jaring pengaman saat slug belum ada di database. */
-export const legacyServiceHero: Record<
-  string,
-  { category: string; breadcrumb: string; title: string; subtitle?: string }
-> = Object.fromEntries(
-  servicePagesSeed.map((page) => [
-    page.slug,
-    {
-      category: page.category,
-      breadcrumb: page.breadcrumb,
-      title: page.title,
-      subtitle: page.subtitle,
-    },
-  ]),
-);

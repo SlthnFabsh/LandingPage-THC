@@ -88,9 +88,17 @@ export interface SocialLinkData {
   order: number;
 }
 
+export interface HomeMediaData {
+  faqThumb1: string;
+  faqThumb2: string;
+  ctaBackground: string;
+  ctaLogo: string;
+}
+
 export interface SiteContent {
   heroSlides: HeroSlideData[];
   company: CompanyContentData;
+  media: HomeMediaData;
   about: AboutContentData;
   stats: CompanyStatData[];
   services: ServiceItemData[];
@@ -201,6 +209,17 @@ function fallbackSocials(): SocialLinkData[] {
   ];
 }
 
+const FALLBACK_HOME_MEDIA: HomeMediaData = {
+  faqThumb1: '/assets/images/news-1.webp',
+  faqThumb2: '/assets/images/borneo.webp',
+  ctaBackground: '/assets/images/sutet-network.webp',
+  ctaLogo: '/assets/images/logo1.webp',
+};
+
+function fallbackHomeMedia(): HomeMediaData {
+  return { ...FALLBACK_HOME_MEDIA };
+}
+
 function splitLines(value: string): string[] {
   return value
     .split('\n')
@@ -259,7 +278,7 @@ export async function getAboutContent(): Promise<AboutSiteContent> {
 }
 
 export async function getSiteContent(): Promise<SiteContent> {
-  const [heroSlides, companyRow, stats, services, customers, partners, faqs, contactRow, socials] =
+  const [heroSlides, companyRow, stats, services, customers, partners, faqs, contactRow, socials, homeMedia] =
     await Promise.all([
       prisma.heroSlide
         .findMany({ where: { active: true }, orderBy: [{ order: 'asc' }, { createdAt: 'asc' }] })
@@ -284,6 +303,7 @@ export async function getSiteContent(): Promise<SiteContent> {
       prisma.socialMediaLink
         .findMany({ where: { active: true }, orderBy: [{ order: 'asc' }, { createdAt: 'asc' }] })
         .catch(() => [] as never[]),
+      prisma.homeMedia.findFirst().catch(() => null),
     ]);
 
   const company = companyRow
@@ -325,9 +345,19 @@ export async function getSiteContent(): Promise<SiteContent> {
       }
     : fallbackContact();
 
+  const media: HomeMediaData = homeMedia?.faqThumb1
+    ? {
+        faqThumb1: homeMedia.faqThumb1,
+        faqThumb2: homeMedia.faqThumb2 || FALLBACK_HOME_MEDIA.faqThumb2,
+        ctaBackground: homeMedia.ctaBackground || FALLBACK_HOME_MEDIA.ctaBackground,
+        ctaLogo: homeMedia.ctaLogo || FALLBACK_HOME_MEDIA.ctaLogo,
+      }
+    : fallbackHomeMedia();
+
   return {
     heroSlides: (heroSlides as unknown as HeroSlideData[]) ?? [],
     company,
+    media,
     about,
     stats: (stats as unknown as CompanyStatData[]) ?? [],
     services: (services as unknown as ServiceItemData[]) ?? [],

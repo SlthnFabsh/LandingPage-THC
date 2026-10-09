@@ -71,8 +71,13 @@ export default async function Home() {
           inverseCards
         />
         <NewsSection items={newsItems} />
-        <FAQSection faqs={content.faqs} contactEmail={content.contact.email} />
-        <CTASection />
+        <FAQSection
+          faqs={content.faqs}
+          contactEmail={content.contact.email}
+          thumb1={content.media.faqThumb1}
+          thumb2={content.media.faqThumb2}
+        />
+        <CTASection logo={content.media.ctaLogo} background={content.media.ctaBackground} />
       </main>
       <Footer contact={content.contact} socials={content.socials} />
       <BackToTop />

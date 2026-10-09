@@ -12,7 +12,8 @@
     "db:push": "prisma db push",
     "db:seed": "npx tsx prisma/seed.ts",
     "verify:service": "npx tsx prisma/verify-service-blocks.ts",
-    "verify:network": "npx tsx prisma/verify-network-blocks.ts"
+    "verify:network": "npx tsx prisma/verify-network-blocks.ts",
+    "verify:media": "npx tsx prisma/verify-media.ts"
   },
   "dependencies": {
     "@node-rs/argon2": "^2.2.0",

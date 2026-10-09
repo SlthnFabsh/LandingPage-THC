@@ -17,6 +17,7 @@ import {
   Network,
   FileText,
   FileStack,
+  ImagePlus,
 } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
@@ -72,6 +73,7 @@ export default async function CmsDashboardPage() {
     { href: '/cms/jaringan', label: 'Pages /jaringan', count: totalNetworkPages, icon: FileStack },
     { href: '/cms/pelanggan', label: 'Customers', count: totalProducts, icon: Users },
     { href: '/cms/mitra', label: 'Partners', count: totalPartners, icon: Handshake },
+    { href: '/cms/media', label: 'Media Halaman', icon: ImagePlus },
     { href: '/cms/faq', label: 'FAQ', count: totalFaqs, icon: HelpCircle },
     { href: '/cms/kontak', label: 'Contact', icon: PhoneCall },
     { href: '/cms/sosmed', label: 'Social Media', count: totalSocials, icon: Share2 },

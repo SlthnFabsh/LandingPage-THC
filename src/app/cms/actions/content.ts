@@ -50,6 +50,24 @@ async function resolveImage(
   return { image: current ?? '' };
 }
 
+function resolveNamedImage(
+  formData: FormData,
+  current: string | null | undefined,
+  base: string
+): Promise<{ image?: string; error?: string }> {
+  const url = String(formData.get(`${base}Url`) || '').trim();
+  if (url) return Promise.resolve({ image: url });
+  const file = (formData.get(base) as File) || null;
+  if (file && file.size > 0) {
+    return processImageUpload(file).then((result) =>
+      result.error
+        ? { error: result.error }
+        : { image: result.coverImage }
+    );
+  }
+  return Promise.resolve({ image: current ?? '' });
+}
+
 function text(formData: FormData, key: string): string {
   return String(formData.get(key) || '').trim();
 }
@@ -785,4 +803,47 @@ export async function deleteSocial(formData: FormData) {
   });
   PUBLIC_PATHS.forEach((p) => revalidatePath(p));
   redirect('/cms/sosmed');
+}
+
+/* ------------------------- Media Halaman (FAQ & CTA) ------------------------- */
+
+const HOME_MEDIA_FIELDS = [
+  { base: 'faqThumb1', key: 'faqThumb1' },
+  { base: 'faqThumb2', key: 'faqThumb2' },
+  { base: 'ctaBackground', key: 'ctaBackground' },
+  { base: 'ctaLogo', key: 'ctaLogo' },
+] as const;
+
+export async function upsertHomeMedia(
+  prevState: ContentFormState,
+  formData: FormData
+): Promise<ContentFormState> {
+  const { user, expired } = await requireUser();
+  if (!user) return { error: ERROR_NOT_AUTH };
+  if (expired) return { error: ERROR_EXPIRED };
+
+  const existing = await prisma.homeMedia.findFirst();
+  const data: Record<string, string> = {};
+
+  for (const field of HOME_MEDIA_FIELDS) {
+    const current = existing ? existing[field.key] : undefined;
+    const resolved = await resolveNamedImage(formData, current, field.base);
+    if (resolved.error) return { error: resolved.error };
+    if (resolved.image) data[field.key] = resolved.image;
+  }
+
+  if (existing) {
+    await prisma.homeMedia.update({ where: { id: existing.id }, data });
+  } else {
+    await prisma.homeMedia.create({ data: { id: 'home-media', ...data } });
+  }
+
+  await writeAudit(existing ? 'CONTENT_UPDATED' : 'CONTENT_CREATED', {
+    userId: user.id,
+    entity: 'HomeMedia',
+    entityId: existing?.id ?? 'home-media',
+    detail: 'Homepage media (FAQ & CTA images) saved',
+  });
+  PUBLIC_PATHS.forEach((p) => revalidatePath(p));
+  redirect('/cms/media');
 }

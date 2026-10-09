@@ -6,10 +6,8 @@ import BackToTop from '@/components/BackToTop';
 import AboutHero from '@/components/About/AboutHero';
 import ServiceSidebar from '@/components/Services/ServiceSidebar';
 import ServiceBlockList from '@/components/Services/blocks/ServiceBlockList';
-import { legacyServiceComponents } from '@/components/Services/legacy-registry';
 import { getAboutContent } from '@/lib/content';
 import { getServicePageBySlug, getServicePageMeta, getServicePageSlugs, getServiceSidebarTree } from '@/lib/service-content';
-import { legacyServiceHero } from '@/lib/service-seed-data';
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -32,11 +30,6 @@ export async function generateMetadata({
     return { title: meta.title, description: meta.description };
   }
 
-  const hero = legacyServiceHero[path];
-  if (hero) {
-    return { title: `${hero.title} | Trans Hybrid Communication`, description: hero.subtitle };
-  }
-
   return {};
 }
 
@@ -44,48 +37,34 @@ export default async function ServicePageRoute({ params }: { params: Promise<{ s
   const { slug } = await params;
   const path = slug.join('/');
 
-  const [{ contact, socials }, sidebar] = await Promise.all([
+  const [{ contact, socials }, sidebar, page] = await Promise.all([
     getAboutContent(),
     getServiceSidebarTree(),
+    getServicePageBySlug(path),
   ]);
 
-  const page = await getServicePageBySlug(path);
-
-  const hero = page
-    ? {
-        category: page.heroCategory,
-        breadcrumb: page.heroBreadcrumb,
-        title: page.heroTitle,
-        subtitle: page.heroSubtitle,
-      }
-    : legacyServiceHero[path];
-
-  const Legacy = page ? null : legacyServiceComponents[path];
-
-  if (!hero || (!page && !Legacy)) notFound();
+  if (!page) {
+    notFound();
+  }
 
   return (
     <>
       <Navbar />
       <main>
         <AboutHero
-          category={hero.category}
-          breadcrumb={hero.breadcrumb}
-          title={hero.title}
-          subtitle={hero.subtitle}
+          category={page.heroCategory}
+          breadcrumb={page.heroBreadcrumb}
+          title={page.heroTitle}
+          subtitle={page.heroSubtitle ?? undefined}
         />
 
         <section className="bg-slate-50/60 py-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-              {(page ? page.heroShowSidebar : true) && <ServiceSidebar items={sidebar} />}
+              {page.heroShowSidebar && <ServiceSidebar items={sidebar} />}
 
               <div className="min-w-0 flex-1">
-                {page ? (
-                  <ServiceBlockList blocks={page.sections} />
-                ) : (
-                  Legacy && <Legacy />
-                )}
+                <ServiceBlockList blocks={page.sections} />
               </div>
             </div>
           </div>

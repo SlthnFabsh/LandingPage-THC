@@ -360,6 +360,20 @@ async function main() {
   });
   console.log('✓ Kontak: kontak');
 
+  // 8b. Media halaman (gambar FAQ & CTA, single row)
+  await prisma.homeMedia.upsert({
+    where: { id: 'home-media' },
+    update: {},
+    create: {
+      id: 'home-media',
+      faqThumb1: '/assets/images/news-1.webp',
+      faqThumb2: '/assets/images/borneo.webp',
+      ctaBackground: '/assets/images/sutet-network.webp',
+      ctaLogo: '/assets/images/logo1.webp',
+    },
+  });
+  console.log('✓ Media halaman: home-media');
+
   // 9. Sosial media
   const socialSeeds: { platform: string; url: string; order: number }[] = [
     { platform: 'x', url: '#', order: 1 },

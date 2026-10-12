@@ -13,7 +13,7 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = { title: 'Halaman /layanan | THC CMS' };
+export const metadata = { title: 'Halaman Layanan | THC CMS' };
 
 const dateFormatter = new Intl.DateTimeFormat('id-ID', {
   day: '2-digit',
@@ -69,7 +69,7 @@ export default async function ServicePagesIndexPage() {
   return (
     <div className="space-y-6">
       <ListHeader
-        title="Halaman /layanan"
+        title="Halaman Layanan"
         subtitle="Isi seluruh halaman di /layanan, dikelompokkan mengikuti menu website. Klik Edit untuk mengubah hero, SEO, dan blok konten."
         addHref="/cms/layanan-halaman/new"
         addLabel="Tambah Halaman"

@@ -13,7 +13,7 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = { title: 'Halaman /jaringan | THC CMS' };
+export const metadata = { title: 'Halaman Jaringan | THC CMS' };
 
 const dateFormatter = new Intl.DateTimeFormat('id-ID', {
   day: '2-digit',
@@ -69,7 +69,7 @@ export default async function NetworkPagesIndexPage() {
   return (
     <div className="space-y-6">
       <ListHeader
-        title="Halaman /jaringan"
+        title="Halaman Jaringan"
         subtitle="Isi seluruh halaman di /jaringan, dikelompokkan mengikuti menu website. Klik Edit untuk mengubah hero, SEO, dan blok konten."
         addHref="/cms/jaringan/new"
         addLabel="Tambah Halaman"

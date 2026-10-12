@@ -81,6 +81,7 @@ export default function Navbar({
   const inTentangPage = pathname.startsWith('/tentang');
   const inLayananPage = pathname.startsWith('/layanan');
   const inJaringanPage = pathname.startsWith('/jaringan');
+  const inBeritaPage = pathname.startsWith('/berita');
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -308,9 +309,9 @@ export default function Navbar({
               )}
             </div>
 
-            <a href={sectionHref('berita')} className={`transition-colors hover:text-blue-600 ${activeSection === 'berita' ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
+            <Link href="/berita" prefetch={true} className={`transition-colors hover:text-blue-600 ${inBeritaPage ? 'font-semibold text-blue-600 underline decoration-2 underline-offset-[7px] decoration-blue-600/80' : ''}`}>
               {t('nav.berita')}
-            </a>
+            </Link>
           </nav>
 
           {/* Right Action Button & Language Toggle */}
@@ -417,9 +418,9 @@ export default function Navbar({
                 )}
               </div>
 
-              <a href={sectionHref('berita')} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${activeSection === 'berita' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
+              <Link href="/berita" prefetch={true} onClick={closeMenu} className={`border-b border-slate-100 py-2 hover:text-blue-600 ${inBeritaPage ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.berita')}
-              </a>
+              </Link>
               <a href={sectionHref('faq')} onClick={closeMenu} className={`py-2 hover:text-blue-600 ${activeSection === 'faq' ? 'text-blue-600 underline decoration-2 underline-offset-4 decoration-blue-600' : ''}`}>
                 {t('nav.faq')}
               </a>

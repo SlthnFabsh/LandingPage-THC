@@ -1,19 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Calendar } from 'lucide-react';
+import { ArrowLeft, Calendar } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
-import TiltCard from '@/components/TiltCard';
-import { newsHref, type NewsFallback } from '@/lib/news-data';
-
-function formatDate(date: string, lang: string): string {
-  return new Date(date).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
+import NewsCard, { formatNewsDate } from '@/components/News/NewsCard';
+import type { NewsFallback } from '@/lib/news-data';
 
 function toParagraphs(value: string | null | undefined, fallback: string): string[] {
   const source = (value ?? '').trim() || fallback;
@@ -41,7 +32,7 @@ export default function NewsArticle({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <Link
-            href="/#berita"
+            href="/berita"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -59,7 +50,7 @@ export default function NewsArticle({
 
           <div className="mt-6 flex items-center gap-2 text-sm font-medium text-slate-500">
             <Calendar className="h-4 w-4" />
-            <span>{formatDate(news.date, lang)}</span>
+            <span>{formatNewsDate(news.date, lang)}</span>
           </div>
 
           <div className="mt-6 space-y-5">
@@ -77,49 +68,16 @@ export default function NewsArticle({
               {t('news.related')}
             </h2>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
-              {related.map((item, i) => {
-                const itemTitle = lang === 'id' ? item.titleId : item.titleEn;
-                const itemSummary = lang === 'id' ? item.summaryId : item.summaryEn;
-                return (
-                  <motion.article
-                    key={item.id}
-                    initial={{ opacity: 0, y: 32 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={{ duration: 0.8, delay: i * 0.1 }}
-                    className="group flex flex-col"
-                  >
-                    <TiltCard className="flex h-full flex-col">
-                      <Link href={newsHref(item.slug)} className="flex h-full flex-col">
-                        <div className="aspect-video overflow-hidden bg-slate-100">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={item.coverImage}
-                            alt={itemTitle}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                        </div>
-                        <div className="flex flex-1 flex-col pt-4">
-                          <div className="mb-2 flex items-center gap-2 text-xs font-medium text-slate-500">
-                            <Calendar className="h-3.5 w-3.5" />
-                            <span>{formatDate(item.date, lang)}</span>
-                          </div>
-                          <h3 className="mb-2 text-lg font-medium leading-snug text-slate-900 transition-colors group-hover:text-brand-600">
-                            {itemTitle}
-                          </h3>
-                          <p className="mb-5 text-sm leading-relaxed text-slate-500 line-clamp-2">
-                            {itemSummary}
-                          </p>
-                          <span className="mt-auto inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 group-hover:text-brand-700">
-                            <span>{t('news.readmore')}</span>
-                            <ArrowRight className="h-4 w-4" />
-                          </span>
-                        </div>
-                      </Link>
-                    </TiltCard>
-                  </motion.article>
-                );
-              })}
+              {related.map((item, i) => (
+                <NewsCard
+                  key={item.id}
+                  item={item}
+                  index={i}
+                  imageClassName="aspect-video"
+                  titleClassName="text-lg"
+                  summaryClassName="line-clamp-2"
+                />
+              ))}
             </div>
           </div>
         )}

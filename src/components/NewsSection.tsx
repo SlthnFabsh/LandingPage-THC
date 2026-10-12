@@ -2,25 +2,17 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 import TextSplit from '@/components/TextSplit';
-import TiltCard from '@/components/TiltCard';
-import { newsHref, type NewsFallback } from '@/lib/news-data';
-
-function formatDate(date: string, lang: string): string {
-  return new Date(date).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
+import NewsCard from '@/components/News/NewsCard';
+import type { NewsFallback } from '@/lib/news-data';
 
 const PER_PAGE = 4;
 
 export default function NewsSection({ items }: { items: NewsFallback[] }) {
-  const { lang, t } = useLanguage();
+  const { t } = useLanguage();
   const totalPages = Math.max(1, Math.ceil(items.length / PER_PAGE));
   const [page, setPage] = useState(0);
   const current = Math.min(page, totalPages - 1);
@@ -78,53 +70,21 @@ export default function NewsSection({ items }: { items: NewsFallback[] }) {
           transition={{ duration: 0.35, ease: 'easeOut' }}
           className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-6 lg:grid-cols-4 lg:gap-7"
         >
-          {visible.map((item, i) => {
-            const title = lang === 'id' ? item.titleId : item.titleEn;
-            const summary = lang === 'id' ? item.summaryId : item.summaryEn;
-            return (
-              <motion.article
-                key={item.id}
-                initial={{ opacity: 0, y: 36 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 1.1, delay: i * 0.12 }}
-                className="group flex flex-col"
-              >
-                <TiltCard className="flex h-full flex-col">
-                  <div className="aspect-square overflow-hidden bg-slate-100">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.coverImage}
-                      alt={title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="flex flex-1 flex-col pt-4">
-                    <div className="mb-3 flex items-center gap-2 text-xs font-medium text-slate-500">
-                      <Calendar className="h-3.5 w-3.5" />
-                      <span>{formatDate(item.date, lang)}</span>
-                    </div>
-                    <h3 className="mb-3 text-xl font-medium leading-snug text-slate-900 transition-colors group-hover:text-brand-600 md:text-[22px]">
-                      <Link href={newsHref(item.slug)} className="hover:underline">
-                        {title}
-                      </Link>
-                    </h3>
-                    <p className="mb-6 text-sm leading-relaxed text-slate-500 line-clamp-3">
-                      {summary}
-                    </p>
-                    <Link
-                      href={newsHref(item.slug)}
-                      className="mt-auto inline-flex w-fit items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700"
-                    >
-                      <span>{t('news.readmore')}</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </TiltCard>
-              </motion.article>
-            );
-          })}
+          {visible.map((item, i) => (
+            <NewsCard key={item.id} item={item} index={i} imageClassName="aspect-square" />
+          ))}
         </motion.div>
+
+        <div className="mt-14 flex justify-center">
+          <Link
+            href="/berita"
+            prefetch={true}
+            className="group inline-flex items-center gap-3 rounded-full bg-brand-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/20 transition hover:bg-brand-700"
+          >
+            <span>{t('news.seeall')}</span>
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </div>
       </div>
     </section>
   );

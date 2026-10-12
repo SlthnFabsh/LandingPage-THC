@@ -26,6 +26,8 @@ export const publicRoutes: RouteEntry[] = [
   { path: '/tentang/informasi-perusahaan', name: 'Informasi Perusahaan', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/tentang/nilai-inti', name: 'Nilai Inti', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/tentang/struktur-grup', name: 'Struktur Grup', priority: 0.8, changeFrequency: 'monthly' },
+  // Berita
+  { path: '/berita', name: 'Berita', priority: 0.8, changeFrequency: 'weekly' },
 ];
 
 export const staticLastModified = new Date('2026-09-14');

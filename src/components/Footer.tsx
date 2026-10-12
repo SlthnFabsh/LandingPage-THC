@@ -100,7 +100,7 @@ export default function Footer({ contact, socials }: FooterProps) {
               </li>
               <li><a href={anchor('tentang')} className="transition-colors hover:text-[#63a9ff]">{t('footer.about')}</a></li>
               <li><a href={anchor('jaringan')} className="transition-colors hover:text-[#63a9ff]">{t('nav.jaringan')}</a></li>
-              <li><a href={anchor('berita')} className="transition-colors hover:text-[#63a9ff]">{t('nav.berita')}</a></li>
+              <li><Link href="/berita" className="transition-colors hover:text-[#63a9ff]">{t('nav.berita')}</Link></li>
               <li><a href={anchor('faq')} className="transition-colors hover:text-[#63a9ff]">{t('nav.faq')}</a></li>
             </ul>
           </div>

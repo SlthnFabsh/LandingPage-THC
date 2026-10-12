@@ -159,7 +159,7 @@ export default function ServiceTreeNav({
                 <a
                   href={`${publicBase}/${node.slug}`}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   title="Lihat di website"
                   className={ICON_BTN}
                 >

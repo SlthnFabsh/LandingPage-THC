@@ -116,7 +116,7 @@ export default async function NetworkPageEditPage({
         <a
           href={networkHref(page.slug)}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50"
         >
           <Eye className="h-3.5 w-3.5" />

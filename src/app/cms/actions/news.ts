@@ -7,6 +7,7 @@ import { getCurrentUser } from '@/lib/session';
 import { isPasswordExpired } from '@/lib/password';
 import { processImageUpload } from '@/lib/upload';
 import { writeAudit } from '@/lib/audit';
+import { sanitizeImageUrl } from '@/lib/safe-url';
 
 const ERROR_NOT_AUTH = 'You are not allowed to perform this action.';
 
@@ -45,7 +46,8 @@ export async function createNews(
 
   let coverImage = '';
   if (coverUrl) {
-    coverImage = coverUrl;
+    coverImage = sanitizeImageUrl(coverUrl);
+    if (!coverImage) return { error: 'Cover URL is not valid.' };
   } else if (imageFile && imageFile.size > 0) {
     const result = await processImageUpload(imageFile);
     if (result.error) return { error: result.error };
@@ -119,7 +121,8 @@ export async function updateNews(
 
   let coverImage = existing.coverImage;
   if (coverUrl) {
-    coverImage = coverUrl;
+    coverImage = sanitizeImageUrl(coverUrl);
+    if (!coverImage) return { error: 'Cover URL is not valid.' };
   } else if (imageFile && imageFile.size > 0) {
     const result = await processImageUpload(imageFile);
     if (result.error) return { error: result.error };

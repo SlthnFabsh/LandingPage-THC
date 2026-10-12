@@ -7,6 +7,7 @@ import { getCurrentUser } from '@/lib/session';
 import { isPasswordExpired } from '@/lib/password';
 import { processImageUpload } from '@/lib/upload';
 import { writeAudit } from '@/lib/audit';
+import { sanitizeImageUrl, sanitizeLinkUrl } from '@/lib/safe-url';
 
 const ERROR_NOT_AUTH = 'You are not allowed to perform this action.';
 const ERROR_EXPIRED = 'Password expired. Change your password first.';
@@ -41,7 +42,11 @@ async function resolveImage(
 ): Promise<{ image?: string; error?: string }> {
   const url = String(formData.get('imageUrl') || '').trim();
   const file = (formData.get('image') as File) || null;
-  if (url) return { image: url };
+  if (url) {
+    const safe = sanitizeImageUrl(url);
+    if (!safe) return { error: 'URL gambar tidak valid.' };
+    return { image: safe };
+  }
   if (file && file.size > 0) {
     const result = await processImageUpload(file);
     if (result.error) return { error: result.error };
@@ -56,7 +61,10 @@ function resolveNamedImage(
   base: string
 ): Promise<{ image?: string; error?: string }> {
   const url = String(formData.get(`${base}Url`) || '').trim();
-  if (url) return Promise.resolve({ image: url });
+  if (url) {
+    const safe = sanitizeImageUrl(url);
+    return Promise.resolve(safe ? { image: safe } : { error: 'URL gambar tidak valid.' });
+  }
   const file = (formData.get(base) as File) || null;
   if (file && file.size > 0) {
     return processImageUpload(file).then((result) =>
@@ -93,6 +101,9 @@ export async function createHeroSlide(
   if (imageResult.error) return { error: imageResult.error };
   if (!imageResult.image) return { error: 'Slide image is required (upload or URL).' };
 
+  const ctaHref = text(formData, 'ctaHref');
+  if (ctaHref && !sanitizeLinkUrl(ctaHref)) return { error: 'CTA link URL is not valid.' };
+
   const slide = await prisma.heroSlide.create({
     data: {
       titleId: titleEn,
@@ -101,7 +112,7 @@ export async function createHeroSlide(
       subtitleEn: text(formData, 'subtitleEn') || null,
       ctaLabelId: text(formData, 'ctaLabelEn') || null,
       ctaLabelEn: text(formData, 'ctaLabelEn') || null,
-      ctaHref: text(formData, 'ctaHref') || null,
+      ctaHref: ctaHref || null,
       image: imageResult.image,
       order: Number(text(formData, 'order') || 0),
       active: active(formData),
@@ -136,6 +147,9 @@ export async function updateHeroSlide(
   const imageResult = await resolveImage(formData, existing.image);
   if (imageResult.error) return { error: imageResult.error };
 
+  const ctaHref = text(formData, 'ctaHref');
+  if (ctaHref && !sanitizeLinkUrl(ctaHref)) return { error: 'CTA link URL is not valid.' };
+
   const slide = await prisma.heroSlide.update({
     where: { id },
     data: {
@@ -145,7 +159,7 @@ export async function updateHeroSlide(
       subtitleEn: text(formData, 'subtitleEn') || null,
       ctaLabelId: text(formData, 'ctaLabelEn') || null,
       ctaLabelEn: text(formData, 'ctaLabelEn') || null,
-      ctaHref: text(formData, 'ctaHref') || null,
+      ctaHref: ctaHref || null,
       image: imageResult.image || existing.image,
       order: Number(text(formData, 'order') || 0),
       active: active(formData),
@@ -202,9 +216,13 @@ export async function upsertProfile(
   const misiEn = text(formData, 'misiEn');
   const existingId = text(formData, 'id');
 
+  const homeImageUrl = text(formData, 'homeImageUrl');
+  if (homeImageUrl && !sanitizeImageUrl(homeImageUrl)) {
+    return { error: 'URL gambar tidak valid.' };
+  }
+
   const homeImage = await (async () => {
-    const url = text(formData, 'homeImageUrl');
-    if (url) return url;
+    if (homeImageUrl) return homeImageUrl;
     const file = (formData.get('homeImage') as File) || null;
     if (file && file.size > 0) {
       const result = await processImageUpload(file);
@@ -739,6 +757,7 @@ export async function createSocial(
   const platform = text(formData, 'platform');
   const url = text(formData, 'url');
   if (!platform || !url) return { error: 'Platform and URL are required.' };
+  if (!sanitizeLinkUrl(url)) return { error: 'URL sosial media tidak valid.' };
 
   const social = await prisma.socialMediaLink.create({
     data: { platform, url, order: Number(text(formData, 'order') || 0), active: active(formData) },
@@ -769,6 +788,7 @@ export async function updateSocial(
   const platform = text(formData, 'platform');
   const url = text(formData, 'url');
   if (!platform || !url) return { error: 'Platform and URL are required.' };
+  if (!sanitizeLinkUrl(url)) return { error: 'URL sosial media tidak valid.' };
 
   const social = await prisma.socialMediaLink.update({
     where: { id },

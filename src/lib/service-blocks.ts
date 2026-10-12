@@ -1,3 +1,5 @@
+import { sanitizeImageUrl, sanitizeLinkUrl } from '@/lib/safe-url';
+
 /**
  * Definisi tipe blok konten untuk halaman /layanan.
  *
@@ -218,7 +220,7 @@ export function normalizeBlock(value: unknown): ServiceBlock | null {
           eyebrow: str(data.eyebrow) || undefined,
           title: str(data.title),
           body: str(data.body) || undefined,
-          image: str(data.image) || undefined,
+          image: sanitizeImageUrl(str(data.image)) || undefined,
           imageAlt: str(data.imageAlt) || undefined,
         },
       };
@@ -267,7 +269,7 @@ export function normalizeBlock(value: unknown): ServiceBlock | null {
               icon: str(card.icon) || 'Layers',
               description: str(card.description),
               features: strList(card.features),
-              href: str(card.href),
+              href: sanitizeLinkUrl(str(card.href)),
               ctaLabel: str(card.ctaLabel) || undefined,
             };
           }),
@@ -321,7 +323,7 @@ export function normalizeBlock(value: unknown): ServiceBlock | null {
       return {
         type,
         data: {
-          src: str(data.src),
+          src: sanitizeImageUrl(str(data.src)),
           alt: str(data.alt),
           caption: str(data.caption) || undefined,
           zoomable: data.zoomable === true,
@@ -335,7 +337,7 @@ export function normalizeBlock(value: unknown): ServiceBlock | null {
           title: str(data.title),
           description: str(data.description) || undefined,
           label: str(data.label),
-          href: str(data.href) || '/#faq',
+          href: sanitizeLinkUrl(str(data.href)) || '/#faq',
         },
       };
 

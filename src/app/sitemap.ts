@@ -4,6 +4,8 @@ import { getServicePageSlugs, serviceHref } from '@/lib/service-content';
 import { servicePagesSeed } from '@/lib/service-seed-data';
 import { getNetworkPageSlugs, networkHref } from '@/lib/network-content';
 import { networkPagesSeed } from '@/lib/network-seed-data';
+import { getNewsSlugs } from '@/lib/news-content';
+import { newsFallback, newsHref } from '@/lib/news-data';
 
 type RouteEntry = {
   path: string;
@@ -59,5 +61,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticEntries, ...serviceEntries, ...networkEntries];
+  const newsSlugs = await getNewsSlugs();
+  const activeNewsSlugs =
+    newsSlugs.length > 0 ? newsSlugs : newsFallback.map((item) => item.slug);
+
+  const newsEntries: MetadataRoute.Sitemap = activeNewsSlugs.map((slug) => ({
+    url: `${siteUrl}${newsHref(slug)}`,
+    lastModified: staticLastModified,
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
+
+  return [...staticEntries, ...serviceEntries, ...networkEntries, ...newsEntries];
 }

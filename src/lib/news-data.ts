@@ -1,3 +1,7 @@
+export function newsHref(slug: string): string {
+  return `/berita/${slug}`;
+}
+
 export interface NewsFallback {
   id: string;
   titleId: string;

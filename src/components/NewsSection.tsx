@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Calendar, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 import TextSplit from '@/components/TextSplit';
 import TiltCard from '@/components/TiltCard';
-import type { NewsFallback } from '@/lib/news-data';
+import { newsHref, type NewsFallback } from '@/lib/news-data';
 
 function formatDate(date: string, lang: string): string {
   return new Date(date).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
@@ -104,18 +105,20 @@ export default function NewsSection({ items }: { items: NewsFallback[] }) {
                       <span>{formatDate(item.date, lang)}</span>
                     </div>
                     <h3 className="mb-3 text-xl font-medium leading-snug text-slate-900 transition-colors group-hover:text-brand-600 md:text-[22px]">
-                      {title}
+                      <Link href={newsHref(item.slug)} className="hover:underline">
+                        {title}
+                      </Link>
                     </h3>
                     <p className="mb-6 text-sm leading-relaxed text-slate-500 line-clamp-3">
                       {summary}
                     </p>
-                    <a
-                      href="#"
+                    <Link
+                      href={newsHref(item.slug)}
                       className="mt-auto inline-flex w-fit items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700"
                     >
                       <span>{t('news.readmore')}</span>
                       <ArrowRight className="h-4 w-4" />
-                    </a>
+                    </Link>
                   </div>
                 </TiltCard>
               </motion.article>

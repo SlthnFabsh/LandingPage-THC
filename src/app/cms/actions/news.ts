@@ -86,6 +86,8 @@ export async function createNews(
   });
 
   revalidatePath('/');
+  revalidatePath('/berita');
+  revalidatePath(`/berita/${news.slug}`);
   revalidatePath('/cms');
   redirect('/cms/news');
 }
@@ -154,6 +156,8 @@ export async function updateNews(
   );
 
   revalidatePath('/');
+  revalidatePath('/berita');
+  revalidatePath(`/berita/${news.slug}`);
   revalidatePath('/cms');
   revalidatePath(`/cms/news/${id}/edit`);
   redirect('/cms/news');
@@ -179,6 +183,8 @@ export async function deleteNews(formData: FormData) {
   });
 
   revalidatePath('/');
+  revalidatePath('/berita');
+  revalidatePath(`/berita/${news.slug}`);
   revalidatePath('/cms');
   redirect('/cms/news');
 }
